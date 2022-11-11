@@ -26,6 +26,8 @@ def findChord(chord) :
     triad = [-1,-1,-1]
     for i in range(3) :
         triad[i] = (maj_scale[(chord - 1 + 2*i) % 7] + key)
+        if i!=0 and triad[i] < triad[i-1]:
+            triad[i] = triad[i] + 12
     return triad
 
 # riceve in input il grado (int da 1 a 7) e restituisce la stringa da stampare
@@ -64,6 +66,8 @@ first_note_index = chord_index + 1
 first_rythm_index = first_note_index + measures*16
 first_note_index2 = first_rythm_index + measures*16
 first_rythm_index2 = first_note_index2 + measures*16
+
+measures_index = 2
     
 # create your MIDI object
 
@@ -75,7 +79,8 @@ melody2_track = 2           # traccia con la 2° melodia
 bass_track = 3              # traccia con il basso
 
 # tonalità del brano (int da 0 a 11)
-key = ord(input[key_index]) % 12    
+#key = ord(input[key_index]) % 12    
+key = 0                                 # tutto in do perché non so l'armonia
 print("key = " + note_names[key])
 
 # Project Tempo
@@ -95,8 +100,43 @@ mf.addTempo(melody1_track, time, BPM)
 mf.addTempo(melody2_track, time, BPM)
 mf.addTempo(bass_track, time, BPM)
 
+measures = ord(input[measures_index]) % 5 + 4
+print("measures = ", measures)
+
 # giro di accordi scelto (array con i 4 gradi - int da 1 a 7)
-chord_progression = progressions[ord(input[chord_index]) % 6]
+# chord_progression = progressions[ord(input[chord_index]) % 6]
+
+chord_progression = [0] * measures
+
+for i in range(measures):
+
+    if i == 0:
+        # 1 o 6
+        chord_progression[i] = (ord(input[chord_index + i]) % 2) * 3 + 1
+    else :
+        # se 5 o 7 -> no 2 o 4
+        if chord_progression[i-1] == 5 :
+            temp = ord(input[chord_index + i]) % 4
+            if temp==0: chord_progression[i] = 1
+            if temp==1: chord_progression[i] = 3
+            if temp==2: chord_progression[i] = 6
+            if temp==3: chord_progression[i] = 7
+            
+        elif chord_progression[i-1] == 7 :
+            chord_progression[i] = 1
+        elif chord_progression[i-1] == 3 :
+            chord_progression[i] = 4
+        else:
+            chord_progression[i] = ord(input[chord_index + i]) % 7 + 1
+            if chord_progression[i] == chord_progression[i-1]:
+                chord_progression[i] = (chord_progression[i] + 1) % 7
+            if chord_progression[i] == 3 and chord_progression[i-1]!=1 :
+                chord_progression[i] = (chord_progression[i] + 1) % 7
+
+        # rivoltare i 2 e 7 
+        #if chord_progression[i] == 2 or chord_progression[i] == 7 :
+        #    print("ciao")
+ 
 print(chord_progression)
 
 # loop sulle 4 battute
@@ -128,7 +168,7 @@ for i in range(measures):
 
     # Bass 
 
-    for j in range(4):
+    for j in range(measures):
         
         # definisce i parametri midi per la nota del basso
         pitch = C4pitch + triad[0] - 2*octave       # C4pitch + freq (da 0 a 11) + key (da 0 a 11) - 2 ottave (-24)
