@@ -18,8 +18,6 @@ note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 # giri di accordi belli
 progressions = [[1, 4, 6, 5],[1, 2, 4, 5],[1, 5, 4, 5],[1, 5, 6, 4],[5, 1, 3, 2],[6, 4, 1, 5]]
 
-#triad = [-1,-1,-1]      # forse lo tolgo
-
 # riceve in input il grado (int da 1 a 7) e restituisce un array con le frequenze midi
 # della triade che forma l'accordo (rispetto a C4pitch)
 def findChord(chord) :
@@ -100,42 +98,54 @@ mf.addTempo(melody1_track, time, BPM)
 mf.addTempo(melody2_track, time, BPM)
 mf.addTempo(bass_track, time, BPM)
 
-measures = ord(input[measures_index]) % 5 + 4
+measures = ord(input[measures_index]) % 5 + 4   # da 4 a 8 battute
 print("measures = ", measures)
 
 # giro di accordi scelto (array con i 4 gradi - int da 1 a 7)
 # chord_progression = progressions[ord(input[chord_index]) % 6]
 
 chord_progression = [0] * measures
+all_triads = [[0]*3]* measures
 
 for i in range(measures):
 
-    if i == 0:
-        # 1 o 6
-        chord_progression[i] = (ord(input[chord_index + i]) % 2) * 3 + 1
+    # primo accordo 1 o 6
+    if i == 0 : 
+        chord_progression[i] = (ord(input[chord_index + i]) % 2) * 5 + 1
+
     else :
-        # se 5 o 7 -> no 2 o 4
+
+        # se il precedente è 5 => il successivo no 2 o 4
         if chord_progression[i-1] == 5 :
             temp = ord(input[chord_index + i]) % 4
             if temp==0: chord_progression[i] = 1
             if temp==1: chord_progression[i] = 3
             if temp==2: chord_progression[i] = 6
             if temp==3: chord_progression[i] = 7
-            
+
+        # se il precedente è 7 => il successivo è 1
         elif chord_progression[i-1] == 7 :
             chord_progression[i] = 1
+
+        # se il precedente è 3 => il successivo è 4 
         elif chord_progression[i-1] == 3 :
             chord_progression[i] = 4
+        
+        # casi rimanenti (precedente 1, 2, 4, 6)
         else:
+
             chord_progression[i] = ord(input[chord_index + i]) % 7 + 1
-            if chord_progression[i] == chord_progression[i-1]:
-                chord_progression[i] = (chord_progression[i] + 1) % 7
-            if chord_progression[i] == 3 and chord_progression[i-1]!=1 :
-                chord_progression[i] = (chord_progression[i] + 1) % 7
+
+            # controlla che non ci siano due accordi uguali di fila
+            # e che non ci sia 1 -> 3
+            while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]==1) :
+                chord_progression[i] = chord_progression[i] % 7 + 1
+
+    all_triads[i] = findChord(chord_progression[i])
 
         # rivoltare i 2 e 7 
-        #if chord_progression[i] == 2 or chord_progression[i] == 7 :
-        #    print("ciao")
+    if chord_progression[i] == 2 or chord_progression[i] == 7 :
+        pass
  
 print(chord_progression)
 
