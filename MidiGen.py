@@ -1,6 +1,7 @@
-from midiutil.MidiFile import MIDIFile
-import string
 import random
+import string
+
+from midiutil.MidiFile import MIDIFile
 
 randomStringSize = 100000   # lunghezza in caratteri dell'input casuale
 channel = 0                 # no idea
@@ -37,6 +38,12 @@ def printChord(chord):
         chordName = chordName + "m"
     chordName = chordName + "\t(" + note_names[triad[0]%12] + " | " + note_names[triad[1]%12] + " | " + note_names[triad[2]%12] + ")"
     return chordName
+
+# sceglie un accordo fra un set di accordi a scelta
+def choose_btw_set(choices, input, index):
+
+    choice = ord(input[index]) % (len(choices) - 1)
+    return choices[choice]
 
 # ritarda la posizione temporale della nota di un valore random da 0 a 0.01
 # per rendere più "realistico" il suono
@@ -111,17 +118,13 @@ for i in range(measures):
 
     # primo accordo 1 o 6
     if i == 0 : 
-        chord_progression[i] = (ord(input[chord_index + i]) % 2) * 5 + 1
+        chord_progression[i] = choose_btw_set([1, 6], input, chord_index + i)
 
     else :
 
         # se il precedente è 5 => il successivo no 2 o 4
         if chord_progression[i-1] == 5 :
-            temp = ord(input[chord_index + i]) % 3
-            if temp==0: chord_progression[i] = 1
-            if temp==1: chord_progression[i] = 6    
-            if temp==2: chord_progression[i] = 7
-            # if temp==3: chord_progression[i] = 3
+            chord_progression[i] = choose_btw_set([1, 6, 7], input, chord_index + i)
 
         # se il precedente è 7 => il successivo è 1
         elif chord_progression[i-1] == 7 :
@@ -145,7 +148,7 @@ for i in range(measures):
 
         # rivoltare i 2 e 7 
     if chord_progression[i] == 2 or chord_progression[i] == 7 :
-        pass
+        pass    # TODO
  
 print(chord_progression)
 
