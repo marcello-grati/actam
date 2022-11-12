@@ -117,11 +117,11 @@ for i in range(measures):
 
         # se il precedente è 5 => il successivo no 2 o 4
         if chord_progression[i-1] == 5 :
-            temp = ord(input[chord_index + i]) % 4
+            temp = ord(input[chord_index + i]) % 3
             if temp==0: chord_progression[i] = 1
-            if temp==1: chord_progression[i] = 3
-            if temp==2: chord_progression[i] = 6
-            if temp==3: chord_progression[i] = 7
+            if temp==1: chord_progression[i] = 6    
+            if temp==2: chord_progression[i] = 7
+            # if temp==3: chord_progression[i] = 3
 
         # se il precedente è 7 => il successivo è 1
         elif chord_progression[i-1] == 7 :
@@ -138,7 +138,7 @@ for i in range(measures):
 
             # controlla che non ci siano due accordi uguali di fila
             # e che non ci sia 1 -> 3
-            while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]==1) :
+            while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]!=1) :
                 chord_progression[i] = chord_progression[i] % 7 + 1
 
     all_triads[i] = findChord(chord_progression[i])
