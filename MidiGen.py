@@ -1,6 +1,7 @@
-from midiutil.MidiFile import MIDIFile
-import string
 import random
+import string
+
+from midiutil.MidiFile import MIDIFile
 
 randomStringSize = 100000   # lunghezza in caratteri dell'input casuale
 channel = 0                 # no idea
@@ -18,14 +19,14 @@ note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 # giri di accordi belli
 progressions = [[1, 4, 6, 5],[1, 2, 4, 5],[1, 5, 4, 5],[1, 5, 6, 4],[5, 1, 3, 2],[6, 4, 1, 5]]
 
-#triad = [-1,-1,-1]      # forse lo tolgo
-
 # riceve in input il grado (int da 1 a 7) e restituisce un array con le frequenze midi
 # della triade che forma l'accordo (rispetto a C4pitch)
 def findChord(chord) :
     triad = [-1,-1,-1]
     for i in range(3) :
         triad[i] = (maj_scale[(chord - 1 + 2*i) % 7] + key)
+        if i!=0 and triad[i] < triad[i-1]:
+            triad[i] = triad[i] + 12
     return triad
 
 # riceve in input il grado (int da 1 a 7) e restituisce la stringa da stampare
@@ -37,6 +38,12 @@ def printChord(chord):
         chordName = chordName + "m"
     chordName = chordName + "\t(" + note_names[triad[0]%12] + " | " + note_names[triad[1]%12] + " | " + note_names[triad[2]%12] + ")"
     return chordName
+
+# sceglie un accordo fra un set di accordi a scelta
+def choose_btw_set(choices, input, index):
+
+    choice = ord(input[index]) % (len(choices) - 1)
+    return choices[choice]
 
 # ritarda la posizione temporale della nota di un valore random da 0 a 0.01
 # per rendere più "realistico" il suono
@@ -64,6 +71,8 @@ first_note_index = chord_index + 1
 first_rythm_index = first_note_index + measures*16
 first_note_index2 = first_rythm_index + measures*16
 first_rythm_index2 = first_note_index2 + measures*16
+
+measures_index = 2
     
 # create your MIDI object
 
@@ -75,7 +84,8 @@ melody2_track = 2           # traccia con la 2° melodia
 bass_track = 3              # traccia con il basso
 
 # tonalità del brano (int da 0 a 11)
-key = ord(input[key_index]) % 12    
+#key = ord(input[key_index]) % 12    
+key = 0                                 # tutto in do perché non so l'armonia
 print("key = " + note_names[key])
 
 # Project Tempo
@@ -95,8 +105,51 @@ mf.addTempo(melody1_track, time, BPM)
 mf.addTempo(melody2_track, time, BPM)
 mf.addTempo(bass_track, time, BPM)
 
+measures = ord(input[measures_index]) % 5 + 4   # da 4 a 8 battute
+print("measures = ", measures)
+
 # giro di accordi scelto (array con i 4 gradi - int da 1 a 7)
-chord_progression = progressions[ord(input[chord_index]) % 6]
+# chord_progression = progressions[ord(input[chord_index]) % 6]
+
+chord_progression = [0] * measures
+all_triads = [[0]*3]* measures
+
+for i in range(measures):
+
+    # primo accordo 1 o 6
+    if i == 0 : 
+        chord_progression[i] = choose_btw_set([1, 6], input, chord_index + i)
+
+    else :
+
+        # se il precedente è 5 => il successivo no 2 o 4
+        if chord_progression[i-1] == 5 :
+            chord_progression[i] = choose_btw_set([1, 6, 7], input, chord_index + i)
+
+        # se il precedente è 7 => il successivo è 1
+        elif chord_progression[i-1] == 7 :
+            chord_progression[i] = 1
+
+        # se il precedente è 3 => il successivo è 4 
+        elif chord_progression[i-1] == 3 :
+            chord_progression[i] = 4
+        
+        # casi rimanenti (precedente 1, 2, 4, 6)
+        else:
+
+            chord_progression[i] = ord(input[chord_index + i]) % 7 + 1
+
+            # controlla che non ci siano due accordi uguali di fila
+            # e che non ci sia 1 -> 3
+            while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]!=1) :
+                chord_progression[i] = chord_progression[i] % 7 + 1
+
+    all_triads[i] = findChord(chord_progression[i])
+
+        # rivoltare i 2 e 7 
+    if chord_progression[i] == 2 or chord_progression[i] == 7 :
+        pass    # TODO
+ 
 print(chord_progression)
 
 # loop sulle 4 battute
@@ -128,7 +181,7 @@ for i in range(measures):
 
     # Bass 
 
-    for j in range(4):
+    for j in range(measures):
         
         # definisce i parametri midi per la nota del basso
         pitch = C4pitch + triad[0] - 2*octave       # C4pitch + freq (da 0 a 11) + key (da 0 a 11) - 2 ottave (-24)
