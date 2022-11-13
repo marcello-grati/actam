@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'neon_club_musicregular';
-    src: url('fonts/neoneon/Neoneon.woff') format('woff');
+    src: url('../fonts/neoneon/Neoneon.woff') format('woff');
     /*url('fonts/clip/clip-webfont.woff') format('woff');*/
     font-weight: normal;
     font-style: normal;
