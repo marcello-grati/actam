@@ -121,9 +121,25 @@ for i in range(measures):
     if i == 0 : 
         chord_progression[i] = choose_btw_set([1, 6], input, chord_index + i)
     else :
-        # se il precedente è 5 => il successivo no 2 o 4
+        # se il precedente è 5 => il successivo no 2 o 4 o 3
         if chord_progression[i-1] == 5 :
             chord_progression[i] = choose_btw_set([1, 6, 7], input, chord_index + i)
+
+        # se il precedente è 1 => il successivo no 5 o 7 MODIFICARE CON RIVOLTI
+        elif chord_progression[i-1] == 1 :
+            chord_progression[i] = choose_btw_set([2, 3, 4, 6], input, chord_index + i)
+
+        # se il precedente è 6 => il successivo no 1 o 7 
+        elif chord_progression[i-1] == 6 :
+            chord_progression[i] = choose_btw_set([2, 3, 4, 5], input, chord_index + i)
+
+        # se il precedente è 4 => il successivo no 1 o 3
+        elif chord_progression[i-1] == 4 :
+            chord_progression[i] = choose_btw_set([2, 4, 5, 6, 7], input, chord_index + i)
+        
+        # se il precedente è 2 => il successivo no 4 o 3
+        elif chord_progression[i-1] == 2 :
+            chord_progression[i] = choose_btw_set([1, 2, 5, 6, 7], input, chord_index + i)
 
         # se il precedente è 7 => il successivo è 1
         elif chord_progression[i-1] == 7 :
@@ -144,15 +160,24 @@ for i in range(measures):
 
             choices = [1, 2, 3, 4, 5, 6, 7]
             choices.remove(chord_progression[i-1])
+        
             if chord_progression[i-1] != 1 : choices.remove(3)
-
             chord_progression[i] = choose_btw_set(choices, input, chord_index + i)
+
+
+
 
     all_triads[i] = findChord(chord_progression[i])
 
         # rivoltare i 2 e 7 
     # if chord_progression[i] == 2 or chord_progression[i] == 7 :
     #     pass    # TODO
+
+#penultimo sempre 4 
+chord_progression[measures-2] = 4;
+
+#ultimo sempre 5
+chord_progression[measures-1] = 5;
  
 print(chord_progression)
 
