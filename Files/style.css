@@ -6,7 +6,13 @@
     font-style: normal;
 }
 
-
+@font-face {
+    font-family: 'bobble';
+    src: url('../fonts/Bobbleboddy/Bobbleboddy_light.woff') format('woff');
+    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
 
 .contenitore {
     background-color: black;
@@ -32,8 +38,9 @@
     background-color: #ffdead;
     box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
     margin: 70px 40px 120px; /* il terzo valore è il gap tra bottoni e nomi*/
-    font-family: "Courier New", Courier, serif; /* font bottoni */
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
     cursor: pointer;
+    font-size: 30px;
 }
 
 .neonText {
@@ -51,13 +58,14 @@
 
 .names{
     color:#ffdead;
-    font-size: 0.8em;
-    font-family: "Courier New", Courier, serif; /* font nomi*/
+    font-size: 1em;
+    font-family: "bobble", Courier, serif; /* font nomi*/
     margin:50px;
 }
 
 .nick{
     color:#ffdead;
-    font-size:1em;
+    font-family: "bobble", Courier, serif; /* font Nickname*/
+    font-size:1.5em;
 
 }

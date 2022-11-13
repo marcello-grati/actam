@@ -6,6 +6,14 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'bobble';
+    src: url('../fonts/Bobbleboddy/Bobbleboddy_light.woff') format('woff');
+    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
 .contenitore {
     background-color: black;
     width: 100%;
@@ -37,8 +45,8 @@
 }
 
 .subtitle{
-    font-family: "Courier New", Courier, serif;
-    font-size: 1.5em;
+    font-family: "bobble", Courier, serif;
+    font-size: 2.5em;
 }
 
 .selection{
@@ -50,6 +58,6 @@
     font-size: 1.2em;
     border-color: #ffdead;
     cursor:pointer;
-    font-family: "New Courier", Courier, serif;
+    font-family: "bobble", Courier, serif;
 }
 
