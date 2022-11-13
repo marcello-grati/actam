@@ -36,13 +36,14 @@ def printChord(chord):
     chordName = note_names[triad[0]%12]
     if chord==2 or chord==3 or chord==6 : 
         chordName = chordName + "m"
+    if chord==7 : chordName = chordName + "dim"
     chordName = chordName + "\t(" + note_names[triad[0]%12] + " | " + note_names[triad[1]%12] + " | " + note_names[triad[2]%12] + ")"
     return chordName
 
 # sceglie un accordo fra un set di accordi a scelta
 def choose_btw_set(choices, input, index):
 
-    choice = ord(input[index]) % (len(choices) - 1)
+    choice = ord(input[index]) % len(choices)
     return choices[choice]
 
 # ritarda la posizione temporale della nota di un valore random da 0 a 0.01
@@ -84,8 +85,8 @@ melody2_track = 2           # traccia con la 2° melodia
 bass_track = 3              # traccia con il basso
 
 # tonalità del brano (int da 0 a 11)
-#key = ord(input[key_index]) % 12    
-key = 0                                 # tutto in do perché non so l'armonia
+key = ord(input[key_index]) % 12    
+# key = 0                                 # tutto in do perché non so l'armonia
 print("key = " + note_names[key])
 
 # Project Tempo
@@ -119,9 +120,7 @@ for i in range(measures):
     # primo accordo 1 o 6
     if i == 0 : 
         chord_progression[i] = choose_btw_set([1, 6], input, chord_index + i)
-
     else :
-
         # se il precedente è 5 => il successivo no 2 o 4
         if chord_progression[i-1] == 5 :
             chord_progression[i] = choose_btw_set([1, 6, 7], input, chord_index + i)
@@ -136,19 +135,24 @@ for i in range(measures):
         
         # casi rimanenti (precedente 1, 2, 4, 6)
         else:
-
-            chord_progression[i] = ord(input[chord_index + i]) % 7 + 1
-
             # controlla che non ci siano due accordi uguali di fila
-            # e che non ci sia 1 -> 3
-            while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]!=1) :
-                chord_progression[i] = chord_progression[i] % 7 + 1
+            # e che 1 => 3
+
+            # chord_progression[i] = ord(input[chord_index + i]) % 7 + 1
+            # while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]!=1) :
+            #    chord_progression[i] = chord_progression[i] % 7 + 1
+
+            choices = [1, 2, 3, 4, 5, 6, 7]
+            choices.remove(chord_progression[i-1])
+            if chord_progression[i-1] != 1 : choices.remove(3)
+
+            chord_progression[i] = choose_btw_set(choices, input, chord_index + i)
 
     all_triads[i] = findChord(chord_progression[i])
 
         # rivoltare i 2 e 7 
-    if chord_progression[i] == 2 or chord_progression[i] == 7 :
-        pass    # TODO
+    # if chord_progression[i] == 2 or chord_progression[i] == 7 :
+    #     pass    # TODO
  
 print(chord_progression)
 
