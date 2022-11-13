@@ -13,9 +13,15 @@ const options = {
 
 selectionMenu.addEventListener("change", function() {
     const selected = selectionMenu.value;
-    console.log(options[selected]);
+    const filenames = options[selected];
 
-    //createElement("img")
+    optionsContainer.replaceChildren([]);
 
-    //optionsContainer.addChildren
+    for (const filename of filenames) {
+        const el_img = document.createElement('div');
+        el_img.classList.add('neonText');
+        el_img.innerText = filename;
+
+        optionsContainer.appendChild(el_img);
+    }
 })

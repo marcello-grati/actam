@@ -22,7 +22,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 130px;
 }
 
 .title {
@@ -47,17 +46,33 @@
 .subtitle{
     font-family: "bobble", Courier, serif;
     font-size: 2.5em;
+    margin-bottom: 100px;
 }
 
-.selection{
+.selections{
     background-color:#ffdead;
     border-radius: 10%;
     box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
-    margin: 15px;
+    margin: 15px 15px 30px;
     padding: 10px 15px;
     font-size: 1.2em;
     border-color: #ffdead;
     cursor:pointer;
     font-family: "bobble", Courier, serif;
+}
+
+.options-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+
+}
+
+.options-container div {
+    background-color: crimson;
+    color: white;
+    width: 50px;
+    height: 50px;
+
 }
 
