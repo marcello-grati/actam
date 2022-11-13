@@ -43,6 +43,7 @@
 
 .selection{
     background-color:#ffdead;
+    border-radius: 10%;
     box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
     margin: 15px;
     padding: 10px 15px;
