@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'neon_club_musicregular';
+    src: url('fonts/neoneon/Neoneon.woff') format('woff');
+    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+.contenitore {
+    background-color: black;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 130px;
+}
+
+.title {
+    font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
+    font-size: 5em; /* Grandezza del titolo*/
+    margin-bottom: 10px;
+}
+
+.neonText {
+    color: #ffdead;
+    text-shadow:
+            0 0 18px #ffa07a,
+            0 0 21px #ff00ff,
+            0 0 31px #ff00ff,
+            0 0 51px #fff0f5,
+            0 0 92px #ffdab9,
+            0 0 102px #ffe4b5,
+            0 0 112px #ffe4e1,
+            0 0 161px #ffe4e1;
+}
+
+.subtitle{
+    font-family: "Courier New", Courier, serif;
+    font-size: 1.5em;
+}
+
+.selection{
+    background-color:#ffdead;
+    box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
+    margin: 15px;
+    padding: 10px 15px;
+    font-size: 1.2em;
+    border-color: #ffdead;
+    cursor:pointer;
+    font-family: "New Courier", Courier, serif;
+}
+
