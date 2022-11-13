@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'neon_club_musicregular';
+    src: url('fonts/neoneon/Neoneon.woff') format('woff');
+    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
 .contenitore {
     background-color: black;
     width: 100%;
@@ -10,8 +20,9 @@
 }
 
 .title {
-    font-family: "Impact", Courier, serif; /* font del titolo*/
+    font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
     font-size: 5em; /* Grandezza del titolo*/
+    margin-bottom: 10px;
 }
 
 .row button {
