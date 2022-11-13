@@ -16,13 +16,13 @@
     flex-direction: column; /*allinea tutti gli elementi del contenitore in colonne*/
     justify-content: center;
     align-items: center; /*allinea tutti gli elementi del contenitore in centro*/
-    gap: 130px; /* gap tra il titolo e i bottoni */
 }
 
 .title {
     font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
     font-size: 5em; /* Grandezza del titolo*/
-    margin-bottom: 10px;
+    margin-bottom: 70px;
+    gap: 150px; /* gap tra il titolo e i bottoni */
 }
 
 .row button {
@@ -31,7 +31,7 @@
     padding: 30px 40px; /* grandezza bottoni */
     background-color: #ffdead;
     box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
-    margin: 0 40px 150px; /* il terzo valore è il gap tra bottoni e nomi*/
+    margin: 70px 40px 120px; /* il terzo valore è il gap tra bottoni e nomi*/
     font-family: "Courier New", Courier, serif; /* font bottoni */
     cursor: pointer;
 }
@@ -53,4 +53,11 @@
     color:#ffdead;
     font-size: 0.8em;
     font-family: "Courier New", Courier, serif; /* font nomi*/
+    margin:50px;
+}
+
+.nick{
+    color:#ffdead;
+    font-size:1em;
+
 }
