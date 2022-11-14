@@ -56,10 +56,40 @@
             0 0 161px #ffe4e1;
 }
 
+
 .names{
     color:#ffdead;
     font-size: 1em;
     font-family: "bobble", Courier, serif; /* font nomi*/
     margin:50px;
+}
+
+.pulsate {
+    animation: pulsate 1.5s infinite alternate;
+}
+
+@keyframes pulsate {
+
+    100% {
+        text-shadow: 0 0 4px #ffa07a,
+        0 0 15px #ff00ff,
+        0 0 25px #ff00ff,
+        0 0 40px #fff0f5,
+        0 0 80px #ffdab9,
+        0 0 90px #ffe4b5,
+        0 0 100px #ffe4e1,
+        0 0 150px #ffe4e1;
+    }
+    0% {
+        /* Smaller blur radius */
+        text-shadow: 0 0 4px #ffa07a,
+        0 0 15px #ff00ff,
+        0 0 25px #ff00ff,
+        0 0 38px #fff0f5,
+        0 0 73px #ffdab9,
+        0 0 80px #ffe4b5,
+        0 0 94px #ffe4e1,
+        0 0 140px #ffe4e1;
+    }
 }
 
