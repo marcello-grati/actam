@@ -87,8 +87,9 @@
 button{
 
     border-radius: 10px;
-    margin-left: 880px;
-    margin-top: 150px;
+    position: absolute;
+    margin-left: 970px;
+    margin-top: 650px;
     padding: 10px 20px; /* grandezza bottoni */
     background-color: #ffdead;
     box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
