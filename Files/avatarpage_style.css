@@ -76,3 +76,18 @@
 
 }
 
+.back_button button{
+    border: none;
+    border-radius: 10px;
+    margin: unset;
+    justify-content: unset;
+    margin-left: 880px;
+    margin-top: 160px;
+    padding: 10px 20px; /* grandezza bottoni */
+    background-color: #ffdead;
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
+    cursor: pointer;
+    font-size: 30px
+}
+
