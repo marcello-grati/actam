@@ -10,6 +10,12 @@
         F A C E T U N E
     </h1>
     <h2 class="neonText subtitle"> CREATE YOUR AVATAR</h2>
+    <form name="nicktext" class="nick" method="post">
+        <label id="nick" class="nick " >Nickname:</label>
+        <label for="nickname"></label><input type="text" id="nickname" name="nickname" size="20" maxlength="20" >
+        <input type="button" id="subButton" value = "Confirm" onclick="saveName();" />
+    </form>
+    <p id="name-avatar"  class="neonText new_name"></p>
     <label for="selection-menu"></label>
     <select id="selection-menu" class="selections" name="Features" >
         <option value= "haircolor" selected="selected">Hair Color </option>
@@ -21,7 +27,7 @@
     </select>
     <div class="options-container" id="options-container">
     </div>
-    <div class="back_button"> <button onclick="location.href='index.html'">BACK</button></div>
+    <button onclick="location.href='index.html'">BACK</button>
 </div>
 </body>
 <script src="avatarpage_app.js"></script>

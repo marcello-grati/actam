@@ -46,14 +46,14 @@
 .subtitle{
     font-family: "bobble", Courier, serif;
     font-size: 2.5em;
-    margin-bottom: 100px;
+    margin-bottom: 20px;
 }
 
 .selections{
     background-color:#ffdead;
     border-radius: 10%;
     box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
-    margin: 15px 15px 30px;
+    margin: 15px 15px 40px;
     padding: 10px 15px;
     font-size: 1.2em;
     border-color: #ffdead;
@@ -76,13 +76,19 @@
 
 }
 
-.back_button button{
-    border: none;
+.new_name p{
+    font-family: "bobble", Courier, serif;
+    font-size: 2.5em;
+    margin: 10px 0 120px;
+    justify-content: inherit;
+    text-transform: uppercase;
+}
+
+button{
+
     border-radius: 10px;
-    margin: unset;
-    justify-content: unset;
     margin-left: 880px;
-    margin-top: 160px;
+    margin-top: 150px;
     padding: 10px 20px; /* grandezza bottoni */
     background-color: #ffdead;
     box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
@@ -91,3 +97,10 @@
     font-size: 30px
 }
 
+.nick{
+    color:#ffdead;
+    font-family: "bobble", Courier, serif; /* font Nickname*/
+    font-size:1em;
+    margin-bottom: 10px;
+
+}
