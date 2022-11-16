@@ -79,7 +79,12 @@ function arrayCreation(elem, selected){
 }
 
 
+function doneButton(){
+    selectionMenu.setAttribute('disabled', '');
+    optionsContainer.replaceChildren([]);
+    //console.log('final string: '+ avatarFeat[0]+','+avatarFeat[1]+','+avatarFeat[2]+','+avatarFeat[3]+','+avatarFeat[4]+','+avatarFeat[5]);
 
+}
 
 
 

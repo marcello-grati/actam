@@ -122,6 +122,14 @@ p {
     text-transform: uppercase;
 }
 
+.done{
+    justify-content: flex-end;
+    display: flex;
+    width:100%;
+}
+
+
+
 .back{
     width:100%;
     justify-content: flex-end;
@@ -139,6 +147,7 @@ button{
     position:relative;
     right:5%;
 }
+
 
 .pulsate {
     animation: pulsate 1.5s infinite alternate;
