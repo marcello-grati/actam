@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Avatar Page</title>
+    <title>Create Your Avatar</title>
     <link rel="stylesheet" href="avatarpage_style.css">
 </head>
 <body>
@@ -9,25 +9,24 @@
     <h1 class="neonText title pulsate">
         F A C E T U N E
     </h1>
-    <h2 class="neonText subtitle pulsate"> CREATE YOUR AVATAR</h2>
-    <form name="nicktext" class="nick" method="post">
-        <label id="nick" class="nick " >Nickname:</label>
-        <label for="nickname"></label><input type="text" id="nickname" name="nickname" size="20" maxlength="20" >
-        <input type="button" id="subButton" value = "Confirm" onclick="saveName();" />
+    <h2 class="neonText subtitle pulsate">CREATE YOUR AVATAR</h2>
+    <form name="nicktext" method="post"> <!-- autocomplete="off" se non si vuole che rimangano memorizzati i nomi-->
+        <label for="nickname" class="nick">Nickname:</label>
+        <input type="text" id="nickname" name="nickname" size="20" maxlength="20" >
+        <input type="button" id="subButton" value="Confirm" onclick="saveName()" />
     </form>
-    <p id="name-avatar"  class="neonText new_name"></p>
-    <label for="selection-menu"></label>
+    <p id="name-avatar" class="neonText new_name"></p>
+    <label for="selection-menu" class="nick">Select a feature of the avatar:</label>
     <select id="selection-menu" class="selections" name="Features" >
-        <option value= "haircolor" selected="selected">Hair Color </option>
-        <option value= "haircut">Haircut </option>
-        <option value="eyes">Eyes </option>
+        <option value="haircolor" selected="selected"> Hair Color </option>
+        <option value="haircut"> Haircut </option>
+        <option value="eyes"> Eyes </option>
         <option value="skin"> Skin </option>
         <option value="nose"> Nose </option>
         <option value="mouth"> Mouth </option>
     </select>
-    <div class="options-container" id="options-container">
-    </div>
-    <button onclick="location.href='index.html'">BACK</button>
+    <div class="options-container" id="options-container"></div>
+    <div class="back"><button onclick="location.href='index.html'">BACK</button></div>
 </div>
 </body>
 <script src="avatarpage_app.js"></script>

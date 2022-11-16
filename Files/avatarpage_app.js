@@ -1,17 +1,25 @@
 const selectionMenu = document.getElementById("selection-menu");
 const optionsContainer = document.getElementById("options-container");
-const nameAvatar = document.getElementById("name-avatar");
-const selectedElement = document.getElementsByClassName("options-container");
+//const nameAvatar = document.getElementById("name-avatar");
+//const selectedElement = document.getElementsByClassName("options-container");
 
 function saveName() {
 
     const nameField = document.getElementById('nickname').value;
-    nameAvatar.replaceChildren([]);
+    let nameAvatar = document.getElementById("name-avatar");
+    nameAvatar.innerText = nameField;
+    /*const nameField = document.getElementById('nickname').value;
+    let e = document.createElement("p");
+    e.classList.add('neonText', 'new_name');
+    e.id = "name-avatar";
+    e.innerText = nameField;
+    let nameAvatar = document.getElementById("name-avatar");
+    nameAvatar.replaceWith(e);*/
+    /*nameAvatar.replaceChildren([]);
     const nick_vis = document.createElement('p');
     nick_vis.classList.add('neonText', 'subtitle');
     nick_vis.innerText = nameField;
-    nameAvatar.appendChild(nick_vis);
-
+    nameAvatar.appendChild(nick_vis);*/
 }
 
 const options = {

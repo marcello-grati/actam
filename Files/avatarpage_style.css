@@ -14,20 +14,36 @@
     font-style: normal;
 }
 
+body{
+    margin: 0;
+    background-color: black;
+}
+
 .contenitore {
     background-color: black;
+    height: 100%;
     width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    position: absolute;
+    display: inline-flex;
+    flex-direction: column; /*allinea tutti gli elementi del contenitore in colonne*/
+    justify-content: space-evenly;
+    align-items: center; /*allinea tutti gli elementi del contenitore in centro*/
 }
 
 .title {
     font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
     font-size: 5em; /* Grandezza del titolo*/
-    margin-bottom: 70px;
+    margin-block-start: unset;
+    margin-block-end: unset;
+    /*margin-bottom: 70px;*/
+}
+
+.subtitle{
+    font-family: "bobble", Courier, serif;
+    font-size: 2.5em;
+    margin-block-start: unset;
+    margin-block-end: unset;
+    /*margin-bottom: 20px;*/
 }
 
 .neonText {
@@ -55,17 +71,28 @@
             0 0 102px #0fa,
             0 0 151px #0fa;
 }
-.subtitle{
-    font-family: "bobble", Courier, serif;
-    font-size: 2.5em;
-    margin-bottom: 20px;
+
+.nick{
+    color:#ffdead;
+    font-family: "bobble", Courier, serif; /* font Nickname*/
+    font-size:1.5em;
+    /*margin-bottom: 10px;*/
+}
+
+input {
+    font-size: 1.5em;
+}
+
+p {
+    margin-block-start: unset;
+    margin-block-end: unset;
 }
 
 .selections{
     background-color:#ffdead;
     border-radius: 10%;
     box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
-    margin: 15px 15px 40px;
+    /*margin: 15px 15px 40px;*/
     padding: 10px 15px;
     font-size: 1.2em;
     border-color: #ffdead;
@@ -77,7 +104,6 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 10px;
-
 }
 
 .options-container div {
@@ -86,38 +112,34 @@
     width: 50px;
     height: 50px;
     cursor:pointer;
-
 }
 
-.new_name p{
+.new_name{
     font-family: "bobble", Courier, serif;
     font-size: 2.5em;
-    margin: 10px 0 120px;
-    justify-content: inherit;
+    /*margin: 10px 0 120px;
+    justify-content: inherit;*/
     text-transform: uppercase;
 }
 
-button{
+.back{
+    width:100%;
+    justify-content: flex-end;
+    display: flex;
+}
 
+button{
     border-radius: 10px;
-    position: absolute;
-    margin-left: 970px;
-    margin-top: 650px;
     padding: 10px 20px; /* grandezza bottoni */
     background-color: #ffdead;
     box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
     font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
     cursor: pointer;
-    font-size: 30px
+    font-size: 30px;
+    position:relative;
+    right:5%;
 }
 
-.nick{
-    color:#ffdead;
-    font-family: "bobble", Courier, serif; /* font Nickname*/
-    font-size:1em;
-    margin-bottom: 10px;
-
-}
 .pulsate {
     animation: pulsate 1.5s infinite alternate;
 }
