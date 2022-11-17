@@ -51,6 +51,16 @@ def choose_btw_set(choices, input, index):
 def dequantize(time):
     return time + random.uniform(0, 0.01)
 
+# rivolta l'accordo
+def invert_chord(triad, root_note):
+    for i in range(3) : triad[i] = triad[i] - key % 12
+    triad.append(triad.pop(0))
+    if root_note == 2 : triad.append(triad.pop(0))
+    for i in range(3) : 
+        triad[i] = triad[i] + key
+        if i!=0 and triad[i] < triad[i-1]:
+            triad[i] = triad[i] + 12
+
 # INPUT PARSING
 #   0       : key
 #   1       : bpm
