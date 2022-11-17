@@ -53,8 +53,7 @@ def dequantize(time):
 
 # rivolta l'accordo (inversion_num da 1 a 2)
 def invert_chord(triad, inversion_num):
-    print("banana")
-    print(triad)
+
     for i in range(3) : triad[i] = triad[i] - key % 12
     if inversion_num == 1:  
 
@@ -75,8 +74,6 @@ def invert_chord(triad, inversion_num):
         triad[i] = triad[i] + key
         if i!=0 and triad[i] < triad[i-1]:
             triad[i] = triad[i] + 12
-
-    print(triad)
     return triad
 
 # INPUT PARSING
@@ -218,6 +215,7 @@ for i in range(measures):
 
         # definisce i parametri midi per ogni nota dell'accordo
         pitch = C4pitch + all_triads[i][j]      # C4pitch + freq (da 0 a 11) + key (da 0 a 11)
+        if key > 6 : pitch-=12
         time = i * 4                    # uno ogni battuta
         time = dequantize(time)         
         duration = 4                    # 4 quarti
@@ -243,11 +241,17 @@ for i in range(measures):
         
         # durata della nota in 16esimi (da 1 a 4)
         duration = ord(input[first_rythm_index + i*4 + counter]) % 4 + 1
+        if counter == 0 : duration = ord(input[first_rythm_index + i*4 + counter]) % 2 + 3
 
-        # indice della nota all'interno della triade (da 0 a 2) 
-        raw_note = ord(input[first_note_index + i*4 + counter]) % 3
+        if counter == 0 or duration == 4 or duration == 3 : 
+            # indice della nota all'interno della triade (da 0 a 2) 
+        
+            raw_note = ord(input[first_note_index + i*4 + counter]) % 3
+            chord_note = triad[raw_note]    # nota in frequenza relativa a C4pitch
 
-        chord_note = triad[raw_note]    # nota in frequenza relativa a C4pitch
+        else :
+            raw_note = ord(input[first_note_index + i*4 + counter]) % 7 + 1
+            chord_note = findChord(raw_note)[0]
 
         # verifica che l'ultima nota non sfori la lunghezza della battuta
         while tempo_left - duration < 0 :
