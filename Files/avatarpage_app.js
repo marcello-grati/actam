@@ -42,20 +42,26 @@ selectionMenu.addEventListener("change", function() {
         arrayCreation(e.target.id, selected)
     }
 
-
     optionsContainer.replaceChildren([]);
 
     for (const filename of filenames) {
-        const el_img = document.createElement('div');
-        el_img.classList.add('neonText');
-        el_img.innerText = filename;
-        el_img.setAttribute('id',filename)
-        el_img.addEventListener("click", selected_el)
 
-        optionsContainer.appendChild(el_img);
+        const a = document.createElement('a');
+        a.href = "#";
+        a.cursor = "pointer";
+        a.setAttribute('id',filename);
+
+        const el_img = document.createElement('object');
+        el_img.classList.add('svgimage');
+        el_img.type = "image/svg+xml";
+        el_img.data = "hair1.svg";
+        el_img.height = "50px";
+        el_img.width = "50px";
+
+        a.addEventListener("click", selected_el);
+        optionsContainer.appendChild(a);
+        a.appendChild(el_img);
     }
-
-
 })
 
 function arrayCreation(elem, selected){
@@ -75,7 +81,6 @@ function arrayCreation(elem, selected){
 
     // Per visualizzare array in console
     console.log(avatarFeat[0]+','+avatarFeat[1]+','+avatarFeat[2]+','+avatarFeat[3]+','+avatarFeat[4]+','+avatarFeat[5])
-
 }
 
 
@@ -83,7 +88,6 @@ function doneButton(){
     selectionMenu.setAttribute('disabled', '');
     optionsContainer.replaceChildren([]);
     //console.log('final string: '+ avatarFeat[0]+','+avatarFeat[1]+','+avatarFeat[2]+','+avatarFeat[3]+','+avatarFeat[4]+','+avatarFeat[5]);
-
 }
 
 

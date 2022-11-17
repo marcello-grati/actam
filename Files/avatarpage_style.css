@@ -106,13 +106,17 @@ p {
     gap: 10px;
 }
 
-.options-container div {
+object {
+    pointer-events: none;
+}
+
+/*.options-container div {
     background-color: crimson;
     color: white;
     width: 50px;
     height: 50px;
     cursor:pointer;
-}
+}*/
 
 .new_name{
     font-family: "bobble", Courier, serif;
