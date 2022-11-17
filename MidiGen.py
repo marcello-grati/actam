@@ -5,7 +5,7 @@ from midiutil.MidiFile import MIDIFile
 
 randomStringSize = 100000   # lunghezza in caratteri dell'input casuale
 channel = 0                 # no idea
-volume = 50                 # velocity di ogni nota
+volume = 100                 # velocity di ogni nota
 C4pitch = 60                # nota di riferimento
 measures = 4                # durata in battute del brano generato
 octave = 12                 # intervallo di un ottava
@@ -31,9 +31,9 @@ def findChord(chord) :
 
 # riceve in input il grado (int da 1 a 7) e restituisce la stringa da stampare
 # con il nome dell'accordo e le note che lo formano
-def printChord(chord):
-    triad = findChord(chord)
-    chordName = note_names[triad[0]%12]
+def printChord(chord, triad):
+    fake_triad = findChord(chord)
+    chordName = note_names[fake_triad[0]%12]
     if chord==2 or chord==3 or chord==6 : 
         chordName = chordName + "m"
     if chord==7 : chordName = chordName + "dim"
@@ -51,15 +51,33 @@ def choose_btw_set(choices, input, index):
 def dequantize(time):
     return time + random.uniform(0, 0.01)
 
-# rivolta l'accordo
-def invert_chord(triad, root_note):
+# rivolta l'accordo (inversion_num da 1 a 2)
+def invert_chord(triad, inversion_num):
+    print("banana")
+    print(triad)
     for i in range(3) : triad[i] = triad[i] - key % 12
-    triad.append(triad.pop(0))
-    if root_note == 2 : triad.append(triad.pop(0))
+    if inversion_num == 1:  
+
+        #temp = triad[0]
+        #triad[0] = triad[1]
+        #triad[1] = triad[2]
+        #triad[2] = temp
+
+        triad.append(triad.pop(0))
+    elif inversion_num == 2 : 
+        triad.append(triad.pop(0))
+        triad.append(triad.pop(0))
+        #temp = triad[0]
+        #triad[0] = triad[2]
+        #triad[2] = triad[1]
+        #triad[1] = temp
     for i in range(3) : 
         triad[i] = triad[i] + key
         if i!=0 and triad[i] < triad[i-1]:
             triad[i] = triad[i] + 12
+
+    print(triad)
+    return triad
 
 # INPUT PARSING
 #   0       : key
@@ -130,64 +148,51 @@ for i in range(measures):
     # primo accordo 1 o 6
     if i == 0 : 
         chord_progression[i] = choose_btw_set([1, 6], input, chord_index + i)
-    else :
-        # se il precedente è 5 => il successivo no 2 o 4 o 3
-        if chord_progression[i-1] == 5 :
-            chord_progression[i] = choose_btw_set([1, 6, 7], input, chord_index + i)
 
+    elif  i == measures-2 : 
+        chord_progression[i] = choose_btw_set([2, 4], input, chord_index + i)
+    elif  i == measures-1 : 
+        chord_progression[i] = choose_btw_set([5], input, chord_index + i)
+    else :
         # se il precedente è 1 => il successivo no 5 o 7 MODIFICARE CON RIVOLTI
-        elif chord_progression[i-1] == 1 :
-            chord_progression[i] = choose_btw_set([2, 3, 4, 6], input, chord_index + i)
+        if chord_progression[i-1] == 1 :
+            chord_progression[i] = choose_btw_set([2, 3, 4, 5, 6], input, chord_index + i)
+        
+
+        # se il precedente è 2 => il successivo no 4 o 3
+        elif chord_progression[i-1] == 2 :
+            chord_progression[i] = choose_btw_set([1, 5, 6, 7], input, chord_index + i)
+
+        # se il precedente è 3 => il successivo è 4 
+        elif chord_progression[i-1] == 3 :
+            chord_progression[i] = 4
+
+        # se il precedente è 4 => il successivo no 1 o 3
+        elif chord_progression[i-1] == 4 :
+            chord_progression[i] = choose_btw_set([2, 5, 6, 7], input, chord_index + i)
+
+        # se il precedente è 5 => il successivo no 2 o 4 o 3
+        elif chord_progression[i-1] == 5 :
+            chord_progression[i] = choose_btw_set([1, 6, 7], input, chord_index + i)
 
         # se il precedente è 6 => il successivo no 1 o 7 
         elif chord_progression[i-1] == 6 :
             chord_progression[i] = choose_btw_set([2, 3, 4, 5], input, chord_index + i)
 
-        # se il precedente è 4 => il successivo no 1 o 3
-        elif chord_progression[i-1] == 4 :
-            chord_progression[i] = choose_btw_set([2, 4, 5, 6, 7], input, chord_index + i)
-        
-        # se il precedente è 2 => il successivo no 4 o 3
-        elif chord_progression[i-1] == 2 :
-            chord_progression[i] = choose_btw_set([1, 2, 5, 6, 7], input, chord_index + i)
-
         # se il precedente è 7 => il successivo è 1
         elif chord_progression[i-1] == 7 :
             chord_progression[i] = 1
 
-        # se il precedente è 3 => il successivo è 4 
-        elif chord_progression[i-1] == 3 :
-            chord_progression[i] = 4
-        
-        # casi rimanenti (precedente 1, 2, 4, 6)
-        else:
-            # controlla che non ci siano due accordi uguali di fila
-            # e che 1 => 3
-
-            # chord_progression[i] = ord(input[chord_index + i]) % 7 + 1
-            # while (chord_progression[i] == chord_progression[i-1]) or (chord_progression[i] == 3 and chord_progression[i-1]!=1) :
-            #    chord_progression[i] = chord_progression[i] % 7 + 1
-
-            choices = [1, 2, 3, 4, 5, 6, 7]
-            choices.remove(chord_progression[i-1])
-        
-            if chord_progression[i-1] != 1 : choices.remove(3)
-            chord_progression[i] = choose_btw_set(choices, input, chord_index + i)
-
-
-
-
     all_triads[i] = findChord(chord_progression[i])
 
-        # rivoltare i 2 e 7 
-    # if chord_progression[i] == 2 or chord_progression[i] == 7 :
-    #     pass    # TODO
+    # rivoltare i 2 e 7 
+    if chord_progression[i] == 2 or chord_progression[i] == 7 :
+        all_triads[i] = invert_chord(all_triads[i], 1)
 
-#penultimo sempre 4 
-chord_progression[measures-2] = 4;
+    # rivolta 5 quando prima un 1
+    if i!=0 and chord_progression[i-1] == 1 and chord_progression[i] == 5:
+        all_triads[i] = invert_chord(all_triads[i], 1)
 
-#ultimo sempre 5
-chord_progression[measures-1] = 5;
  
 print(chord_progression)
 
@@ -204,15 +209,15 @@ for i in range(measures):
     triad = findChord(chord)
 
     # stampa l'accordo
-    chordName = printChord(chord) 
-    print(chordName) # add: [, end = "  "]
+    chordName = printChord(chord, all_triads[i]) 
+    print(chordName)
 
     # Chords
 
     for j in range(3):
 
         # definisce i parametri midi per ogni nota dell'accordo
-        pitch = C4pitch + triad[j]      # C4pitch + freq (da 0 a 11) + key (da 0 a 11)
+        pitch = C4pitch + all_triads[i][j]      # C4pitch + freq (da 0 a 11) + key (da 0 a 11)
         time = i * 4                    # uno ogni battuta
         time = dequantize(time)         
         duration = 4                    # 4 quarti
@@ -220,7 +225,7 @@ for i in range(measures):
 
     # Bass 
 
-    for j in range(measures):
+    for j in range(4):
         
         # definisce i parametri midi per la nota del basso
         pitch = C4pitch + triad[0] - 2*octave       # C4pitch + freq (da 0 a 11) + key (da 0 a 11) - 2 ottave (-24)
