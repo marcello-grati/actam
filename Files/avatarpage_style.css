@@ -30,6 +30,14 @@ body{
     align-items: center; /*allinea tutti gli elementi del contenitore in centro*/
 }
 
+.avatar_container{
+    background-color: grey;
+    width: 30%;
+    height:40%;
+    margin-bottom: 10px;
+    opacity: 0.2%;
+}
+
 .title {
     font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
     font-size: 5em; /* Grandezza del titolo*/
@@ -98,11 +106,13 @@ p {
     border-color: #ffdead;
     cursor:pointer;
     font-family: "bobble", Courier, serif;
+
 }
 
 .options-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    margin-top:10px;
     gap: 10px;
 }
 
@@ -132,7 +142,134 @@ object {
     width:100%;
 }
 
+.colors{
+    height: 50px;
+    width: 50px;
+    border-radius:50%;
+    border: 3px solid white;
+    background-color: red;
+    cursor: pointer;
+}
 
+.black_hair{
+    fill: #000000;
+    stroke: #000000;
+    opacity: 1;
+}
+
+#black_hair{
+    background-color: #000000;
+}
+
+.brown_hair{
+    fill: #8B4513;
+    stroke: #6e2e21;
+    opacity: 1;
+}
+
+#brown_hair{
+    background-color: #8B4513
+}
+
+.blonde_hair{
+    fill: #ffe735;
+    stroke: #e4a42c;
+    opacity: 1;
+}
+
+#blonde_hair{
+    background-color: #ffe735;
+}
+
+.white_hair{
+    fill: #ffffff;
+    stroke: #868484;
+    opacity: 1;
+}
+
+#white_hair{
+    background-color: #ffffff;
+}
+
+.red_hair{
+    fill: #B22222;
+    stroke: #691f1f;
+    opacity: 1;
+}
+
+#red_hair{
+    background-color: #B22222;
+}
+
+.grey_hair{
+    fill: #808080;
+    stroke: #424040;
+    opacity: 1;
+}
+
+#grey_hair{
+    background-color: #808080;
+}
+
+.lightbrown_hair{
+    fill: #CD853F;
+    stroke: #8a5820;
+    opacity: 1;
+}
+
+#lightbrown_hair{
+    background-color:#CD853F;
+}
+
+.pink_hair{
+    fill: #FF69B4;
+    stroke: #b205a9;
+    opacity: 1;
+}
+
+#pink_hair{
+    background-color: #FF69B4;
+}
+
+.blue_hair{
+    fill: #1E90FF;
+    stroke: #067ead;
+    opacity: 1;
+}
+
+#blue_hair{
+    background-color: #1E90FF;
+}
+
+.brown2_hair{
+    fill: #622f17;
+    stroke: #422304;
+    opacity: 1;
+}
+
+#brown2_hair{
+    background-color: #622f17;
+}
+
+.chocolate_hair{
+    fill: #D2691E;
+    stroke: #c46b00;
+    opacity: 1;
+}
+
+#chocolate_hair{
+    background-color: #D2691E;
+}
+
+.gold_hair{
+    fill: #ffb500;
+    stroke: #f39017;
+    opacity: 1;
+}
+
+#gold_hair{
+    background-color: #ffb500;
+}
 
 .back{
     width:100%;
