@@ -13,6 +13,9 @@ octave = 12                 # intervallo di un ottava
 # intervalli dei vari gradi rispetto alla fondamentale (scala maggiore)
 maj_scale = [0, 2, 4, 5, 7, 9, 11]
 
+# inrervalli in giù
+maj_scale_inv = [0, -1, -3, -5, -7, -8, -10]
+
 # Nomi dei vari accordi/note
 note_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 
@@ -214,7 +217,7 @@ for i in range(measures):
     for j in range(3):
 
         # definisce i parametri midi per ogni nota dell'accordo
-        pitch = C4pitch + all_triads[i][j]      # C4pitch + freq (da 0 a 11) + key (da 0 a 11)
+        pitch = C4pitch - 12 + all_triads[i][j]      # C4pitch + freq (da 0 a 11) + key (da 0 a 11)
         if key > 6 : pitch-=12
         time = i * 4                    # uno ogni battuta
         time = dequantize(time)         
@@ -236,22 +239,33 @@ for i in range(measures):
 
     tempo_left = 16     # quantità in 16esimi rimasta per ripempire la battuta
     counter = 0         # n° di cicli while eseguiti (per scorrere l'input)
+    old_note = 0
 
     while tempo_left > 0:
         
         # durata della nota in 16esimi (da 1 a 4)
         duration = ord(input[first_rythm_index + i*4 + counter]) % 4 + 1
         if counter == 0 : duration = ord(input[first_rythm_index + i*4 + counter]) % 2 + 3
-
-        if counter == 0 or duration == 4 or duration == 3 : 
+   
+        if counter == 0 or duration > 1 : 
             # indice della nota all'interno della triade (da 0 a 2) 
-        
+            
             raw_note = ord(input[first_note_index + i*4 + counter]) % 3
             chord_note = triad[raw_note]    # nota in frequenza relativa a C4pitch
 
         else :
             raw_note = ord(input[first_note_index + i*4 + counter]) % 7 + 1
             chord_note = findChord(raw_note)[0]
+
+        if counter!=0 :
+            if chord_note - old_note > 5 : 
+                
+                print("new note: ", chord_note, " old note: ", old_note, " -12")
+                chord_note -= 12
+            elif chord_note - old_note < -5 : 
+                chord_note += 12
+                print("new note: ", chord_note, " old note: ", old_note, " +12")
+        
 
         # verifica che l'ultima nota non sfori la lunghezza della battuta
         while tempo_left - duration < 0 :
@@ -261,10 +275,12 @@ for i in range(measures):
         # riscalati in quarti
         time = i * 4 + (16 - tempo_left)/4
         time = dequantize(time)
-        pitch = C4pitch + chord_note           
+        pitch = C4pitch + chord_note            
         mf.addNote(melody1_track, channel, pitch, time, duration/4, volume) # duration riscalata in quarti
         tempo_left -= duration
         counter += 1
+
+        old_note = chord_note
 
     # second melody
 
