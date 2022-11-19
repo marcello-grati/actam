@@ -1,11 +1,20 @@
 const selectionMenu = document.getElementById("selection-menu");
 const optionsContainer = document.getElementById("options-container");
 const avatarcontainer = document.getElementById("avatar-container");
-//const nameAvatar = document.getElementById("name-avatar");
+const namebox = document.getElementById("nickname");
 //const selectedElement = document.getElementsByClassName("options-container");
 
-function saveName() {
 
+// Nome viene confermato anche schiacciando invio da tastiera
+namebox.addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        saveName();
+    }
+});
+
+
+function saveName() {
     const nameField = document.getElementById('nickname').value;
     let nameAvatar = document.getElementById("name-avatar");
     nameAvatar.innerText = nameField;
@@ -30,6 +39,7 @@ let cont_skin=0;
 let cont_eyes=0;
 let cont_nose=0;
 let cont_mouth=0;
+let cont=0;
 
 
 
@@ -115,20 +125,24 @@ selectionMenu.addEventListener("change", function() {
             optionsContainer.appendChild(a);
             a.appendChild(el_img);
 
+            if(selected=== 'haircut'){
+                cont++;
+                if(cont === 3 && avatarFeat[0]!==0){
+                    change(avatarFeat[0]);
+                }
+            }
 
         }
 
     }
 
-    if(avatarFeat[0]!==0){
-        change(avatarFeat[0]);
-    }
 
 })
 
-function change(filename) {
-    const elem = document.querySelector(".svgimage").getSVGDocument().getElementById("SvgjsG1373");
-    elem.classList.replace(elem.classList.item(0), filename);
+function change(color) {
+    console.log(color);
+    const elem = document.querySelector('.svgimage').getSVGDocument().getElementById("SvgjsG1373");
+    elem.classList.replace(elem.classList.item(0), color);
 }
 
 
