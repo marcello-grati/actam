@@ -3,10 +3,8 @@ const optionsContainer = document.getElementById("options-container");
 const avatarcontainer = document.getElementById("avatar-container");
 const namebox = document.getElementById("nickname");
 
-//const selectedElement = document.getElementsByClassName("options-container");
 
-
-// Nome viene confermato anche schiacciando invio da tastiera
+//  Conferma nickname da tastiera
 namebox.addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -14,7 +12,7 @@ namebox.addEventListener("keypress", function(event) {
     }
 });
 
-
+// Creazione testo con nickname inserito
 function saveName() {
     const nameField = document.getElementById('nickname').value;
     let nameAvatar = document.getElementById("name-avatar");
@@ -23,8 +21,8 @@ function saveName() {
 
 }
 
+// Cambio layout
 function changeView(){
-
     document.getElementById("create-container").style.display="flex";
     document.getElementById("done").hidden=false;
     document.getElementById("nick-form").style.display="none";
@@ -32,10 +30,10 @@ function changeView(){
 }
 
 const options = {
-    "skin": ['color1s', 'color2s', 'color3s', 'color4s', 'color5s', 'color6s', 'color7s', 'color8s', 'color9s', 'color10s'],
+    "skin": ['skin1', 'skin2', 'skin3', 'skin4', 'skin5', 'skin6', 'skin7', 'skin8', 'skin9', 'skin10'],
     "haircolor": ['black_hair', 'white_hair', 'brown_hair', 'blonde_hair', 'red_hair', 'grey_hair', 'lightbrown_hair', 'pink_hair', 'blue_hair', 'brown2_hair', 'chocolate_hair', 'gold_hair'],
     "haircut": ['1h','2h','3h'],
-    "eyes": ['color1e', 'color2e', 'color3e', 'color4e'],
+    "eyes": ['green_eyes', 'blue_eyes', 'brown_eyes', 'grey_eyes'],
     "nose":['type1n', 'type2n', 'type3n', 'type4n'],
     "mouth": ['type1m','type2m']
 
@@ -45,72 +43,62 @@ avatarFeat = [0,0,0,0,0,0];
 
 // contatori per fare replaceChildren se si sostituisce la scelta
 let cont_hair=0;
-let cont_skin=0;
-let cont_eyes=0;
 let cont_nose=0;
 let cont_mouth=0;
-let cont=0;
 
 
 
+// Selezione elementi dal menù a tendina
 function menuselection(){
-        const selected = selectionMenu.value;
-        const filenames = options[selected];
-        const selected_el = e => {
-            arrayCreation(e.target.id, selected);
-            avatarcreation(e,selected);
-        }
-        optionsContainer.replaceChildren([]);
+    const selected = selectionMenu.value;
+    const filenames = options[selected];
+    const selected_el = e => {
+        arrayCreation(e.target.id, selected);
+        avatarcreation(e,selected);
+    }
+    optionsContainer.replaceChildren([]);
 
 
-        for (const filename of filenames){
+    for (const filename of filenames){
 
-            if(selected === 'haircolor'){
+        if(selected === 'haircolor' || selected === 'skin' || selected === 'eyes'){
 
-                const color = document.createElement('div');
-                color.setAttribute('id', filename);
-                color.setAttribute('class', 'colors');
-                color.addEventListener("click", selected_el);
-                optionsContainer.appendChild(color);
+            const color = document.createElement('div');
+            color.setAttribute('id', filename);
+            color.setAttribute('class', 'colors');
+            color.addEventListener("click", selected_el);
+            optionsContainer.appendChild(color);
 
 
-            }else{
+        }else{
 
-                const a = document.createElement('a');
-                a.href = "#";
-                a.cursor = "pointer";
-                a.setAttribute('id',filename);
+            const a = document.createElement('a');
+            a.href = "#";
+            a.cursor = "pointer";
+            a.setAttribute('id',filename);
 
-                const el_img = document.createElement('object');
-                el_img.classList.add('svgimage');
-                el_img.type = "image/svg+xml";
-                el_img.data = "hair1.svg";
-                el_img.height = "50px";
-                el_img.width = "50px";
+            const el_img = document.createElement('object');
+            el_img.classList.add('svgimage');
+            el_img.type = "image/svg+xml";
+            el_img.data = "hair1.svg";
+            el_img.height = "50px";
+            el_img.width = "50px";
 
-                a.addEventListener("click", selected_el);
-                optionsContainer.appendChild(a);
-                a.appendChild(el_img);
+            a.addEventListener("click", selected_el);
+            optionsContainer.appendChild(a);
+            a.appendChild(el_img);
 
-                el_img.addEventListener('load',changeHairColor);
-
-                /*if(selected=== 'haircut'){
-                    cont++;
-                    if(cont === 3 && avatarFeat[0]!==0){
-                        change(avatarFeat[0]);
-                    }
-                }
-*/
-            }
-
+            el_img.addEventListener('load',changeHairColor);
 
 
         }
+
+    }
 }
 
 selectionMenu.addEventListener("change", menuselection);
 
-
+// Cambio colore
 function changeHairColor() {
     const elem = document.querySelectorAll('.svgimage');
     for(let i = 0; i<elem.length; i++){
@@ -120,8 +108,9 @@ function changeHairColor() {
     }
 }
 
+// Creazione avatar
 function avatarcreation(e, selected){
-    if (selected !== 'haircolor') {
+    if (selected !== 'haircolor' && selected!=='skin') {
         const av_img = document.createElement('object');
         av_img.classList.add('svgimage');
         av_img.type = "image/svg+xml";
@@ -138,11 +127,6 @@ function avatarcreation(e, selected){
             av_img.addEventListener('load',changeHairColor);
             //avatarcontainer.addEventListener("load",changeHairColor);
 
-        }else if(selected === 'skin'){
-            cont_skin++;
-            if (cont_skin > 1) {
-                avatarcontainer.replaceChild(); // bisogna trovare il modo di dirgli quale child deve sostituire
-            }
 
         }else if(selected === 'mouth'){
             cont_mouth++;
@@ -154,22 +138,15 @@ function avatarcreation(e, selected){
             if(cont_nose > 1){
                 avatarcontainer.replaceChild();
             }
-        }else if(selected === 'eyes'){
-            cont_eyes++;
-            if(cont_eyes > 1){
-                avatarcontainer.replaceChild();
-            }
         }
 
 
         avatarcontainer.appendChild(av_img);
     }
 
-
-
 }
 
-
+// Creazione array genoma avatar
 function arrayCreation(elem, selected){
     // [0]=hair color, [1]=haircut, [2]=eyes, [3]=skin [4]=nose, [5]=mouth
     if(selected==='haircolor')
@@ -189,7 +166,7 @@ function arrayCreation(elem, selected){
     console.log(avatarFeat[0]+','+avatarFeat[1]+','+avatarFeat[2]+','+avatarFeat[3]+','+avatarFeat[4]+','+avatarFeat[5])
 }
 
-
+// Disabilta tendina dopo "done"
 function doneButton(){
     selectionMenu.setAttribute('disabled', '');
     optionsContainer.replaceChildren([]);
