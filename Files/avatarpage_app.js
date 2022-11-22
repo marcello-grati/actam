@@ -2,6 +2,7 @@ const selectionMenu = document.getElementById("selection-menu");
 const optionsContainer = document.getElementById("options-container");
 const avatarcontainer = document.getElementById("avatar-container");
 const namebox = document.getElementById("nickname");
+
 //const selectedElement = document.getElementsByClassName("options-container");
 
 
@@ -18,6 +19,15 @@ function saveName() {
     const nameField = document.getElementById('nickname').value;
     let nameAvatar = document.getElementById("name-avatar");
     nameAvatar.innerText = nameField;
+    changeView();
+
+}
+
+function changeView(){
+
+    document.getElementById("create-container").style.display="flex";
+    document.getElementById("done").hidden=false;
+    document.getElementById("nick-form").style.display="none";
 
 }
 
@@ -43,108 +53,121 @@ let cont=0;
 
 
 
-selectionMenu.addEventListener("change", function() {
-    const selected = selectionMenu.value;
-    const filenames = options[selected];
-    const selected_el = e => {
-        arrayCreation(e.target.id, selected);
+function menuselection(){
+        const selected = selectionMenu.value;
+        const filenames = options[selected];
+        const selected_el = e => {
+            arrayCreation(e.target.id, selected);
+            avatarcreation(e,selected);
+        }
+        optionsContainer.replaceChildren([]);
 
-        if (selected !== 'haircolor') {
-            const av_img = document.createElement('object');
-            av_img.classList.add('avimage');
-            av_img.type = "image/svg+xml";
-            av_img.height = "30%";
-            av_img.width = "30%";
-            av_img.setAttribute('opacity', '1');
 
-            if (selected === 'haircut') {
-                cont_hair++;
-                if (cont_hair > 1) {
-                    avatarcontainer.replaceChild();
-                }
-                av_img.data = "hair1.svg"; //poi sarebbe " e.target.id + '.svg' "
+        for (const filename of filenames){
 
-            }else if(selected === 'skin'){
-                cont_skin++;
-                if (cont_skin > 1) {
-                    avatarcontainer.replaceChild(); // bisogna trovare il modo di dirgli quale child deve sostituire
-                }
+            if(selected === 'haircolor'){
 
-            }else if(selected === 'mouth'){
-                cont_mouth++;
-                if(cont_mouth > 1){
-                    avatarcontainer.replaceChild();
+                const color = document.createElement('div');
+                color.setAttribute('id', filename);
+                color.setAttribute('class', 'colors');
+                color.addEventListener("click", selected_el);
+                optionsContainer.appendChild(color);
+
+
+            }else{
+
+                const a = document.createElement('a');
+                a.href = "#";
+                a.cursor = "pointer";
+                a.setAttribute('id',filename);
+
+                const el_img = document.createElement('object');
+                el_img.classList.add('svgimage');
+                el_img.type = "image/svg+xml";
+                el_img.data = "hair1.svg";
+                el_img.height = "50px";
+                el_img.width = "50px";
+
+                a.addEventListener("click", selected_el);
+                optionsContainer.appendChild(a);
+                a.appendChild(el_img);
+
+                el_img.addEventListener('load',changeHairColor);
+
+                /*if(selected=== 'haircut'){
+                    cont++;
+                    if(cont === 3 && avatarFeat[0]!==0){
+                        change(avatarFeat[0]);
+                    }
                 }
-            }else if(selected === 'nose'){
-                cont_nose++;
-                if(cont_nose > 1){
-                    avatarcontainer.replaceChild();
-                }
-            }else if(selected === 'eyes'){
-                cont_eyes++;
-                if(cont_eyes > 1){
-                    avatarcontainer.replaceChild();
-                }
+*/
             }
 
 
-            avatarcontainer.appendChild(av_img);
-        }
-
-    }
-
-    optionsContainer.replaceChildren([]);
-
-
-    for (const filename of filenames){
-
-        if(selected === 'haircolor'){
-
-            const color = document.createElement('div');
-            color.setAttribute('id', filename);
-            color.setAttribute('class', 'colors');
-            color.addEventListener("click", selected_el);
-            optionsContainer.appendChild(color);
-
-
-        }else{
-
-            const a = document.createElement('a');
-            a.href = "#";
-            a.cursor = "pointer";
-            a.setAttribute('id',filename);
-
-            const el_img = document.createElement('object');
-            el_img.classList.add('svgimage');
-            el_img.type = "image/svg+xml";
-            el_img.data = "hair1.svg";
-            el_img.height = "50px";
-            el_img.width = "50px";
-
-            a.addEventListener("click", selected_el);
-            optionsContainer.appendChild(a);
-            a.appendChild(el_img);
-
-            if(selected=== 'haircut'){
-                cont++;
-                if(cont === 3 && avatarFeat[0]!==0){
-                    change(avatarFeat[0]);
-                }
-            }
 
         }
-
-    }
-
-
-})
-
-function change(color) {
-    console.log(color);
-    const elem = document.querySelector('.svgimage').getSVGDocument().getElementById("SvgjsG1373");
-    elem.classList.replace(elem.classList.item(0), color);
 }
 
+selectionMenu.addEventListener("change", menuselection);
+
+
+function changeHairColor() {
+    const elem = document.querySelectorAll('.svgimage');
+    for(let i = 0; i<elem.length; i++){
+        const ele = elem[i].contentDocument;
+        const e = ele.getElementById('SvgjsG1373');
+        e.classList.replace(e.classList.item(0), avatarFeat[0]);
+    }
+}
+
+function avatarcreation(e, selected){
+    if (selected !== 'haircolor') {
+        const av_img = document.createElement('object');
+        av_img.classList.add('svgimage');
+        av_img.type = "image/svg+xml";
+        av_img.height = "30%";
+        av_img.width = "30%";
+        av_img.setAttribute('opacity', '1');
+
+        if (selected === 'haircut') {
+            cont_hair++;
+            if (cont_hair > 1) {
+                avatarcontainer.replaceChild();
+            }
+            av_img.data = "hair1.svg"; //poi sarebbe " e.target.id + '.svg' "
+            av_img.addEventListener('load',changeHairColor);
+            //avatarcontainer.addEventListener("load",changeHairColor);
+
+        }else if(selected === 'skin'){
+            cont_skin++;
+            if (cont_skin > 1) {
+                avatarcontainer.replaceChild(); // bisogna trovare il modo di dirgli quale child deve sostituire
+            }
+
+        }else if(selected === 'mouth'){
+            cont_mouth++;
+            if(cont_mouth > 1){
+                avatarcontainer.replaceChild();
+            }
+        }else if(selected === 'nose'){
+            cont_nose++;
+            if(cont_nose > 1){
+                avatarcontainer.replaceChild();
+            }
+        }else if(selected === 'eyes'){
+            cont_eyes++;
+            if(cont_eyes > 1){
+                avatarcontainer.replaceChild();
+            }
+        }
+
+
+        avatarcontainer.appendChild(av_img);
+    }
+
+
+
+}
 
 
 function arrayCreation(elem, selected){
