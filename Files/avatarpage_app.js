@@ -75,6 +75,7 @@ function menuselection(){
             const a = document.createElement('a');
             a.href = "#";
             a.cursor = "pointer";
+            a.style.background = "white";
             a.setAttribute('id',filename);
 
             const el_img = document.createElement('object');
