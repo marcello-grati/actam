@@ -30,7 +30,26 @@ body{
     align-items: center; /*allinea tutti gli elementi del contenitore in centro*/
 }
 
+.avatar{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 400px;
+    height: 400px;
+}
+
+.haircut{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 350px;
+    height: 350px;
+}
+
 .avatar_container{
+    position:relative;
     background-color: grey;
     width: 50%;
     height:100%;

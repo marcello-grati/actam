@@ -115,8 +115,6 @@ function avatarcreation(e, selected){
         const av_img = document.createElement('object');
         av_img.classList.add('svgimage');
         av_img.type = "image/svg+xml";
-        av_img.height = "30%";
-        av_img.width = "30%";
         av_img.setAttribute('opacity', '1');
 
         if (selected === 'haircut') {
