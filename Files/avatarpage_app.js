@@ -41,7 +41,7 @@ const options = {
 };
 
 avatarFeat = [0,0,0,0,0,0];
-
+idsaver = 0;
 // contatori per fare replaceChildren se si sostituisce la scelta
 let cont_hair=0;
 let cont_nose=0;
@@ -56,9 +56,10 @@ function menuselection(){
     const selected_el = e => {
         arrayCreation(e.target.id, selected);
         avatarcreation(e,selected);
+        idsaver = e.target.id;
         if(selected === 'skin'){
             body.addEventListener("click", changeSkinColor);
-            console.log('changing skin');
+
         }
     }
     optionsContainer.replaceChildren([]);
@@ -85,15 +86,16 @@ function menuselection(){
             const el_img = document.createElement('object');
             el_img.classList.add('svgimage');
             el_img.type = "image/svg+xml";
-            el_img.data = "hair1.svg";
+            el_img.data = filename+".svg";
             el_img.height = "50px";
             el_img.width = "50px";
+
 
             a.addEventListener("click", selected_el);
             optionsContainer.appendChild(a);
             a.appendChild(el_img);
-
             el_img.addEventListener('load',changeHairColor);
+
 
         }
 
@@ -109,8 +111,15 @@ function changeHairColor() {
     const elem = document.querySelectorAll('.svgimage');
     for(let i = 0; i<elem.length; i++){
         const ele = elem[i].contentDocument;
-        const e = ele.getElementById('SvgjsG1373');
-        e.classList.replace(e.classList.item(0), avatarFeat[0]);
+        if(idsaver === '1h') {
+            const e = ele.getElementById('SvgjsG1373');
+            e.classList.replace(e.classList.item(0), avatarFeat[0]);
+        }
+        if (idsaver==='2h'){
+            const e = ele.getElementById('SvgjsG1478');
+            e.classList.replace(e.classList.item(0), avatarFeat[0]);
+        }
+
     }
 
 }
@@ -118,11 +127,6 @@ function changeHairColor() {
 // Cambio colore pelle
 function changeSkinColor(){
     const elem = document.querySelectorAll('.svgimage');
-    for(let i = 0; i<elem.length; i++){
-        const ele = elem[i].contentDocument;
-        const e = ele.getElementById('svga-group-humanbody-single');
-        e.classList.replace(e.classList.item(0), avatarFeat[3]);
-    }
     for(let i = 0; i<elem.length; i++){
         const ele = elem[i].contentDocument;
         const e = ele.getElementById('svga-group-humanbody-single');
@@ -140,11 +144,13 @@ function avatarcreation(e, selected){
 
         if (selected === 'haircut') {
             cont_hair++;
-            if (cont_hair > 1) {
-                avatarcontainer.replaceChild();
-            }
-            av_img.data = "hair1.svg"; //poi sarebbe " e.target.id + '.svg' "
+
+            av_img.data = e.target.id +".svg"; //poi sarebbe " e.target.id + '.svg' "
             av_img.addEventListener('load',changeHairColor);
+
+            if (cont_hair > 1) {
+                avatarcontainer.replaceChild([]);
+            }
             //avatarcontainer.addEventListener("load",changeHairColor);
 
 
