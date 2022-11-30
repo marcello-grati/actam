@@ -166,7 +166,12 @@ object {
     text-transform: uppercase;
 }
 
-
+.avatar-hair{
+    position:absolute;
+    height:85%;
+    left:8%;
+    top:10%;
+}
 .colors{
     height: 50px;
     width: 50px;

@@ -2,6 +2,7 @@ const selectionMenu = document.getElementById("selection-menu");
 const optionsContainer = document.getElementById("options-container");
 const avatarcontainer = document.getElementById("avatar-container");
 const namebox = document.getElementById("nickname");
+const body = document.getElementById("body");
 
 
 //  Conferma nickname da tastiera
@@ -55,6 +56,10 @@ function menuselection(){
     const selected_el = e => {
         arrayCreation(e.target.id, selected);
         avatarcreation(e,selected);
+        if(selected === 'skin'){
+            body.addEventListener("click", changeSkinColor);
+            console.log('changing skin');
+        }
     }
     optionsContainer.replaceChildren([]);
 
@@ -68,7 +73,6 @@ function menuselection(){
             color.setAttribute('class', 'colors');
             color.addEventListener("click", selected_el);
             optionsContainer.appendChild(color);
-
 
         }else{
 
@@ -91,21 +95,38 @@ function menuselection(){
 
             el_img.addEventListener('load',changeHairColor);
 
-
         }
 
+
     }
+
 }
 
 selectionMenu.addEventListener("change", menuselection);
 
-// Cambio colore
+// Cambio colore capelli
 function changeHairColor() {
     const elem = document.querySelectorAll('.svgimage');
     for(let i = 0; i<elem.length; i++){
         const ele = elem[i].contentDocument;
         const e = ele.getElementById('SvgjsG1373');
         e.classList.replace(e.classList.item(0), avatarFeat[0]);
+    }
+
+}
+
+// Cambio colore pelle
+function changeSkinColor(){
+    const elem = document.querySelectorAll('.svgimage');
+    for(let i = 0; i<elem.length; i++){
+        const ele = elem[i].contentDocument;
+        const e = ele.getElementById('svga-group-humanbody-single');
+        e.classList.replace(e.classList.item(0), avatarFeat[3]);
+    }
+    for(let i = 0; i<elem.length; i++){
+        const ele = elem[i].contentDocument;
+        const e = ele.getElementById('svga-group-humanbody-single');
+        e.classList.replace(e.classList.item(0), avatarFeat[3]);
     }
 }
 
