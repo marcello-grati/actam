@@ -108,17 +108,17 @@ selectionMenu.addEventListener("change", menuselection);
 
 // Cambio colore capelli
 function changeHairColor() {
+    console.log('change hair color'+ avatarFeat[0]);
     const elem = document.querySelectorAll('.svgimage');
     for(let i = 0; i<elem.length; i++){
         const ele = elem[i].contentDocument;
-        if(idsaver === '1h') {
-            const e = ele.getElementById('SvgjsG1373');
-            e.classList.replace(e.classList.item(0), avatarFeat[0]);
-        }
-        if (idsaver==='2h'){
-            const e = ele.getElementById('SvgjsG1478');
-            e.classList.replace(e.classList.item(0), avatarFeat[0]);
-        }
+        const e = ele.getElementById('SvgjsG1373');
+        e.classList.replace(e.classList.item(0), avatarFeat[0]);
+
+        const  ele2 = elem[i+1].contentDocument;
+        const e2 = ele2.getElementById('SvgjsG1478');
+        e2.classList.replace(e2.classList.item(0), avatarFeat[0]);
+
 
     }
 
