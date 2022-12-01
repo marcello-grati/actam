@@ -1,3 +1,5 @@
 .DS_Store
 .mid
 .idea/
+/node_modules
+package-lock.json
