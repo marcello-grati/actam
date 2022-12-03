@@ -77,26 +77,26 @@ function menuselection(){
 
         }else{
 
-            const a = document.createElement('a');
-            a.href = "#";
-            a.cursor = "pointer";
+            const a = document.createElement('div');
+            a.style.cursor = "pointer";
             a.style.background = "white";
             a.setAttribute('id',filename);
 
             const el_img = document.createElement('object');
             el_img.classList.add('svgimage');
-            el_img.type = "image/svg+xml";
+            el_img.id = filename + "svg";
+            el_img.type = "image/svg+xml"
             el_img.data = filename+".svg";
-            el_img.height = "50px";
-            el_img.width = "50px";
+            el_img.height = "60px";
+            el_img.width = "60px";
 
 
             a.addEventListener("click", selected_el);
             optionsContainer.appendChild(a);
             a.appendChild(el_img);
-            el_img.addEventListener('load',changeHairColor);
-
-
+            el_img.addEventListener('load', function(){
+                changeColor(el_img.id)
+            });
         }
 
 
@@ -107,36 +107,49 @@ function menuselection(){
 selectionMenu.addEventListener("change", menuselection);
 
 // Cambio colore capelli
-function changeHairColor() {
-    console.log('change hair color'+ avatarFeat[0]);
-    const elem = document.querySelectorAll('.svgimage');
-    for(let i = 0; i<elem.length; i++){
-        const ele = elem[i].contentDocument;
-        const e = ele.getElementById('SvgjsG1373');
-        e.classList.replace(e.classList.item(0), avatarFeat[0]);
+function changeHairColor(color) {
+    console.log('change hair color' + color);
+    haircut = body.contentDocument.getElementById('haircut');
+    haircut.classList.replace(haircut.classList.item(0), color);
+}
 
-        const  ele2 = elem[i+1].contentDocument;
-        const e2 = ele2.getElementById('SvgjsG1478');
-        e2.classList.replace(e2.classList.item(0), avatarFeat[0]);
+//cambio colore capelli icone
+function changeColor(name) {
+     const elem = document.getElementById(name);
+     console.log(elem);
+     const ele = elem.contentDocument;
+     const e = ele.getElementsByTagName('g')[0];
+     e.classList.replace(e.classList.item(0), avatarFeat[0]);
+}
 
-
-    }
-
+//cambio taglio di capelli
+function changeHairCut(hair) {
+    console.log('change hair cut' + hair);
+    haircut = body.contentDocument.getElementById('haircut');
+    hr = hair + '.svg#' + hair;
+    haircut.setAttribute('href', hr);
 }
 
 // Cambio colore pelle
-function changeSkinColor(){
-    const elem = document.querySelectorAll('.svgimage');
-    for(let i = 0; i<elem.length; i++){
-        const ele = elem[i].contentDocument;
-        const e = ele.getElementById('svga-group-humanbody-single');
-        e.classList.replace(e.classList.item(0), avatarFeat[3]);
-    }
+//non funziona ancora perchè bisogna cambiare i colori nell'svg
+function changeSkinColor(colorskin){
+    console.log('change skin color' + colorskin);
+    skin = body.contentDocument.getElementById('sameskin');
+    skin.classList.replace(skin.classList.item(0), colorskin);
 }
 
 // Creazione avatar
 function avatarcreation(e, selected){
-    if (selected !== 'haircolor' && selected!=='skin') {
+    if(selected === 'haircolor') {
+        changeHairColor(e.target.id);
+    }
+    if(selected==='haircut'){
+        changeHairCut(e.target.id);
+    }
+    if(selected==='skin'){
+        changeSkinColor(e.target.id);
+    }
+    /*if (selected !== 'haircolor' && selected!=='skin') {
         const av_img = document.createElement('object');
         av_img.classList.add('svgimage');
         av_img.type = "image/svg+xml";
@@ -168,7 +181,7 @@ function avatarcreation(e, selected){
 
 
         avatarcontainer.appendChild(av_img);
-    }
+    }*/
 
 }
 

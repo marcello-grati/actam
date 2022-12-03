@@ -182,9 +182,8 @@ object {
 }
 
 .black_hair{
-    fill: #000000;
+    fill: #0e0b0e;
     stroke: #000000;
-    opacity: 1;
 }
 
 #black_hair{
@@ -222,9 +221,8 @@ object {
 }
 
 .red_hair{
-    fill: #B22222;
+    fill: #b42222;
     stroke: #691f1f;
-    opacity: 1;
 }
 
 #red_hair{
@@ -232,8 +230,8 @@ object {
 }
 
 .grey_hair{
-    fill: #808080;
-    stroke: #424040;
+    fill: hsl(0, 0%, 50%);
+    stroke: hsl(0, -14%, 35%);
     opacity: 1;
 }
 
