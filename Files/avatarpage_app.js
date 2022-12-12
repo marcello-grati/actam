@@ -26,6 +26,9 @@ function saveName() {
 function changeView(){
     document.getElementById("create-container").style.display="flex";
     document.getElementById("done").hidden=false;
+    document.getElementById("play").hidden=false;
+    document.getElementById("pause").hidden=false;
+    document.getElementById("stop").hidden=false;
     document.getElementById("nick-form").style.display="none";
 
 }

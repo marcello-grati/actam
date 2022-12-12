@@ -423,10 +423,10 @@ object {
 
 .backdone{
     width:100%;
-    justify-content: space-between;
+    justify-content: space-around;
     display: flex;
     left: 5%;
-    right:5%;
+    right: 5%;
 }
 
 button{
@@ -438,7 +438,7 @@ button{
     cursor: pointer;
     font-size: 30px;
     position:relative;
-    margin: 0 10% 0;
+    margin: 0 0 0;
 }
 
 
