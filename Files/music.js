@@ -1,12 +1,10 @@
 const Tone = require('tone');
 const Tonal = require('tonal');
-const t = Tone.Transport;
 
 let sheet;
-let pianoPart;
-const numOfChordNotes = 3;
-
-const sampler = new Tone.Sampler({
+const num_of_chord_notes = 3;
+const num_of_voices = 2;
+const piano_options = {
     urls: {
         A0: "A0.mp3",
         C1: "C1.mp3",
@@ -41,7 +39,14 @@ const sampler = new Tone.Sampler({
     },
     release: 2,
     baseUrl: "https://tonejs.github.io/audio/salamander/"
-}).toDestination();
+}
+
+const t = Tone.Transport;
+const pan_left = new Tone.Panner(-0.5).toDestination();
+const pan_right = new Tone.Panner(0.5).toDestination();
+const piano_chord_sampler = new Tone.Sampler(piano_options).toDestination();
+const piano_left_sampler = new Tone.Sampler(piano_options).connect(pan_left);
+const piano_right_sampler = new Tone.Sampler(piano_options).connect(pan_right);
 
 // Create an inverted chord
 function invert(chord, inv_num) {
@@ -71,8 +76,8 @@ function writeMusic () {
 
     const first_note_index1 = chord_index + 1
     const first_rythm_index1 = first_note_index1 + measures*16
-    //const first_note_index2 = first_rythm_index1 + measures*16
-    //const first_rythm_index2 = first_note_index2 + measures*16
+    const first_note_index2 = first_rythm_index1 + measures*16
+    const first_rythm_index2 = first_note_index2 + measures*16
 
     const chromaticScale = Tonal.Range.chromatic(["C4", "B4"], {sharps : false, pitchClass : true});
 
@@ -139,79 +144,83 @@ function writeMusic () {
     let simple_progression = [];
 
     for (let i=0; i<measures; i++) {
-        simple_progression.push(new Array(numOfChordNotes));
-        for (let j=0; j<numOfChordNotes; j++) {
+        simple_progression.push(new Array(num_of_chord_notes));
+        for (let j=0; j<num_of_chord_notes; j++) {
             simple_progression[i][j] = progression[i].notes[j] + "3";
         }
     }
     console.log(simple_progression);
 
-    // first melody
-
     let melody = [];
 
-    for (let i=0; i<measures; i++) {
-        let tempo_left = 16;
-        let counter = 0;
-        let old_note = 0;
-        let duration;
-        let note;
-        let time
+    for (let k=0; k<num_of_voices; k++) {
 
-        while (tempo_left > 0) {
+        let melody1 = [];
 
-            if (counter === 0) {
-                duration = input[first_rythm_index1 + i*16 + counter] % 3 + 2;
-                //duration = 4; // test
-                note = simple_progression[i][input[first_note_index1 + i*16 + counter] % numOfChordNotes];
+        for (let i=0; i<measures; i++) {
+            let tempo_left = 16;
+            let counter = 0;
+            let old_note = 0;
+            let duration;
+            let note;
+            let time
 
-            } else {
-                duration = input[first_rythm_index1 + i*16 + counter] % 5 + 1;
-                if (duration>3) duration = 4;
-                //duration = 4; // test
-                if (duration > 1) {
-                    note = simple_progression[i][input[first_note_index1 + i*16 + counter] % numOfChordNotes];
-                    //note = Tonal.Note.transpose(note, "+8P");
+            while (tempo_left > 0) {
+
+                if (counter === 0) {
+                    duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 3 + 2;
+                    //duration = 4; // test
+                    note = simple_progression[i][input[first_note_index1 + k*32 + i*16 + counter] % num_of_chord_notes];
+
                 } else {
-                    note = key.scale[input[first_note_index1 + i*16 + counter] % 7] + "3";
+                    duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 5 + 1;
+                    if (duration>3) duration = 4;
+                    //duration = 4; // test
+                    if (duration > 1) {
+                        note = simple_progression[i][input[first_note_index1 + k*32 + i*16 + counter] % num_of_chord_notes];
+                        //note = Tonal.Note.transpose(note, "+8P");
+                    } else {
+                        note = key.scale[input[first_note_index1 + k*32 + i*16 + counter] % 7] + "3";
 
-                    let prec_interval = Tonal.Interval.get(Tonal.Interval.distance(old_note, note)).num;
-                    if (prec_interval > 4) {
-                        note = Tonal.Note.transpose(note, "-8M")
-                    } else if (prec_interval < -4) {
-                        note = Tonal.Note.transpose(note, "+8M")
+                        let prec_interval = Tonal.Interval.get(Tonal.Interval.distance(old_note, note)).num;
+                        if (prec_interval > 4) {
+                            note = Tonal.Note.transpose(note, "-8M")
+                        } else if (prec_interval < -4) {
+                            note = Tonal.Note.transpose(note, "+8M")
+                        }
                     }
                 }
-            }
-            while (tempo_left - duration < 0) duration -= 1
+                while (tempo_left - duration < 0) duration -= 1
 
-            time = (i * 16 + (16 - tempo_left)) * t.toSeconds("16n");
-            tempo_left -= duration;
-            counter++;
-            old_note = note;
+                time = (i * 16 + (16 - tempo_left)) * t.toSeconds("16n");
+                tempo_left -= duration;
+                counter++;
+                old_note = note;
 
-            melody.push(
-                {
+                melody1.push(
+                    {
+                        time : time,
+                        noteName : note = Tonal.Note.transpose(note, "+8P"),
+                        velocity : 0.7,
+                        duration : duration * t.toSeconds("16n")
+                    }
+                )
+                /*
+                console.log("measure " + i);
+                console.log({
+
                     time : time,
-                    noteName : note = Tonal.Note.transpose(note, "+8P"),
+                    noteName : note,
                     velocity : 0.7,
                     duration : duration * t.toSeconds("16n")
-                }
-            )
-            /*
-            console.log("measure " + i);
-            console.log({
-
-                time : time,
-                noteName : note,
-                velocity : 0.7,
-                duration : duration * t.toSeconds("16n")
-            });
-            */
+                });
+                */
+            }
         }
+        console.log("melody " + k + " :");
+        console.log(melody1);
+        melody.push(melody1);
     }
-
-    console.log(melody);
 
     sheet =  {
         bpm: bpm,
@@ -243,10 +252,10 @@ function initializeMusic() {
      */
 
     //let part_array = [];
-    let part_array = sheet.melody;
+    let part_array = [];
 
     for (let i=0; i<sheet.measures; i++) {
-        for (let j=0; j<numOfChordNotes; j++) {
+        for (let j=0; j<num_of_chord_notes; j++) {
             part_array.push(
                 {
                     time : i * t.toSeconds("1m"),
@@ -258,13 +267,30 @@ function initializeMusic() {
         }
     }
 
-    pianoPart = new Tone.Part(((time, part_array) => {
-        sampler.triggerAttackRelease(part_array.noteName, part_array.duration, time, part_array.velocity);
-    }), part_array).start(0);
-
-    pianoPart.loop = true;
-    pianoPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
+    let left_melody = sheet.melody[0];
+    let voiceLeftPart = new Tone.Part(((time, left_melody) => {
+        piano_left_sampler.triggerAttackRelease(left_melody.noteName, left_melody.duration, time, left_melody.velocity);
+    }), left_melody).start(0);
+    voiceLeftPart.loop = true;
+    voiceLeftPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
     //pianoPart.humanize = true;
+
+    let chordsPart = new Tone.Part(((time, part_array) => {
+        piano_chord_sampler.triggerAttackRelease(part_array.noteName, part_array.duration, time, part_array.velocity);
+    }), part_array).start(0);
+    chordsPart.loop = true;
+    chordsPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
+    //pianoPart.humanize = true;
+
+    let right_melody = sheet.melody[1];
+    let voiceRightPart = new Tone.Part(((time, right_melody) => {
+        piano_right_sampler.triggerAttackRelease(right_melody.noteName, right_melody.duration, time, right_melody.velocity);
+    }), right_melody).start(0);
+    voiceRightPart.loop = true;
+    voiceRightPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
+    //pianoPart.humanize = true;
+
+
 }
 
 document.getElementById("done").addEventListener("click", function() {
@@ -272,12 +298,9 @@ document.getElementById("done").addEventListener("click", function() {
         t.stop();
         writeMusic();
         initializeMusic();
+        t.start();
     });
 });
-
-// More buttons needed
-
-/*
 document.getElementById("play").addEventListener("click", function() {
     Tone.start().then(r => {
         t.start();
@@ -291,4 +314,3 @@ document.getElementById("stop").addEventListener("click", function() {
 
     t.stop();
 });
- */
