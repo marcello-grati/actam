@@ -60,10 +60,6 @@ function menuselection(){
         arrayCreation(e.target.id, selected);
         avatarcreation(e,selected);
         idsaver = e.target.id;
-        if(selected === 'skin'){
-            body.addEventListener("click", changeSkinColor);
-
-        }
     }
     optionsContainer.replaceChildren([]);
 
@@ -81,6 +77,7 @@ function menuselection(){
         }else{
 
             const a = document.createElement('div');
+            a.classList.add('selectelement');
             a.style.cursor = "pointer";
             a.style.background = "white";
             a.setAttribute('id',filename);
@@ -90,8 +87,7 @@ function menuselection(){
             el_img.id = filename + "svg";
             el_img.type = "image/svg+xml"
             el_img.data = filename+".svg";
-            el_img.height = "60px";
-            el_img.width = "60px";
+
 
 
             a.addEventListener("click", selected_el);
@@ -113,7 +109,11 @@ selectionMenu.addEventListener("change", menuselection);
 function changeHairColor(color) {
     console.log('change hair color' + color);
     haircut = body.contentDocument.getElementById('haircut');
-    haircut.classList.replace(haircut.classList.item(0), color);
+    haircut.classList.replace(haircut.classList.item(0), color)
+    eyebrows = body.contentDocument.getElementById('eyebrows_left');
+    eyebrows.classList.replace(eyebrows.classList.item(0), color);
+    eyebrows = body.contentDocument.getElementById('eyebrows_right');
+    eyebrows.classList.replace(eyebrows.classList.item(0), color);
 }
 
 //cambio colore capelli icone
@@ -139,7 +139,20 @@ function changeSkinColor(colorskin){
     console.log('change skin color' + colorskin);
     skin = body.contentDocument.getElementById('sameskin');
     skin.classList.replace(skin.classList.item(0), colorskin);
+    skin = body.contentDocument.getElementById('sameskin1');
+    skin.classList.replace(skin.classList.item(0), colorskin+'1');
 }
+
+//cambio colore occhi
+function changeEyesColor(eyescolor){
+    console.log('change eyes color' + eyescolor);
+    iris = body.contentDocument.getElementById('iris_right');
+    iris.classList.replace(iris.classList.item(0), eyescolor);
+    iris = body.contentDocument.getElementById('iris_left');
+    iris.classList.replace(iris.classList.item(0), eyescolor);
+}
+
+
 
 // Creazione avatar
 function avatarcreation(e, selected){
@@ -152,39 +165,9 @@ function avatarcreation(e, selected){
     if(selected==='skin'){
         changeSkinColor(e.target.id);
     }
-    /*if (selected !== 'haircolor' && selected!=='skin') {
-        const av_img = document.createElement('object');
-        av_img.classList.add('svgimage');
-        av_img.type = "image/svg+xml";
-        av_img.setAttribute('opacity', '1');
-
-        if (selected === 'haircut') {
-            cont_hair++;
-
-            av_img.data = e.target.id +".svg"; //poi sarebbe " e.target.id + '.svg' "
-            av_img.addEventListener('load',changeHairColor);
-
-            if (cont_hair > 1) {
-                avatarcontainer.replaceChild([]);
-            }
-            //avatarcontainer.addEventListener("load",changeHairColor);
-
-
-        }else if(selected === 'mouth'){
-            cont_mouth++;
-            if(cont_mouth > 1){
-                avatarcontainer.replaceChild();
-            }
-        }else if(selected === 'nose'){
-            cont_nose++;
-            if(cont_nose > 1){
-                avatarcontainer.replaceChild();
-            }
-        }
-
-
-        avatarcontainer.appendChild(av_img);
-    }*/
+    if(selected==='eyes'){
+        changeEyesColor(e.target.id);
+    }
 
 }
 

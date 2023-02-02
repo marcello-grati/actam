@@ -35,8 +35,9 @@ body{
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-    width: 400px;
-    height: 400px;
+    height: 90%;
+    min-width: 200px;
+    min-height: 200px;
 }
 
 .haircut{
@@ -44,8 +45,9 @@ body{
     left: 50%;
     top: 50%;
     transform: translate(-50%,-50%);
-    width: 350px;
-    height: 350px;
+    height: 90%;
+    min-width: 200px;
+    min-height: 200px;
 }
 
 .avatar_container{
@@ -63,6 +65,19 @@ body{
     display: none;
 }
 
+.svgimage{
+    height: 90%;
+    padding: 2%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    max-width: 80px;
+    transform: translate(-50%, -50%);
+}
+.selectelement{
+    width:80px;
+    height:80px;
+}
 .selection{
     display: inline-flex;
     flex-direction: column;
@@ -182,8 +197,7 @@ object {
 }
 
 .black_hair{
-    fill: #0e0b0e;
-    stroke: #000000;
+    fill: #251f26;
 }
 
 #black_hair{
@@ -300,12 +314,16 @@ object {
 }
 
 #skin1{
-    background-color: #f6c7a9;
+    background-color: #f0c7b1;
 }
 
 .skin1{
-    fill:#f6c7a9;
-    stroke: #f3b895;
+    fill:#f0c7b1;
+    stroke: #c27b55;
+}
+
+.skin11{
+    fill:#c27b55;
 }
 
 #skin2{
@@ -313,8 +331,12 @@ object {
 }
 
 .skin2{
-    fill: #f6b9b6;
-    stroke: #f5a18a
+    fill: #ebbbb7;
+    stroke: #d28c78;
+}
+
+.skin21{
+    fill: #d28c78;
 }
 
 #skin3{
@@ -326,6 +348,10 @@ object {
     stroke: #f6a991;
 }
 
+.skin31{
+    fill: #f6a991;
+}
+
 #skin4{
     background-color: #f19975;
 }
@@ -333,6 +359,10 @@ object {
 .skin4{
     fill:#f19975;
     stroke: #e38b52;
+}
+
+.skin41{
+    fill: #e38b52;
 }
 
 #skin5{
@@ -344,6 +374,10 @@ object {
     stroke: #fac676;
 }
 
+.skin51{
+    fill: #fac676;
+}
+
 #skin6{
     background-color: #ecac7a;
 }
@@ -351,6 +385,10 @@ object {
 .skin6{
     fill: #ecac7a;
     stroke: #e89d64;
+}
+
+.skin61{
+    fill: #e89d64;
 }
 
 #skin7{
@@ -362,6 +400,10 @@ object {
     stroke: #42231f;
 }
 
+.skin71{
+    fill: #42231f;
+}
+
 #skin8{
     background-color: #9b572a;
 }
@@ -369,6 +411,10 @@ object {
 .skin8{
     fill: #9b572a;
     stroke: #854519;
+}
+
+.skin81{
+    fill: #854519;
 }
 
 #skin9{
@@ -380,6 +426,10 @@ object {
     stroke: #462510;
 }
 
+.skin91{
+    fill: #462510;
+}
+
 #skin10{
     background-color: #753c19;
 }
@@ -389,12 +439,16 @@ object {
     stroke: #5b290c;
 }
 
+.skin101{
+    fill: #5b290c;
+}
+
 #green_eyes{
     background-color: #09883d;
 }
 
 .green_eyes{
-    background-color: #09883d;
+    fill: #09883d;
 }
 
 #blue_eyes{
@@ -402,7 +456,7 @@ object {
 }
 
 .blue_eyes{
-    background-color: #1d82cc;
+    fill: #1d82cc;
 }
 
 #brown_eyes{
@@ -410,7 +464,7 @@ object {
 }
 
 .brown_eyes{
-    background-color: #6e2e21;
+    fill: #6e2e21;
 }
 
 #grey_eyes{
@@ -418,7 +472,7 @@ object {
 }
 
 .grey_eyes{
-    background-color: #4b5757;
+    fill: #4b5757;
 }
 
 .backdone{
