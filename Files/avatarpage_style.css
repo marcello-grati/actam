@@ -23,6 +23,7 @@ body{
     background-color: black;
     height: 100%;
     width: 100%;
+    min-width: 700px;
     position: absolute;
     display: inline-flex;
     flex-direction: column; /*allinea tutti gli elementi del contenitore in colonne*/
@@ -52,16 +53,19 @@ body{
 
 .avatar_container{
     position:relative;
-    background-color: grey;
+    background-color: white;
     width: 50%;
     height:100%;
+    min-width: 350px;
+    max-width:400px;
     /*margin-bottom: 10px;*/
 }
 
 .create-container{
     height: 60%;
-    width:100%;
-    justify-content: space-around;
+    width: 100%;
+    min-width: 700px;
+    justify-content: space-evenly;
     display: none;
 }
 
@@ -83,6 +87,7 @@ body{
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    min-width:300px;
 }
 
 .title {
@@ -345,11 +350,11 @@ object {
 
 .skin3{
     fill: #fac29d;
-    stroke: #f6a991;
+    stroke: #f79e83;
 }
 
 .skin31{
-    fill: #f6a991;
+    fill: #f79e83;
 }
 
 #skin4{
@@ -358,11 +363,11 @@ object {
 
 .skin4{
     fill:#f19975;
-    stroke: #e38b52;
+    stroke: #e28548;
 }
 
 .skin41{
-    fill: #e38b52;
+    fill: #e28548;
 }
 
 #skin5{
@@ -371,11 +376,11 @@ object {
 
 .skin5{
     fill: #fdd599;
-    stroke: #fac676;
+    stroke: #cea059;
 }
 
 .skin51{
-    fill: #fac676;
+    fill: #cea059;
 }
 
 #skin6{
@@ -384,19 +389,19 @@ object {
 
 .skin6{
     fill: #ecac7a;
-    stroke: #e89d64;
+    stroke: #c3804d;
 }
 
 .skin61{
-    fill: #e89d64;
+    fill: #c3804d;
 }
 
 #skin7{
-    background-color: #4b2c28;
+    background-color: #4d2f2b;
 }
 
 .skin7{
-    fill: #4b2c28;
+    fill: #4d2f2b;
     stroke: #42231f;
 }
 
@@ -410,11 +415,11 @@ object {
 
 .skin8{
     fill: #9b572a;
-    stroke: #854519;
+    stroke: #6d3814;
 }
 
 .skin81{
-    fill: #854519;
+    fill: #6d3814;
 }
 
 #skin9{
