@@ -2,9 +2,11 @@
 const Tone = require('tone');
 const Tonal = require('tonal');
 
+let recording = false;
+let recording_interrupted = false;
 let sheet;
 const num_of_chord_notes = 3;
-const num_of_voices = 2;
+const num_of_voices = 1;
 const piano_options = {
     urls: {
         A0: "A0.mp3",
@@ -43,11 +45,22 @@ const piano_options = {
 }
 
 const t = Tone.Transport;
-const pan_left = new Tone.Panner(-0.5).toDestination();
-const pan_right = new Tone.Panner(0.5).toDestination();
-const piano_chord_sampler = new Tone.Sampler(piano_options).toDestination();
-const piano_left_sampler = new Tone.Sampler(piano_options).connect(pan_left);
-const piano_right_sampler = new Tone.Sampler(piano_options).connect(pan_right);
+const pan_left = new Tone.Panner().toDestination();
+//const pan_right = new Tone.Panner(0.5).toDestination();
+//const piano_chord_sampler = new Tone.Sampler(piano_options).toDestination();
+//const piano_melody_sampler = new Tone.Sampler(piano_options).connect(pan_left);
+//const piano_right_sampler = new Tone.Sampler(piano_options).connect(pan_right);
+//const piano_melody_sampler = new Tone.Sampler(piano_options).toDestination();
+//const piano_right_sampler = new Tone.Sampler(piano_options).toDestination();
+
+const piano_chord_sampler = new Tone.Sampler(piano_options).connect(pan_left);
+const piano_melody_sampler = new Tone.Sampler(piano_options).connect(pan_left);
+
+//const audio = document.querySelector('audio');    // This is only to use the html audio player
+
+const dest  = Tone.context.createMediaStreamDestination();
+pan_left.connect(dest);
+const recorder = new MediaRecorder(dest.stream, { mimeType: "audio/webm" });
 
 // Create an inverted chord
 function invert(chord, inv_num) {
@@ -77,8 +90,9 @@ function writeMusic () {
 
     const first_note_index1 = chord_index + 1
     const first_rythm_index1 = first_note_index1 + measures*16
-    const first_note_index2 = first_rythm_index1 + measures*16
-    const first_rythm_index2 = first_note_index2 + measures*16
+
+    //const first_note_index2 = first_rythm_index1 + measures*16
+    //const first_rythm_index2 = first_note_index2 + measures*16
 
     const chromaticScale = Tonal.Range.chromatic(["C4", "B4"], {sharps : false, pitchClass : true});
 
@@ -161,7 +175,7 @@ function writeMusic () {
         for (let i=0; i<measures; i++) {
             let tempo_left = 16;
             let counter = 0;
-            let old_note = 0;
+            let old_note = null;
             let duration;
             let note;
             let time
@@ -169,19 +183,49 @@ function writeMusic () {
             while (tempo_left > 0) {
 
                 if (counter === 0) {
-                    duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 3 + 2;
+                    duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 2 + 3;
                     //duration = 4; // test
                     note = simple_progression[i][input[first_note_index1 + k*32 + i*16 + counter] % num_of_chord_notes];
 
                 } else {
-                    duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 5 + 1;
-                    if (duration>3) duration = 4;
+                    //duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 4 + 1;
+                    duration = input[first_rythm_index1 + k*32 + i*16 + counter] % 6;     // per avere più 1/4
+                    if (duration < 1 || duration > 4) duration = 2;
+
                     //duration = 4; // test
-                    if (duration > 1) {
-                        note = simple_progression[i][input[first_note_index1 + k*32 + i*16 + counter] % num_of_chord_notes];
+                    if (duration > 2) {
+
+                        let min_dist = Tonal.Interval.get("8P");
+                        let min_pos = 8;
+                        for (let s=0; s<key.scale.length; s++) {
+                            let cur_dist = Tonal.Interval.get(Tonal.Interval.distance(old_note, key.scale[s] + "3"));
+                            //console.log("ciclo " + s +" cur_dist=" + cur_dist.name + " min_dist=" + min_dist.name);
+                            if (Math.abs(cur_dist.num) < Math.abs(min_dist.num) && cur_dist.num!==1 && simple_progression[i].indexOf(key.scale[s] + "3")!==-1) {
+                                min_dist = cur_dist;
+                                min_pos = s;
+                            }
+                        }
+                        note = Tonal.Note.transpose(old_note, min_dist);
+                        //console.log("fine for " + note + " " + simple_progression[i]);
+
+                        //note = simple_progression[i][input[first_note_index1 + k*32 + i*16 + counter] % num_of_chord_notes];
                         //note = Tonal.Note.transpose(note, "+8P");
                     } else {
-                        note = key.scale[input[first_note_index1 + k*32 + i*16 + counter] % 7] + "3";
+
+                        let min_dist = Tonal.Interval.get("8P");
+                        let min_pos = 8;
+                        for (let s=0; s<key.scale.length; s++) {
+                            let cur_dist = Tonal.Interval.get(Tonal.Interval.distance(old_note, key.scale[s] + "3"));
+                            //console.log("ciclo " + s +" cur_dist=" + cur_dist.name + " min_dist=" + min_dist.name);
+                            if (Math.abs(cur_dist.num) < Math.abs(min_dist.num) && cur_dist.num!==1 ) {
+                                min_dist = cur_dist;
+                                min_pos = s;
+                            }
+                        }
+                        note = Tonal.Note.transpose(old_note, min_dist);
+                        //console.log("fine for " + note);
+
+                        //note = key.scale[input[first_note_index1 + k*32 + i*16 + counter] % 7] + "3";
 
                         let prec_interval = Tonal.Interval.get(Tonal.Interval.distance(old_note, note)).num;
                         if (prec_interval > 4) {
@@ -240,19 +284,6 @@ function initializeMusic() {
     //t.bpm.value = sheet.bpm;
     console.log(t.get());
 
-    /*
-    loop = new Tone.Loop(time => {
-        for (let i=0; i<sheet.measures; i++)
-        {
-            for (let j=0; j<1; j++) {
-                //sampler.triggerAttackRelease(["C4", "E4", "G4"], "4n", time + (i * t.toSeconds("4n")))
-                sampler.triggerAttackRelease(sheet.progression[i][j], "4n", time + (i * t.toSeconds("4n")))
-            }
-        }
-    }, (sheet.measures + 1) * t.toSeconds("4n")).start(0);
-     */
-
-    //let part_array = [];
     let part_array = [];
 
     for (let i=0; i<sheet.measures; i++) {
@@ -268,12 +299,12 @@ function initializeMusic() {
         }
     }
 
-    let left_melody = sheet.melody[0];
-    let voiceLeftPart = new Tone.Part(((time, left_melody) => {
-        piano_left_sampler.triggerAttackRelease(left_melody.noteName, left_melody.duration, time, left_melody.velocity);
-    }), left_melody).start(0);
-    voiceLeftPart.loop = true;
-    voiceLeftPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
+    let melody = sheet.melody[0];
+    let melodyPart = new Tone.Part(((time, melody) => {
+        piano_melody_sampler.triggerAttackRelease(melody.noteName, melody.duration, time, melody.velocity);
+    }), melody).start(0);
+    melodyPart.loop = true;
+    melodyPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
     //pianoPart.humanize = true;
 
     let chordsPart = new Tone.Part(((time, part_array) => {
@@ -282,38 +313,106 @@ function initializeMusic() {
     chordsPart.loop = true;
     chordsPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
     //pianoPart.humanize = true;
+}
 
-    let right_melody = sheet.melody[1];
-    let voiceRightPart = new Tone.Part(((time, right_melody) => {
-        piano_right_sampler.triggerAttackRelease(right_melody.noteName, right_melody.duration, time, right_melody.velocity);
-    }), right_melody).start(0);
-    voiceRightPart.loop = true;
-    voiceRightPart.loopEnd = (sheet.measures) * t.toSeconds("1m");
-    //pianoPart.humanize = true;
+function downloadMusic() {
+
+    Tone.start().then(() => {
+
+        console.log("download audio file");
+
+        const chunks = [];
+        let initialDelay = 1000;    // in milliseconds
+        let duration = ((sheet.measures * 4 + 1) * 60 / sheet.bpm) * 1000;  // in milliseconds
+        let fadeOut = 2000; // in milliseconds
+
+        t.stop();
+
+        setTimeout(function() {
+            recorder.start();
+            t.start();
+        }, initialDelay);
 
 
+
+        setTimeout(function(){
+            if (!recording_interrupted) {
+                t.stop();
+                setTimeout(()=>{ recorder.stop() }, fadeOut);
+                recording = false;
+            } else {
+                recording_interrupted = false;
+            }
+        }, duration + initialDelay);
+
+        recorder.ondataavailable = evt => chunks.push(evt.data);
+        recorder.onstop = () => {
+
+            if (!recording_interrupted) {
+
+                let blob = new Blob(chunks, {type: recorder.mimeType});
+                const url = URL.createObjectURL(blob);
+
+                //audio.src = URL.createObjectURL(blob);    // This is only to use the html audio player
+
+                const anchor = document.createElement('a');
+                document.body.appendChild(anchor);
+                anchor.style.display = 'none';
+                anchor.href = url;
+                anchor.download = 'FaceTune.webm';
+                anchor.click();
+                URL.revokeObjectURL(url);
+            }
+        };
+    });
 }
 
 document.getElementById("done").addEventListener("click", function() {
-    Tone.start().then(r => {
-        t.stop();
-        writeMusic();
-        initializeMusic();
-        t.start();
-    });
+
+    if (!recording) {
+        Tone.start().then(() => {
+            t.stop();
+            writeMusic();
+            initializeMusic();
+            t.start(t.now() + 0.6);
+        });
+    }
 });
+
 document.getElementById("play").addEventListener("click", function() {
-    Tone.start().then(r => {
-        t.start();
-    });
+
+    if (!recording) {
+        Tone.start().then(() => {
+            t.start();
+        });
+    }
 });
+
 document.getElementById("pause").addEventListener("click", function() {
 
-    t.pause();
+    if (!recording) {
+        t.pause();
+    }
 });
+
 document.getElementById("stop").addEventListener("click", function() {
 
-    t.stop();
+    if (!recording) {
+        t.stop();
+    }
+});
+
+document.getElementById("download").addEventListener("click", function() {
+
+    if (!recording && !recording_interrupted) {
+        recording = true;
+        downloadMusic();
+    } else {
+        recording_interrupted = true;
+        t.stop();
+        recorder.stop()
+        recording = false;
+    }
 });
 },{"tonal":22,"tone":23}],2:[function(require,module,exports){
 "use strict";
