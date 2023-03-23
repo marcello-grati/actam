@@ -58,13 +58,13 @@ const options = {
     'chocolate_hair',
     'gold_hair',
   ],
-  haircut: ['1h', '2h', '3h'],
+  haircut: ['0h','1h', '2h', '3h'],
   eyes: ['green_eyes', 'blue_eyes', 'brown_eyes', 'grey_eyes'],
   nose: ['type1n', 'type2n', 'type3n', 'type4n'],
   mouth: ['type1m', 'type2m'],
 };
 
-avatarFeat = [0, 0, 0, 0, 0, 0];
+avatarFeat = ['black_hair', '0h', 'blue_eyes', 'skin1', 0, 0];
 idsaver = 0;
 // contatori per fare replaceChildren se si sostituisce la scelta
 let cont_hair = 0;
