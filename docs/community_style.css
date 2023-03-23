@@ -1,0 +1,176 @@
+@font-face {
+    font-family: 'neon_club_musicregular';
+    src: url('../fonts/neoneon/Neoneon.woff') format('woff');
+    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'bobble';
+    src: url('../fonts/Bobbleboddy/Bobbleboddy_light.woff') format('woff');
+    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
+    font-weight: normal;
+    font-style: normal;
+}
+
+body{
+    margin: 0;
+    background-color: black;
+}
+
+.contenitore {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    min-width: 700px;
+    position: absolute;
+    display: inline-flex;
+    flex-direction: column; /*allinea tutti gli elementi del contenitore in colonne*/
+    justify-content: space-evenly;
+    align-items: center; /*allinea tutti gli elementi del contenitore in centro*/
+}
+
+.options-container {
+    display: grid;
+    grid-template-columns: repeat(3, 0.5fr);
+    border-color: white;
+    width: 100%;
+    /*height: 50%;*/
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.colors{
+    height: 50px;
+    width: 50px;
+    border-radius:50%;
+    border: 3px solid white;
+    background-color: red;
+    cursor: pointer;
+}
+
+.title {
+    font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
+    font-size: 5em; /* Grandezza del titolo*/
+    margin-block-start: unset;
+    margin-block-end: unset;
+    /*margin-bottom: 70px;*/
+}
+
+.subtitle{
+    font-family: "bobble", Courier, serif;
+    font-size: 2.5em;
+    margin-block-start: unset;
+    margin-block-end: unset;
+    /*margin-bottom: 20px;*/
+}
+
+.neonText {
+    color: #ffdead;
+    text-shadow:
+            0 0 18px #ffa07a,
+            0 0 21px #ff00ff,
+            0 0 31px #ff00ff,
+            0 0 51px #fff0f5,
+            0 0 92px #ffdab9,
+            0 0 102px #ffe4b5,
+            0 0 112px #ffe4e1,
+            0 0 161px #ffe4e1;
+}
+
+.neonText2 {
+    color: #fff;
+    text-shadow:
+            0 0 7px #fff,
+            0 0 10px #fff,
+            0 0 21px #fff,
+            0 0 42px #0fa,
+            0 0 82px #0fa,
+            0 0 92px #0fa,
+            0 0 102px #0fa,
+            0 0 151px #0fa;
+}
+
+.selections{
+    background-color:#ffdead;
+    border-radius: 10%;
+    box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
+    /*margin: 15px 15px 40px;*/
+    padding: 10px 15px;
+    font-size: 1.2em;
+    border-color: #ffdead;
+    cursor:pointer;
+    font-family: "bobble", Courier, serif;
+
+}
+
+.nick{
+    color:#ffdead;
+    font-family: "bobble", Courier, serif; /* font Nickname*/
+    font-size:1.5em;
+    /*margin-bottom: 10px;*/
+}
+
+.pulsate {
+    animation: pulsate 1.5s infinite alternate;
+}
+
+.options-container {
+    display: grid;
+    grid-template-columns: repeat(3, 0.5fr);
+    border-color: white;
+    width: 100%;
+    /*height: 50%;*/
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+}
+
+.backdone{
+    width:100%;
+    justify-content: space-around;
+    display: flex;
+    left: 5%;
+    right: 5%;
+}
+
+button{
+    border-radius: 10px;
+    padding: 10px 20px; /* grandezza bottoni */
+    background-color: #ffdead;
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
+    cursor: pointer;
+    font-size: 30px;
+    position:relative;
+    margin: 0 0 0;
+}
+
+@keyframes pulsate {
+
+    100% {
+        text-shadow: 0 0 4px #ffa07a,
+        0 0 15px #ff00ff,
+        0 0 25px #ff00ff,
+        0 0 40px #fff0f5,
+        0 0 80px #ffdab9,
+        0 0 90px #ffe4b5,
+        0 0 100px #ffe4e1,
+        0 0 150px #ffe4e1;
+    }
+    0% {
+        /* Smaller blur radius */
+        text-shadow: 0 0 4px #ffa07a,
+        0 0 15px #ff00ff,
+        0 0 25px #ff00ff,
+        0 0 38px #fff0f5,
+        0 0 73px #ffdab9,
+        0 0 80px #ffe4b5,
+        0 0 94px #ffe4e1,
+        0 0 140px #ffe4e1;
+    }
+}

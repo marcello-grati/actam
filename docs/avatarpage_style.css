@@ -173,6 +173,24 @@ p {
     justify-items: center;
 }
 
+.fil_container{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-color : white;
+    width: 70%;
+    height: 50%;
+    gap:10px;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+
+}
+
+#options-container2{
+    width:30%;
+    height: 40%;
+}
+
 object {
     pointer-events: none;
 }

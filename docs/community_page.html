@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Avatars Community</title>
+    <link rel="stylesheet" href="avatarpage_style.css">
+</head>
+<body>
+<div class ="contenitore">
+    <h1 class="neonText title pulsate">
+        F A C E T U N E
+    </h1>
+    <h2 class="neonText subtitle pulsate">AVATARS COMMUNITY</h2>
+
+    <div class="selection">
+        <select id="filters-menu" class="selections" name="Filters" >
+            <option value="">-- Filter by --</option>
+            <option value="all"> Visualize all the avatars </option>
+            <option value="haircolor" > Hair Color </option>
+            <option value="haircut"> Haircut </option>
+            <option value="eyes"> Eyes </option>
+            <option value="skin"> Skin </option>
+            <option value="nose"> Nose </option>
+            <option value="mouth"> Mouth </option>
+            <option value="username"> Nickname </option>
+        </select>
+    </div>
+
+    <div class="options-container" id="options-container2" ></div>
+    <form name="nicktext" method="post" id="nick-form" hidden="hidden"> <!-- autocomplete="off" se non si vuole che rimangano memorizzati i nomi-->
+        <label for="username" class="nick">Nickname:</label>
+        <input type="text" id="username" name="nickname" size="20" maxlength="20" >
+        <input type="button" id="subButton" value="Confirm" onclick="saveName()" />
+    </form>
+
+    <div class="backdone">
+        <button onclick="location.href='index.html'">BACK</button>
+    </div>
+
+
+</div>
+</body>
+<script src="community_app.js"></script>
+</html>
