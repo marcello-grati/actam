@@ -192,14 +192,28 @@ p {
 }
 
 #name-list-container{
-    width: 30%;
-    height: 30%;
+    width: 60%;
+    height: 50%;
     border: white;
     background-color:black;
     align-content: center;
     align-items: center;
     justify-items: center;
+    text-align: center;
+    margin-top: 20%;
+    margin-bottom: 20%;
 
+}
+
+.avatar_container_f{
+    position:relative;
+    background-color: black;
+    width: 60%;
+    height: 50%;
+    margin-top: 20%;
+    margin-bottom: 20%;
+
+    /*margin-bottom: 10px;*/
 }
 
 #name-list{
@@ -209,6 +223,9 @@ p {
     cursor: pointer;
     overflow-y: scroll;
     background-color: black;
+    justify-content: center;
+    justify-items: center;
+    align-content: center;
 }
 
 #name-list li{
@@ -231,6 +248,25 @@ p {
     border-radius: 5px;
 }
 
+.grid_container {
+    position: relative;
+    display: grid;
+    width: 80%;
+    height: 50%;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    justify-content: center;
+
+}
+
+#body_f{
+    position:relative;
+    width: 80%;
+    height: 80%;
+    align-content: center;
+}
+
+
 object {
     pointer-events: none;
 }
@@ -242,6 +278,14 @@ object {
     /*margin: 10px 0 120px;
     justify-content: inherit;*/
     text-transform: uppercase;
+}
+
+#name-avatar_f{
+    position: relative;
+    align:center;
+    justify-content: center;
+    left: 100px;
+    top: 0px;
 }
 
 .avatar-hair{
@@ -283,9 +327,13 @@ object {
     opacity: 1;
 }
 
+
+
 #blonde_hair{
     background-color: #ffe735;
 }
+
+
 
 .white_hair{
     fill: #ffffff;

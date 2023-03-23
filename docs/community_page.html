@@ -11,6 +11,7 @@
     </h1>
     <h2 class="neonText subtitle pulsate">AVATARS COMMUNITY</h2>
 
+
     <div class="selection">
         <select id="filters-menu" class="selections" name="Filters" >
             <option value="">-- Filter by --</option>
@@ -31,12 +32,18 @@
         <input type="text" id="username" name="nickname" size="20" maxlength="20" >
         <input type="button" id="subButton" value="Confirm" onclick="saveName()" />
     </form>
-
+<div class="grid_container" id="grid_container" hidden="hidden">
     <div id="name-list-container" hidden="hidden">
         <ul id="name-list" hidden="hidden">
             <!-- The list of names will be added dynamically using JavaScript -->
         </ul>
     </div>
+
+    <div class="avatar_container_f" id="avatar_container_f" hidden="hidden">
+        <p id="name-avatar_f" class="neonText new_name" hidden="hidden"></p>
+        <object id ="body_f" data="body.svg" type="image/svg+xml" class="avatar" hidden="hidden"></object>
+    </div>
+</div>
 
     <div id="no_found" hidden="hidden" >
         <h2 class="neonText subtitle pulsate">   NO AVATARS FOUND!   </h2>

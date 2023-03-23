@@ -4,6 +4,13 @@ const namebox = document.getElementById('nick-form');
 const nameListContainer = document.getElementById('name-list-container');
 const nameList = document.getElementById('name-list');
 const noFound = document.getElementById('no_found');
+const nameAvatar = document.getElementById('name-avatar_f');
+const avatar_container = document.getElementById('avatar_container_f');
+const body = document.getElementById('body_f');
+const grid = document.getElementById('grid_container');
+
+optionsContainer.style.display = 'none';
+grid.style.display = 'none';
 
 const options = {
     skin: [
@@ -47,6 +54,10 @@ function filtersSelection() {
     selection[0] = filtersMenu.value;
     nameListContainer.hidden = true;
     nameList.hidden = true;
+    nameAvatar.hidden = true;
+    avatar_container.hidden = true;
+    body.hidden = true;
+    grid.style.display = 'none';
     //console.log(1);
 
     console.log(selection);
@@ -111,7 +122,13 @@ function filtersSelection() {
     }
 
 }
-filtersMenu.addEventListener('change', filtersSelection);
+
+if(filtersMenu){
+    filtersMenu.addEventListener('change', filtersSelection);
+}
+
+
+
 
 function changeColor(name) {
     const elem = document.getElementById(name);
@@ -122,13 +139,17 @@ function changeColor(name) {
 
 }
 
-namebox.addEventListener('keypress', function (event) {
-    //console.log(3);
-    if (event.key === 'Enter') {
-        event.preventDefault();
-        saveName();
-    }
-});
+
+if(namebox){
+    namebox.addEventListener('keypress', function (event) {
+        //console.log(3);
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            saveName();
+        }
+    });
+}
+
 
 function saveName() {
     const nameField = document.getElementById('username').value;
@@ -179,9 +200,13 @@ function showNicks(length, avatars){
     console.log(avatars);
     optionsContainer.style.display = 'none';
     namebox.hidden = true;
+    noFound.hidden = true;
+    grid.style.display = 'grid';
     nameList.hidden = false;
     nameListContainer.hidden = false;
-    noFound.hidden = true;
+    avatar_container.hidden = false;
+    body.hidden = false;
+
 
     nicknames.length = length;
 
@@ -218,7 +243,7 @@ function showNicks(length, avatars){
         // Add a click event listener to the list item
         li.addEventListener("click", function() {
             // Call the seeAvatar function with the selected nickname
-            seeAvatar(nickname, avatars);
+            chooseName(nickname, avatars);
         });
 
         // Add the list item to the name list
@@ -229,8 +254,10 @@ function showNicks(length, avatars){
 }
 
 
-function seeAvatar(nickname, avatars) {
+function chooseName(nickname, avatars) {
 
+    optionsContainer.style.display = 'none';
+    grid.hidden = false;
     console.log(`Selected nickname: ${nickname}`);
     const avatarFeat = [];
 
@@ -247,7 +274,24 @@ function seeAvatar(nickname, avatars) {
     }
 
     console.log(avatarFeat);
+    seeAvatar(nickname, avatarFeat);
 
 }
 
+function seeAvatar(nickname, avatar) {
+    optionsContainer.style.display = 'none';
+    filtersMenu.hidden = false;
+    nameList.hidden = false;
+    nameListContainer.hidden = false;
 
+    nameAvatar.hidden = false;
+    nameAvatar.innerText = nickname;
+
+    avatar_container.hidden = false;
+    body.hidden = false;
+
+
+
+
+
+}
