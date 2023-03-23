@@ -24,10 +24,10 @@ function saveName() {
 function changeView() {
   document.getElementById('create-container').style.display = 'flex';
   document.getElementById('done').hidden = false;
-  document.getElementById('play').hidden = false;
-  document.getElementById('pause').hidden = false;
-  document.getElementById('download').hidden = false;
-  document.getElementById('stop').hidden = false;
+  //document.getElementById('play').hidden = false;
+  //document.getElementById('pause').hidden = false;
+  //document.getElementById('download').hidden = false;
+  //document.getElementById('stop').hidden = false;
   document.getElementById('nick-form').style.display = 'none';
 }
 
@@ -212,12 +212,20 @@ avatardb = [0,0,0,0,0,0];
 // Disabilta tendina dopo "done"
 async function doneButton() {
 
-  avatardb = avatarFeat;
-  avatardb[6] = document.getElementById('nickname').value;
-
   selectionMenu.setAttribute('disabled', '');
   optionsContainer.replaceChildren([]);
   //console.log('final string: '+ avatarFeat[0]+','+avatarFeat[1]+','+avatarFeat[2]+','+avatarFeat[3]+','+avatarFeat[4]+','+avatarFeat[5]);
+  document.getElementsByClassName('selection')[0].style.display = 'none';
+  document.getElementById('done').hidden = true;
+  document.getElementById('play').hidden = false;
+  document.getElementById('pause').hidden = false;
+  document.getElementById('download').hidden = false;
+  document.getElementById('stop').hidden = false;
+  document.getElementById('nick-form').style.display = 'none';
+
+  avatardb = avatarFeat;
+  avatardb[6] = document.getElementById('nickname').value;
+
   fetch('http://localhost:3000/community/add', {
     method: 'POST',
     headers: {
@@ -229,4 +237,6 @@ async function doneButton() {
   const res = await fetch('http://localhost:3000/community');
   const all = await res.json();
   console.log(all);
+
+
 }
