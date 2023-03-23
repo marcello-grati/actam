@@ -38,7 +38,7 @@ app.get('/community', (req, res) => {
     if(filters[0] === 'all'){
 
       if (avatars.length === 0) {
-        res.send(error);
+        res.send(avatars);
         console.log('No avatars found :(');
 
       } else {
@@ -53,7 +53,7 @@ app.get('/community', (req, res) => {
 
       if (filtered_avatars.length === 0) {
 
-        res.send(error);
+        res.send(filtered_avatars);
         console.log('No avatars found :(');
 
       } else {

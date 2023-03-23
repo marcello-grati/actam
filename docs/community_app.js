@@ -1,7 +1,9 @@
 const filtersMenu = document.getElementById('filters-menu');
 const optionsContainer = document.getElementById('options-container2');
 const namebox = document.getElementById('nick-form');
-//const fil_container = document.getElementById('filter_container');
+const nameListContainer = document.getElementById('name-list-container');
+const nameList = document.getElementById('name-list');
+const noFound = document.getElementById('no_found');
 
 const options = {
     skin: [
@@ -41,7 +43,10 @@ const selection = [];
 idsaver=0;
 
 function filtersSelection() {
+    noFound.hidden = true;
     selection[0] = filtersMenu.value;
+    nameListContainer.hidden = true;
+    nameList.hidden = true;
     //console.log(1);
 
     console.log(selection);
@@ -133,15 +138,11 @@ function saveName() {
 
 }
 
-function changeView(){
-    optionsContainer.style.display = 'none';
-    namebox.hidden = true;
-    fil_container.hidden = false;
-
-
-}
+let all;
 
 async function filtersArray(elem, selected) {
+
+    noFound.hidden = true;
     if (selected === 'all') {
         selection[1] = 'all';
     }else {
@@ -155,10 +156,98 @@ async function filtersArray(elem, selected) {
           filters : JSON.stringify(selection),
       }),
   );
-    const all = await res.json();
+    all = await res.json();
     console.log(all);
-
     console.log(all.length);
+
+    if(all.length === 0){
+        optionsContainer.style.display = 'none';
+        namebox.hidden = true;
+        noFound.hidden = false;
+    }else{
+        showNicks(all.length, all);
+    }
+
+
     //console.log(selection);
 }
+
+
+let nicknames = [];
+function showNicks(length, avatars){
+
+    console.log(avatars);
+    optionsContainer.style.display = 'none';
+    namebox.hidden = true;
+    nameList.hidden = false;
+    nameListContainer.hidden = false;
+    noFound.hidden = true;
+
+    nicknames.length = length;
+
+    //console.log(nicknames.length);
+
+    for(let i=0; i<length; i++){
+        //console.log(name);
+        nicknames[i] = avatars[i]["username"];
+    }
+
+    console.log(nicknames);
+
+    nameList.replaceChildren([]);
+
+    for (let i = 0; i < nicknames.length; i++) {
+        const nickname = nicknames[i];
+
+        // Create a list item element
+        const li = document.createElement("li");
+        li.textContent = nickname;
+        li.style.fontSize = '2em';
+        li.style.fontFamily = 'Helvetica Neue';
+        li.style.margin = '10px';
+        li.style.textTransform = 'uppercase';
+        li.style.color = '#ffdead';
+        li.style.transition = 'box-shadow 0.3s';
+        li.addEventListener('mouseover', function() {
+            li.style.boxShadow = '0 0 10px green';
+        });
+        li.addEventListener('mouseout', function() {
+            li.style.boxShadow = '';
+        });
+
+        // Add a click event listener to the list item
+        li.addEventListener("click", function() {
+            // Call the seeAvatar function with the selected nickname
+            seeAvatar(nickname, avatars);
+        });
+
+        // Add the list item to the name list
+        nameList.appendChild(li);
+    }
+
+
+}
+
+
+function seeAvatar(nickname, avatars) {
+
+    console.log(`Selected nickname: ${nickname}`);
+    const avatarFeat = [];
+
+    for(let i=0; i<avatars.length; i++){
+        if(avatars[i]['username'] === nickname){
+            avatarFeat[0] = avatars[i]['haircolor'];
+            avatarFeat[1] = avatars[i]['haircut'];
+            avatarFeat[2] = avatars[i]['eyes'];
+            avatarFeat[3] = avatars[i]['skin'];
+            avatarFeat[4] = avatars[i]['nose'];
+            avatarFeat[5] = avatars[i]['mouth'];
+            avatarFeat[6] = avatars[i]['username'];
+        }
+    }
+
+    console.log(avatarFeat);
+
+}
+
 
