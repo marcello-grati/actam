@@ -290,6 +290,39 @@ function seeAvatar(nickname, avatar) {
     avatar_container.hidden = false;
     body.hidden = false;
 
+    if(avatar[0]==='0.0'){
+        avatar[0] = 'black_hair';
+    }
+    if(avatar[1]==='0.0'){
+        avatar[1] = '0h';
+    }
+    if(avatar[2]==='0.0'){
+        avatar[2] = 'blue_eyes';
+    }
+    if(avatar[3]==='0.0'){
+        avatar[3] = 'skin1';
+    }
+
+
+
+    haircut = body.contentDocument.getElementById('haircut');
+    hr = avatar[1] + '.svg#' + avatar[1];
+    haircut.setAttribute('href', hr);
+    haircut = body.contentDocument.getElementById('haircut');
+    haircut.classList.replace(haircut.classList.item(0), avatar[0]);
+    eyebrows = body.contentDocument.getElementById('eyebrows_left');
+    eyebrows.classList.replace(eyebrows.classList.item(0), avatar[0]);
+    eyebrows = body.contentDocument.getElementById('eyebrows_right');
+    eyebrows.classList.replace(eyebrows.classList.item(0), avatar[0]);
+    skin = body.contentDocument.getElementById('sameskin');
+    skin.classList.replace(skin.classList.item(0), avatar[3]);
+    skin = body.contentDocument.getElementById('sameskin1');
+    skin.classList.replace(skin.classList.item(0), avatar[3] + '1');
+    iris = body.contentDocument.getElementById('iris_right');
+    iris.classList.replace(iris.classList.item(0), avatar[2]);
+    iris = body.contentDocument.getElementById('iris_left');
+    iris.classList.replace(iris.classList.item(0), avatar[2]);
+
 
 
 
