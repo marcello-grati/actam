@@ -247,6 +247,7 @@ async function doneButton() {
   document.getElementById('download').hidden = false;
   document.getElementById('stop').hidden = false;
   document.getElementById('nick-form').style.display = 'none';
+  document.getElementById('back').style.marginRight = '73px';
 
   avatardb = avatarFeat;
   avatardb[6] = document.getElementById('nickname').value;
