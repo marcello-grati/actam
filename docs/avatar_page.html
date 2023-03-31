@@ -35,12 +35,21 @@
         </div>
     </div>
     <div class="backdone">
-        <button onclick="doneButton()" id="done" hidden="hidden">DONE</button>
-        <button id="download" hidden="hidden">DOWNLOAD</button>
-        <button id="play" hidden="hidden">PLAY</button>
-        <button id="pause" hidden="hidden">PAUSE</button>
-        <button id="stop" hidden="hidden">STOP</button>
-        <button onclick="location.href='index.html'">BACK</button>
+        <button class="buttons" onclick="doneButton()" id="done" hidden="hidden">DONE</button>
+        <button class="buttons" id="write" hidden="hidden">WRITE</button>
+        <button class="buttons" id="download" hidden="hidden">DOWNLOAD</button>
+        <div class="player">
+            <button id="play" class="btn" hidden="hidden">
+                <div class="playbtn"></div>
+            </button>
+            <button id="pause" class="btn" hidden="hidden">
+                <div class="pausebtn"></div>
+            </button>
+            <button id="stop" class="btn" hidden="hidden">
+                <div class="stopbtn"></div>
+            </button>
+        </div>
+        <button class="buttons" onclick="location.href='index.html'">BACK</button>
     </div>
 
 </div>

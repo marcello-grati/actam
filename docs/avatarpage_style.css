@@ -78,6 +78,8 @@ body{
     max-width: 80px;
     transform: translate(-50%, -50%);
 }
+
+
 .selectelement{
     width:80px;
     height:80px;
@@ -594,7 +596,7 @@ object {
     right: 5%;
 }
 
-button{
+.buttons{
     border-radius: 10px;
     padding: 10px 20px; /* grandezza bottoni */
     background-color: #ffdead;
@@ -606,6 +608,45 @@ button{
     margin: 0 0 0;
 }
 
+.btn {
+    border-radius: 37%;
+    height: 100%;
+    width:30%;
+    background-color: #ffdead;
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    cursor: pointer;
+    position:relative;
+    margin: 0 0 0;
+}
+
+.player{
+    width:200px;
+    justify-content: space-between;
+    display: inline-flex;
+}
+
+.playbtn{
+    margin-left: 15px;
+    border-style: solid;
+    box-sizing: border-box;
+    border-width: 12px 0px 12px 20px;
+    border-color: transparent transparent transparent #202020;
+}
+
+.pausebtn{
+    height: 20px;
+    border-style: double;
+    border-width: 0px 0px 0px 18px;
+    border-color: #202020;
+    margin-left: 13px;
+}
+
+.stopbtn{
+    height: 20px;
+    width: 20px;
+    background-color: #202020;
+    margin-left: 13px;
+}
 
 .pulsate {
     animation: pulsate 1.5s infinite alternate;
