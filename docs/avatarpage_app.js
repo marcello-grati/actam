@@ -64,7 +64,7 @@ const options = {
   mouth: ['type1m', 'type2m'],
 };
 
-avatarFeat = ['black_hair', '0h', 'blue_eyes', 'skin1', 0, 0];
+avatarFeat = ['black_hair', '0h', 'blue_eyes', 'skin1', 'type1n', 'type1m'];
 idsaver = 0;
 // contatori per fare replaceChildren se si sostituisce la scelta
 let cont_hair = 0;
@@ -140,10 +140,24 @@ function changeColor(name) {
 
 //cambio taglio di capelli
 function changeHairCut(hair) {
-  console.log('change hair cut' + hair);
+  console.log('change haircut ' + hair);
   haircut = body.contentDocument.getElementById('haircut');
   hr = hair + '.svg#' + hair;
   haircut.setAttribute('href', hr);
+}
+
+function changeMouth(mouthtype) {
+  console.log('change mouthtype ' + mouthtype);
+  mouth = body.contentDocument.getElementById('mouth');
+  m = mouthtype + '.svg#' + mouthtype;
+  mouth.setAttribute('href', m);
+}
+
+function changeNose(nosetype) {
+  console.log('change nosetype ' + nosetype);
+  nose = body.contentDocument.getElementById('nose');
+  n = nosetype + '.svg#' + nosetype;
+  nose.setAttribute('href', n);
 }
 
 // Cambio colore pelle
@@ -154,6 +168,10 @@ function changeSkinColor(colorskin) {
   skin.classList.replace(skin.classList.item(0), colorskin);
   skin = body.contentDocument.getElementById('sameskin1');
   skin.classList.replace(skin.classList.item(0), colorskin + '1');
+  nose = body.contentDocument.getElementById('nose');
+  nose.classList.replace(nose.classList.item(0), colorskin +'1');
+  mouth = body.contentDocument.getElementById('mouth');
+  mouth.classList.replace(mouth.classList.item(0), colorskin +'1');
 }
 
 //cambio colore occhi
@@ -178,6 +196,12 @@ function avatarcreation(e, selected) {
   }
   if (selected === 'eyes') {
     changeEyesColor(e.target.id);
+  }
+  if (selected === 'mouth') {
+    changeMouth(e.target.id);
+  }
+  if (selected === 'nose') {
+    changeNose(e.target.id);
   }
 }
 
