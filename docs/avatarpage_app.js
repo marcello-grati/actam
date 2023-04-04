@@ -109,9 +109,16 @@ function menuselection() {
       a.addEventListener('click', selected_el);
       optionsContainer.appendChild(a);
       a.appendChild(el_img);
-      el_img.addEventListener('load', function () {
-        changeColor(el_img.id);
-      });
+      if (selected==='haircut') {
+        el_img.addEventListener('load', function () {
+          changeColor(el_img.id, 0);
+        });
+      }
+      else if (selected==='mouse'||selected==='nose'){
+        el_img.addEventListener('load', function () {
+          changeColor(el_img.id, 3);
+        });
+      }
     }
   }
 }
@@ -130,12 +137,12 @@ function changeHairColor(color) {
 }
 
 //cambio colore capelli icone
-function changeColor(name) {
+function changeColor(name,i) {
   const elem = document.getElementById(name);
   console.log(elem);
   const ele = elem.contentDocument;
   const e = ele.getElementsByTagName('g')[0];
-  e.classList.replace(e.classList.item(0), avatarFeat[0]);
+  e.classList.replace(e.classList.item(0), avatarFeat[i]);
 }
 
 //cambio taglio di capelli
