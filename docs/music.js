@@ -1,5 +1,6 @@
 const Tone = require('tone');
 const Tonal = require('tonal');
+const seedrandom = require('seedrandom');
 
 let recording = false;
 let recording_interrupted = false;
@@ -82,13 +83,13 @@ function features2int() {
     input.push(options.nose.indexOf(avatarFeat[4]));
     input.push(options.mouth.indexOf(avatarFeat[5]));
 
-    // input.push(Math.round(Math.random()*3)) // temp nose
-    // input.push(Math.round(Math.random())) // temp mouth
+    // input.push(Math.round(rng(*3)) // temp nose
+    // input.push(Math.round(rng()) // temp mouth
 
     return input;
 }
 
-function chordInput(input) {
+function convertInput(input) {
     let chordInput = [];
     for (let i=0; i<6; i++) {    // for (let i=0; i<input.length; i++) {
         if (i%3 === 0) chordInput[i] = input[i] % 7
@@ -97,17 +98,66 @@ function chordInput(input) {
     return chordInput;
 }
 
+function input2intervals(input) {
+
+    switch (input) {
+        case 0: return -3;
+        case 1: return -2;
+        case 2: return -1;
+        case 3: return 0;
+        case 4: return 1;
+        case 5: return 2;
+        case 6: return 3;
+        default: return null;
+    }
+}
+
+function nextDissonantNote(input, old_note, key) {
+    let old_note_index = key.scale.indexOf(old_note);
+    let next_note_index = old_note_index + input2intervals(input);
+    let next_note;
+    if (next_note_index < 0) {
+        next_note_index += 7;
+        next_note = key.scale[next_note_index] + "3";
+        next_note = Tonal.Note.transpose(next_note, "-8P");
+    } else if (next_note_index > 6) {
+        next_note_index -= 7;
+        next_note = key.scale[next_note_index] + "3";
+        next_note = Tonal.Note.transpose(next_note, "+8P");
+    } else {
+        next_note = key.scale[next_note_index] + "3";
+    }
+    return next_note;
+}
+
+function nextConsonantNote(input, old_note, key, chord) {
+
+    let next_note = null;
+    while (chord.indexOf(next_note)===-1) {
+
+        next_note = nextDissonantNote(input, old_note, key);
+        input = (input + 1) % 7;
+    }
+    return next_note;
+}
+
 // write the sheet music
 function writeMusic () {
 
-    // Random input
     let input = [];
 
-    // for (let i=0; i<1000; i++) input[i] = Math.floor(Math.random()*100); // deprecated
+    // for (let i=0; i<1000; i++) input[i] = Math.floor(rng(*100); // deprecated
 
     input = features2int();
-    let chord_input = chordInput(input);
-    for (let i=0; i<1000; i++) input.push(Math.floor(Math.random()*100));
+    let chord_input = convertInput(input);
+    //for (let i=0; i<1000; i++) input.push(Math.floor(rng(*100));
+
+    let seed_string = "";
+    for (let i=0; i<input.length; i++) {
+        seed_string = seed_string + input[i];
+    }
+    let rng = seedrandom(seed_string);
+    //seedrandom(seed_string, { global: true });
 
     console.log("avatarFeat: ", avatarFeat);
     console.log("stringa in input: ", input);
@@ -208,6 +258,8 @@ function writeMusic () {
     }
     // console.log(simple_progression);
 
+    // Math.ceil(x/2) +1
+
     let melody = [];
 
     for (let i=0; i<measures; i++) {
@@ -221,19 +273,29 @@ function writeMusic () {
         while (tempo_left > 0) {
 
             if (counter === 0) {
-                duration = input[first_rythm_index1 + i*16 + counter] % 2 + 3;
+                duration = Math.floor(rng() * 2) + 3;
+                // duration = input[first_rhythm_index1 + i*16 + counter] % 2 + 3;   // deprecated
                 //duration = 4; // test
-                note = simple_progression[i][input[first_note_index1 + i*16 + counter] % num_of_chord_notes];
+                //note = simple_progression[i][chord_input[(i + counter) % chord_input.length] % num_of_chord_notes];
+                note = simple_progression[i][Math.floor(rng() * num_of_chord_notes)];
 
             } else {
-                //duration = input[first_rythm_index1 + i*16 + counter] % 4 + 1;
-                duration = input[first_rythm_index1 + i*16 + counter] % 6;     // per avere più 1/4
-                if (duration < 1 || duration > 4) duration = 2;
+
+                duration = Math.ceil(Math.floor(rng() * 7) / 2) + 1;
+                //duration = Math.ceil(chord_input[(i + counter) % chord_input.length] / 2) + 1;
+                //console.log(chord_input[(i + counter) % chord_input.length], " -> ", duration);
+
+                // deprecated
+                //duration = input[first_rhythm_index1 + i*16 + counter] % 4 + 1;
+                // duration = input[first_rhythm_index1 + i*16 + counter] % 6;     // per avere più 1/4
+
+                // if (duration < 1 || duration > 4) duration = 2;
 
                 //duration = 4; // test
+
                 if (duration > 2) {
 
-                    let min_dist = Tonal.Interval.get("8P");
+                    /*let min_dist = Tonal.Interval.get("8P");
                     let min_pos = 8;
                     for (let s=0; s<key.scale.length; s++) {
                         let cur_dist = Tonal.Interval.get(Tonal.Interval.distance(old_note, key.scale[s] + "3"));
@@ -243,14 +305,20 @@ function writeMusic () {
                             min_pos = s;
                         }
                     }
-                    note = Tonal.Note.transpose(old_note, min_dist);
+                    note = Tonal.Note.transpose(old_note, min_dist);*/
+
                     //console.log("fine for " + note + " " + simple_progression[i]);
 
                     //note = simple_progression[i][input[first_note_index1 + i*16 + counter] % num_of_chord_notes];
                     //note = Tonal.Note.transpose(note, "+8P");
+
+
+                    //note = nextConsonantNote(chord_input[(i + counter) % chord_input.length], old_note, key, simple_progression[i]);
+                    note = nextConsonantNote(Math.floor(rng() * 7), old_note, key, simple_progression[i]);
+
                 } else {
 
-                    let min_dist = Tonal.Interval.get("8P");
+                    /*let min_dist = Tonal.Interval.get("8P");
                     let min_pos = 8;
                     for (let s=0; s<key.scale.length; s++) {
                         let cur_dist = Tonal.Interval.get(Tonal.Interval.distance(old_note, key.scale[s] + "3"));
@@ -270,7 +338,10 @@ function writeMusic () {
                         note = Tonal.Note.transpose(note, "-8M")
                     } else if (prec_interval < -4) {
                         note = Tonal.Note.transpose(note, "+8M")
-                    }
+                    }*/
+
+                    note = nextDissonantNote(Math.floor(rng() * 7), old_note, key);
+                    //note = nextDissonantNote(chord_input[(i + counter) % chord_input.length], old_note, key);
                 }
             }
             while (tempo_left - duration < 0) duration -= 1
@@ -311,8 +382,6 @@ function writeMusic () {
         melody : melody
     }
 }
-
-
 
 // play the song
 function initializeMusic() {
@@ -412,7 +481,6 @@ document.getElementById("write").addEventListener("click", function() {
             writeMusic();
             initializeMusic();
             t.start(t.now() + 0.6);
-            // console.log("input on music generation is: [" + avatarFeat + "]");
         });
     }
 });
