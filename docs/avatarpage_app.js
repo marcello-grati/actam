@@ -145,6 +145,7 @@ function changeColor(name,i) {
   e.classList.replace(e.classList.item(0), avatarFeat[i]);
 }
 
+
 //cambio taglio di capelli
 function changeHairCut(hair) {
   console.log('change haircut ' + hair);
