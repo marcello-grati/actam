@@ -260,6 +260,7 @@ async function doneButton() {
   avatardb = avatarFeat;
   avatardb[6] = document.getElementById('nickname').value;
 
+
   fetch('http://localhost:3000/community/add', {
     method: 'POST',
     headers: {

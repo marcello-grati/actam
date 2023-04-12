@@ -8,9 +8,12 @@ const nameAvatar = document.getElementById('name-avatar_f');
 const avatar_container = document.getElementById('avatar_container_f');
 const body = document.getElementById('body_f');
 const grid = document.getElementById('grid_container');
+const back = document.getElementById('backcomm');
+const score_cont = document.getElementById('score');
 
 optionsContainer.style.display = 'none';
 grid.style.display = 'none';
+score_cont.style.display = 'none';
 
 const options = {
     skin: [
@@ -58,6 +61,7 @@ function filtersSelection() {
     avatar_container.hidden = true;
     body.hidden = true;
     grid.style.display = 'none';
+    score_cont.style.display = 'none';
     //console.log(1);
 
     console.log(selection);
@@ -206,6 +210,7 @@ function showNicks(length, avatars){
     nameListContainer.hidden = false;
     avatar_container.hidden = false;
     body.hidden = false;
+    score_cont.style.display = 'grid';
 
 
     nicknames.length = length;
@@ -258,6 +263,7 @@ function chooseName(nickname, avatars) {
 
     optionsContainer.style.display = 'none';
     grid.hidden = false;
+    score_cont.style.display = 'none';
     console.log(`Selected nickname: ${nickname}`);
     const avatarFeat = [];
 
@@ -270,6 +276,8 @@ function chooseName(nickname, avatars) {
             avatarFeat[4] = avatars[i]['nose'];
             avatarFeat[5] = avatars[i]['mouth'];
             avatarFeat[6] = avatars[i]['username'];
+            avatarFeat[7] = avatars[i]['score'];
+            avatarFeat[8] = avatars[i]['votes'];
         }
     }
 
@@ -289,6 +297,10 @@ function seeAvatar(nickname, avatar) {
 
     avatar_container.hidden = false;
     body.hidden = false;
+
+    score_cont.style.display = 'grid';
+
+    avatarScore(avatar[7]);
 
     if(avatar[0]==='0.0'){
         avatar[0] = 'black_hair';
@@ -325,6 +337,81 @@ function seeAvatar(nickname, avatar) {
 
 
 
+}
 
+
+stars_vector = [];
+nStars = 5;
+
+function avatarScore(score){
+
+    score_cont.replaceChildren([]);
+
+    const vote_text = document.createElement('h2');
+    vote_text.setAttribute('class','neonText subtitle pulsate');
+    vote_text.innerText = 'VOTE';
+    score_cont.appendChild(vote_text);
+
+
+    const a = document.createElement('div');
+    a.setAttribute('id', 'star_cont');
+
+    score_cont.appendChild(a);
+    score_cont.style.gap = '50px';
+    score_cont.style.position = 'relative';
+    score_cont.style.justifyItems = 'center';
+    score_cont.style.display = 'grid';
+    score_cont.style.left = '460px';
+    score_cont.style.bottom = '360px';
+
+    for(let i = 0; i<nStars; i++){
+
+        id =i;
+        //console.log(id);
+        htmlStar = '<svg  id='+id+' viewBox="0 0 100 100">'+
+            '<path id='+id+' stroke-width="3" d="M50 5 L61.8 37.5 L95 37.5 L68.7 58.3 L79.4 95.1 L50 75.2 L20.6 95.1 L31.3 58.3 L5 37.5 L38.2 37.5 Z" />'+
+            ' </svg>';
+
+        //a.innerHTML =stars_vector[i];
+        child = document.createElement('div');
+        child.innerHTML = htmlStar;
+        a.appendChild(child);
+        stars_vector[i] = document.getElementById(id);
+        //console.log(stars_vector[i]);
+        stars_vector[i].style.stroke = 'yellow';
+        stars_vector[i].style.width = '30px';
+        stars_vector[i].style.height = '30px';
+
+        stars_vector[i].addEventListener('mouseenter', colorBorder);
+        stars_vector[i].addEventListener('mouseleave', unColorBorder);
+        stars_vector[i].addEventListener('click', fillStar);
+    }
+
+}
+
+function colorBorder(e){
+    var img = e.target;
+    img.style.stroke = 'orange';
+
+}
+
+
+function unColorBorder(e){
+    var img = e.target;
+    img.style.stroke = 'yellow';
+}
+
+function fillStar(e){
+    //console.log('enter');
+    //console.log(e.target.id);
+    stars_vector.forEach((e)=>console.log(e))
+    var img = stars_vector[e.target.id];
+    num = parseInt(e.target.id);
+    //console.log('num '+num);
+    if (img.style.fill === 'yellow') {
+        for(let i = 0; i< nStars; i++) {stars_vector[i].style.fill = 'none';
+        //console.log("coloring"+i)
+        }
+    }else for(let i = 0; i< num+1; i++) stars_vector[i].style.fill = 'yellow';
 
 }
