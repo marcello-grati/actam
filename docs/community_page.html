@@ -34,6 +34,13 @@
     </form>
 <div class="grid_container" id="grid_container" hidden="hidden">
     <div id="name-list-container" hidden="hidden">
+        <select id="order-by" class="selections" name="Order">
+            <option value="">-- Order by --</option>
+            <option value="az"> A-Z </option>
+            <option value="za"> Z-A </option>
+            <option value="higher"> Higher Score </option>
+            <option value="lower"> Lower Score </option>
+        </select>
         <ul id="name-list" hidden="hidden">
             <!-- The list of names will be added dynamically using JavaScript -->
         </ul>
@@ -42,6 +49,7 @@
     <div class="avatar_container_f" id="avatar_container_f" hidden="hidden">
         <p id="name-avatar_f" class="neonText new_name" hidden="hidden"></p>
         <object id ="body_f" data="body.svg" type="image/svg+xml" class="avatar" hidden="hidden"></object>
+        <p id="score_text" class="neonText new_name" hidden="hidden"></p>
     </div>
 </div>
 

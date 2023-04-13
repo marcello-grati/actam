@@ -8,12 +8,15 @@ const nameAvatar = document.getElementById('name-avatar_f');
 const avatar_container = document.getElementById('avatar_container_f');
 const body = document.getElementById('body_f');
 const grid = document.getElementById('grid_container');
-const back = document.getElementById('backcomm');
 const score_cont = document.getElementById('score');
+const score_view = document.getElementById('score_text');
+const order_by = document.getElementById('order-by');
 
 optionsContainer.style.display = 'none';
 grid.style.display = 'none';
 score_cont.style.display = 'none';
+
+avatargen = [];
 
 const options = {
     skin: [
@@ -164,7 +167,7 @@ function saveName() {
 }
 
 let all;
-
+let all_avatars=[];
 async function filtersArray(elem, selected) {
 
     noFound.hidden = true;
@@ -185,12 +188,14 @@ async function filtersArray(elem, selected) {
     console.log(all);
     console.log(all.length);
 
+    all_avatars = all;
+
     if(all.length === 0){
         optionsContainer.style.display = 'none';
         namebox.hidden = true;
         noFound.hidden = false;
     }else{
-        showNicks(all.length, all);
+        showNicks();
     }
 
 
@@ -199,9 +204,9 @@ async function filtersArray(elem, selected) {
 
 
 let nicknames = [];
-function showNicks(length, avatars){
+function showNicks(){
 
-    console.log(avatars);
+    console.log(all_avatars);
     optionsContainer.style.display = 'none';
     namebox.hidden = true;
     noFound.hidden = true;
@@ -211,22 +216,60 @@ function showNicks(length, avatars){
     avatar_container.hidden = false;
     body.hidden = false;
     score_cont.style.display = 'grid';
-
-
-    nicknames.length = length;
-
     //console.log(nicknames.length);
 
-    for(let i=0; i<length; i++){
-        //console.log(name);
-        nicknames[i] = avatars[i]["username"];
+    order_by.addEventListener("change", ordering);
+
+}
+
+function ordering(){
+    let order = order_by.value;
+
+    //console.log(order);
+
+    if(order === 'higher'){
+        //console.log(order);
+        all_avatars.sort(function(a,b){
+            return b["score"]-a["score"];
+        });
+        //console.log(all_avatars);
+    }else if(order === 'lower'){
+        all_avatars.sort(function(a,b){
+            return a["score"]-b["score"];
+        });
+    }else if(order === 'az'){
+        all_avatars.sort((a, b) => {
+            if (a["username"] < b["username"]) {
+                return -1;
+            }
+            if (a["username"] > b["username"]) {
+                return 1;
+            }
+            return 0;
+        });
+    }else if(order === 'za'){
+        all_avatars.sort((a, b) => {
+            if (a["username"] > b["username"]) {
+                return -1;
+            }
+            if (a["username"] < b["username"]) {
+                return 1;
+            }
+            return 0;
+        });
     }
 
-    console.log(nicknames);
+    for(let i=0; i<all_avatars.length; i++){
+        //console.log(name);
+        nicknames[i] = all_avatars[i]["username"];
+    }
+
+
+    //console.log(nicknames);
 
     nameList.replaceChildren([]);
 
-    for (let i = 0; i < nicknames.length; i++) {
+    for (let i = 0; i < all_avatars.length; i++) {
         const nickname = nicknames[i];
 
         // Create a list item element
@@ -248,16 +291,13 @@ function showNicks(length, avatars){
         // Add a click event listener to the list item
         li.addEventListener("click", function() {
             // Call the seeAvatar function with the selected nickname
-            chooseName(nickname, avatars);
+            chooseName(nickname, all_avatars);
         });
 
         // Add the list item to the name list
         nameList.appendChild(li);
     }
-
-
 }
-
 
 function chooseName(nickname, avatars) {
 
@@ -265,28 +305,27 @@ function chooseName(nickname, avatars) {
     grid.hidden = false;
     score_cont.style.display = 'none';
     console.log(`Selected nickname: ${nickname}`);
-    const avatarFeat = [];
 
     for(let i=0; i<avatars.length; i++){
         if(avatars[i]['username'] === nickname){
-            avatarFeat[0] = avatars[i]['haircolor'];
-            avatarFeat[1] = avatars[i]['haircut'];
-            avatarFeat[2] = avatars[i]['eyes'];
-            avatarFeat[3] = avatars[i]['skin'];
-            avatarFeat[4] = avatars[i]['nose'];
-            avatarFeat[5] = avatars[i]['mouth'];
-            avatarFeat[6] = avatars[i]['username'];
-            avatarFeat[7] = avatars[i]['score'];
-            avatarFeat[8] = avatars[i]['votes'];
+            avatargen[0] = avatars[i]['haircolor'];
+            avatargen[1] = avatars[i]['haircut'];
+            avatargen[2] = avatars[i]['eyes'];
+            avatargen[3] = avatars[i]['skin'];
+            avatargen[4] = avatars[i]['nose'];
+            avatargen[5] = avatars[i]['mouth'];
+            avatargen[6] = avatars[i]['username'];
+            avatargen[7] = avatars[i]['score'];
+            avatargen[8] = avatars[i]['votes'];
         }
     }
 
-    console.log(avatarFeat);
-    seeAvatar(nickname, avatarFeat);
+    console.log(avatargen);
+    seeAvatar(nickname);
 
 }
 
-function seeAvatar(nickname, avatar) {
+function seeAvatar(nickname) {
     optionsContainer.style.display = 'none';
     filtersMenu.hidden = false;
     nameList.hidden = false;
@@ -299,41 +338,50 @@ function seeAvatar(nickname, avatar) {
     body.hidden = false;
 
     score_cont.style.display = 'grid';
+    score_view.hidden = false;
 
-    avatarScore(avatar[7]);
+    score_view.innerText = 'SCORE: '+avatargen[7]+'/5';
+    score_view.style.fontSize = '1.8em';
+    score_view.style.top = '50px';
+    score_view.style.left = '60px';
+    score_view.style.display = 'flex';
+    score_view.style.position = 'relative';
+    score_view.style.position='relative';
 
-    if(avatar[0]==='0.0'){
-        avatar[0] = 'black_hair';
+    avatarScore(avatargen[7], avatargen[8]);
+
+    if(avatargen[0]==='0.0'){
+        avatargen[0] = 'black_hair';
     }
-    if(avatar[1]==='0.0'){
-        avatar[1] = '0h';
+    if(avatargen[1]==='0.0'){
+        avatargen[1] = '0h';
     }
-    if(avatar[2]==='0.0'){
-        avatar[2] = 'blue_eyes';
+    if(avatargen[2]==='0.0'){
+        avatargen[2] = 'blue_eyes';
     }
-    if(avatar[3]==='0.0'){
-        avatar[3] = 'skin1';
+    if(avatargen[3]==='0.0'){
+        avatargen[3] = 'skin1';
     }
 
 
 
     haircut = body.contentDocument.getElementById('haircut');
-    hr = avatar[1] + '.svg#' + avatar[1];
+    hr = avatargen[1] + '.svg#' + avatargen[1];
     haircut.setAttribute('href', hr);
     haircut = body.contentDocument.getElementById('haircut');
-    haircut.classList.replace(haircut.classList.item(0), avatar[0]);
+    haircut.classList.replace(haircut.classList.item(0), avatargen[0]);
     eyebrows = body.contentDocument.getElementById('eyebrows_left');
-    eyebrows.classList.replace(eyebrows.classList.item(0), avatar[0]);
+    eyebrows.classList.replace(eyebrows.classList.item(0), avatargen[0]);
     eyebrows = body.contentDocument.getElementById('eyebrows_right');
-    eyebrows.classList.replace(eyebrows.classList.item(0), avatar[0]);
+    eyebrows.classList.replace(eyebrows.classList.item(0), avatargen[0]);
     skin = body.contentDocument.getElementById('sameskin');
-    skin.classList.replace(skin.classList.item(0), avatar[3]);
+    skin.classList.replace(skin.classList.item(0), avatargen[3]);
     skin = body.contentDocument.getElementById('sameskin1');
-    skin.classList.replace(skin.classList.item(0), avatar[3] + '1');
+    skin.classList.replace(skin.classList.item(0), avatargen[3] + '1');
     iris = body.contentDocument.getElementById('iris_right');
-    iris.classList.replace(iris.classList.item(0), avatar[2]);
+    iris.classList.replace(iris.classList.item(0), avatargen[2]);
     iris = body.contentDocument.getElementById('iris_left');
-    iris.classList.replace(iris.classList.item(0), avatar[2]);
+    iris.classList.replace(iris.classList.item(0), avatargen[2]);
 
 
 
@@ -342,13 +390,14 @@ function seeAvatar(nickname, avatar) {
 
 stars_vector = [];
 nStars = 5;
+scores = [];
 
-function avatarScore(score){
+function avatarScore(score, votes){
 
     score_cont.replaceChildren([]);
 
     const vote_text = document.createElement('h2');
-    vote_text.setAttribute('class','neonText subtitle pulsate');
+    vote_text.setAttribute('class','neonText new_name');
     vote_text.innerText = 'VOTE';
     score_cont.appendChild(vote_text);
 
@@ -362,7 +411,7 @@ function avatarScore(score){
     score_cont.style.justifyItems = 'center';
     score_cont.style.display = 'grid';
     score_cont.style.left = '460px';
-    score_cont.style.bottom = '360px';
+    score_cont.style.bottom = '400px';
 
     for(let i = 0; i<nStars; i++){
 
@@ -387,6 +436,9 @@ function avatarScore(score){
         stars_vector[i].addEventListener('click', fillStar);
     }
 
+    console.log('score:'+ score + ' votes:' + votes);
+    scores[0] = score;
+    scores[1] = votes;
 }
 
 function colorBorder(e){
@@ -401,17 +453,63 @@ function unColorBorder(e){
     img.style.stroke = 'yellow';
 }
 
-function fillStar(e){
+function fillStar(e) {
     //console.log('enter');
     //console.log(e.target.id);
-    stars_vector.forEach((e)=>console.log(e))
-    var img = stars_vector[e.target.id];
-    num = parseInt(e.target.id);
+    //stars_vector.forEach((e)=>console.log(e))
+    const img = stars_vector[e.target.id];
+    let num = parseInt(e.target.id);
     //console.log('num '+num);
+
     if (img.style.fill === 'yellow') {
-        for(let i = 0; i< nStars; i++) {stars_vector[i].style.fill = 'none';
-        //console.log("coloring"+i)
+        for (let i = 0; i < nStars; i++) {
+            stars_vector[i].style.fill = 'none';
+            //console.log("coloring"+i)
         }
-    }else for(let i = 0; i< num+1; i++) stars_vector[i].style.fill = 'yellow';
+    } else
+
+        for (let i = 0; i < num + 1; i++) stars_vector[i].style.fill = 'yellow';
+
+    console.log('scores: ' + scores);
+
+    const new_score_dec = (scores[0] * scores[1] + (num + 1)) / (scores[1] + 1);
+    let new_score = new_score_dec.toFixed(1);
+    console.log('new score:' + new_score);
+
+    avatargen[7] = new_score;
+    avatargen[8] += 1;
+
+    score_view.innerText = 'SCORE: '+new_score+'/5';
+
+    console.log(avatargen);
+
+
+    const data = {
+        genome: [
+            avatargen[0],
+            avatargen[1],
+            avatargen[2],
+            avatargen[3],
+            avatargen[4],
+            avatargen[5],
+            avatargen[6],
+            avatargen[7],
+            avatargen[8]
+        ]
+    };
+
+    fetch('http://localhost:3000/community/update?', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+
+
+
 
 }

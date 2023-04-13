@@ -86,6 +86,42 @@ app.post('/community/add', (req, res) => {
   return res.status(200);
 });
 
+
+app.post('/community/update', (req, res) => {
+  const avatar = req.body.genome;
+  console.log('Received update request:', avatar);
+
+  const haircolor = avatar[0];
+  const haircut = avatar[1];
+  const eyes = avatar[2];
+  const skin = avatar[3]
+  const nose = avatar[4];
+  const mouth = avatar[5];
+  const username = avatar[6];
+  const score = avatar[7];
+  const votes = avatar[8];
+
+  console.log('Searching for existing avatars with username:', username);
+  const existingAvatars = db.prepare('SELECT * FROM genoma WHERE haircolor = ? AND haircut = ? AND eyes = ? AND skin = ? AND nose = ? AND mouth = ? AND username = ?').all(haircolor, haircut, eyes, skin, nose, mouth, username);
+  console.log('Found existing avatars:', existingAvatars);
+
+  db.transaction(() => {
+    if (existingAvatars.length > 0) {
+      console.log('Updating existing avatars with new score and votes:', score, votes);
+      const updateStmt = db.prepare('UPDATE genoma SET score = ?, votes = ? WHERE haircolor = ? AND haircut = ? AND eyes = ? AND skin = ? AND nose = ? AND mouth = ? AND username = ?');
+      existingAvatars.forEach(existingAvatar => {
+        updateStmt.run(score, votes, existingAvatar.haircolor, existingAvatar.haircut, existingAvatar.eyes, existingAvatar.skin, existingAvatar.nose, existingAvatar.mouth, username);
+      });
+    }
+  })();
+
+  console.log('updated');
+
+  return res.status(200);
+});
+
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
