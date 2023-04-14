@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>Avatars Community</title>
-    <link rel="stylesheet" href="avatarpage_style.css">
+    <link rel="stylesheet" href="community_style.css">
 </head>
 <body>
 <div class ="contenitore">
@@ -10,8 +10,6 @@
         F A C E T U N E
     </h1>
     <h2 class="neonText subtitle pulsate">AVATARS COMMUNITY</h2>
-
-
     <div class="selection">
         <select id="filters-menu" class="selections" name="Filters" >
             <option value="">-- Filter by --</option>
@@ -24,39 +22,39 @@
             <option value="mouth"> Mouth </option>
             <option value="username"> Nickname </option>
         </select>
+        <div class="options-container" id="options-container2" ></div>
+
     </div>
 
-    <div class="options-container" id="options-container2" ></div>
     <form name="nicktext" method="post" id="nick-form" hidden="hidden"> <!-- autocomplete="off" se non si vuole che rimangano memorizzati i nomi-->
         <label for="username" class="nick">Nickname:</label>
         <input type="text" id="username" name="nickname" size="20" maxlength="20" >
         <input type="button" id="subButton" value="Confirm" onclick="saveName()" />
     </form>
-<div class="grid_container" id="grid_container" hidden="hidden">
-    <div id="name-list-container" hidden="hidden">
-        <select id="order-by" class="selections" name="Order">
-            <option value="">-- Order by --</option>
-            <option value="az"> A-Z </option>
-            <option value="za"> Z-A </option>
-            <option value="higher"> Higher Score </option>
-            <option value="lower"> Lower Score </option>
-        </select>
-        <ul id="name-list" hidden="hidden">
-            <!-- The list of names will be added dynamically using JavaScript -->
-        </ul>
+
+
+    <div class="grid_container" id="grid_container" hidden="hidden"> <!--come create-container-->
+        <div id="name-list-container" hidden="hidden">
+            <select id="order-by" class="selections" name="Order">
+                <option value="">-- Order by --</option>
+                <option value="az"> A-Z </option>
+                <option value="za"> Z-A </option>
+                <option value="higher"> Higher Score </option>
+                <option value="lower"> Lower Score </option>
+            </select>
+            <ul id="name-list" hidden="hidden">
+                <!-- The list of names will be added dynamically using JavaScript -->
+            </ul>
+        </div>
+        <div class="avatar_container_f" id="avatar_container_f" hidden="hidden">
+            <p id="name-avatar_f" class="neonText new_name" hidden="hidden"></p>
+            <object id ="body_f" data="body.svg" type="image/svg+xml" class="avatar" hidden="hidden"></object>
+            <p id="score_text" class="neonText new_name" hidden="hidden"></p>
+        </div>
+        <div class="score_container" id="score" hidden="hidden"></div>
     </div>
 
-    <div class="avatar_container_f" id="avatar_container_f" hidden="hidden">
-        <p id="name-avatar_f" class="neonText new_name" hidden="hidden"></p>
-        <object id ="body_f" data="body.svg" type="image/svg+xml" class="avatar" hidden="hidden"></object>
-        <p id="score_text" class="neonText new_name" hidden="hidden"></p>
-    </div>
-</div>
 
-    <div class="score_container" id="score">
-
-
-    </div>
 
     <div id="no_found" hidden="hidden" >
         <h2 class="neonText subtitle pulsate">   NO AVATARS FOUND!   </h2>

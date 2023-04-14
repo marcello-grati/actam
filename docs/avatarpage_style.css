@@ -24,6 +24,7 @@ body{
     height: 100%;
     width: 100%;
     min-width: 700px;
+    min-height: 600px;
     position: absolute;
     display: inline-flex;
     flex-direction: column; /*allinea tutti gli elementi del contenitore in colonne*/
@@ -65,25 +66,29 @@ body{
     height: 60%;
     width: 100%;
     min-width: 700px;
+    min-height: 330px;
     justify-content: space-evenly;
     display: none;
-}
-
-.svgimage{
-    height: 90%;
-    padding: 2%;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    max-width: 80px;
-    transform: translate(-50%, -50%);
 }
 
 
 .selectelement{
     width:80px;
     height:80px;
+    display: flex;
+    justify-content: center;
 }
+
+.svgimage{
+    height: 100%;
+    padding: 5%;
+    /*position: relative;*/
+    /*top: 50%;
+    left: 50%;*/
+    max-height: 75px;
+    /*transform: translate(-50%, -50%);*/
+}
+
 .selection{
     display: inline-flex;
     flex-direction: column;

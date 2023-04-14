@@ -51,20 +51,19 @@ const options = {
     mouth: ['type1m', 'type2m'],
 };
 
-
 const selection = [];
 idsaver=0;
 
 function filtersSelection() {
-    noFound.hidden = true;
     selection[0] = filtersMenu.value;
-    nameListContainer.hidden = true;
-    nameList.hidden = true;
-    nameAvatar.hidden = true;
-    avatar_container.hidden = true;
-    body.hidden = true;
+    //nameListContainer.hidden = true;
+    //nameList.hidden = true;
+    //nameAvatar.hidden = true;
+    //avatar_container.hidden = true;
+    //body.hidden = true;
     grid.style.display = 'none';
     score_cont.style.display = 'none';
+    noFound.hidden = true;
     //console.log(1);
 
     console.log(selection);
@@ -88,8 +87,8 @@ function filtersSelection() {
             filtersArray(e.target.id, selection[0]);
             idsaver = e.target.id;
         };
-        //console.log(selection);
-        //console.log(idsaver);
+        console.log(selection);
+        console.log(idsaver);
 
         optionsContainer.replaceChildren([]);
 
@@ -120,9 +119,9 @@ function filtersSelection() {
                 a.addEventListener('click', selected_el);
                 optionsContainer.appendChild(a);
                 a.appendChild(el_img);
-                el_img.addEventListener('load', function () {
-                    changeColor(el_img.id);
-                });
+                //el_img.addEventListener('load', function () {
+                //  changeColor(el_img.id);
+                //});
             }
 
         }
@@ -134,17 +133,14 @@ if(filtersMenu){
     filtersMenu.addEventListener('change', filtersSelection);
 }
 
-
-
-
-function changeColor(name) {
+/*function changeColor(name) {
     const elem = document.getElementById(name);
     //console.log(elem);
     const ele = elem.contentDocument;
     const e = ele.getElementsByTagName('g')[0];
     e.classList.replace(e.classList.item(0), selection[1]);
 
-}
+}*/
 
 
 if(namebox){
@@ -160,7 +156,7 @@ if(namebox){
 
 function saveName() {
     const nameField = document.getElementById('username').value;
-   // console.log(4);
+    // console.log(4);
     filtersArray(nameField, selection[0]);
     //console.log(nameField);
 
@@ -178,12 +174,12 @@ async function filtersArray(elem, selected) {
         selection[1] = elem;
     }
 
-  const res = await fetch(
-      'http://localhost:3000/community?' +
-      new URLSearchParams({
-          filters : JSON.stringify(selection),
-      }),
-  );
+    const res = await fetch(
+        'http://localhost:3000/community?' +
+        new URLSearchParams({
+            filters : JSON.stringify(selection),
+        }),
+    );
     all = await res.json();
     console.log(all);
     console.log(all.length);
@@ -210,12 +206,12 @@ function showNicks(){
     optionsContainer.style.display = 'none';
     namebox.hidden = true;
     noFound.hidden = true;
-    grid.style.display = 'grid';
+    grid.style.display = 'flex';
     nameList.hidden = false;
     nameListContainer.hidden = false;
     avatar_container.hidden = false;
     body.hidden = false;
-    score_cont.style.display = 'grid';
+    //score_cont.style.display = 'flex';
     //console.log(nicknames.length);
 
     order_by.addEventListener("change", ordering);
@@ -337,16 +333,16 @@ function seeAvatar(nickname) {
     avatar_container.hidden = false;
     body.hidden = false;
 
-    score_cont.style.display = 'grid';
+    score_cont.style.display = 'flex';
     score_view.hidden = false;
 
     score_view.innerText = 'SCORE: '+avatargen[7]+'/5';
-    score_view.style.fontSize = '1.8em';
+    /*score_view.style.fontSize = '1.8em';
     score_view.style.top = '50px';
     score_view.style.left = '60px';
     score_view.style.display = 'flex';
     score_view.style.position = 'relative';
-    score_view.style.position='relative';
+    score_view.style.position= 'relative';*/
 
     avatarScore(avatargen[7], avatargen[8]);
 
@@ -396,7 +392,7 @@ function avatarScore(score, votes){
 
     score_cont.replaceChildren([]);
 
-    const vote_text = document.createElement('h2');
+    const vote_text = document.createElement('p');
     vote_text.setAttribute('class','neonText new_name');
     vote_text.innerText = 'VOTE';
     score_cont.appendChild(vote_text);
@@ -406,12 +402,12 @@ function avatarScore(score, votes){
     a.setAttribute('id', 'star_cont');
 
     score_cont.appendChild(a);
-    score_cont.style.gap = '50px';
+    /*score_cont.style.gap = '50px';
     score_cont.style.position = 'relative';
     score_cont.style.justifyItems = 'center';
     score_cont.style.display = 'grid';
     score_cont.style.left = '460px';
-    score_cont.style.bottom = '400px';
+    score_cont.style.bottom = '400px';*/
 
     for(let i = 0; i<nStars; i++){
 
