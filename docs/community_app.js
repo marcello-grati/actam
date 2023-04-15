@@ -55,12 +55,12 @@ const selection = [];
 idsaver=0;
 
 function filtersSelection() {
+
+    nameList.replaceChildren([]);
+    order_by.value = 'null1';
+    defaultAvatar();
     selection[0] = filtersMenu.value;
-    //nameListContainer.hidden = true;
-    //nameList.hidden = true;
-    //nameAvatar.hidden = true;
-    //avatar_container.hidden = true;
-    //body.hidden = true;
+
     grid.style.display = 'none';
     score_cont.style.display = 'none';
     noFound.hidden = true;
@@ -119,28 +119,21 @@ function filtersSelection() {
                 a.addEventListener('click', selected_el);
                 optionsContainer.appendChild(a);
                 a.appendChild(el_img);
-                //el_img.addEventListener('load', function () {
-                //  changeColor(el_img.id);
-                //});
+
             }
 
         }
     }
 
+    filtersMenu.value = 'null';
+
 }
 
-if(filtersMenu){
-    filtersMenu.addEventListener('change', filtersSelection);
+
+if (filtersMenu) {
+    filtersMenu.addEventListener("change", filtersSelection);
 }
 
-/*function changeColor(name) {
-    const elem = document.getElementById(name);
-    //console.log(elem);
-    const ele = elem.contentDocument;
-    const e = ele.getElementsByTagName('g')[0];
-    e.classList.replace(e.classList.item(0), selection[1]);
-
-}*/
 
 
 if(namebox){
@@ -211,7 +204,6 @@ function showNicks(){
     nameListContainer.hidden = false;
     avatar_container.hidden = false;
     body.hidden = false;
-    //score_cont.style.display = 'flex';
     //console.log(nicknames.length);
 
     order_by.addEventListener("change", ordering);
@@ -220,6 +212,7 @@ function showNicks(){
 
 function ordering(){
     let order = order_by.value;
+
 
     //console.log(order);
 
@@ -337,12 +330,7 @@ function seeAvatar(nickname) {
     score_view.hidden = false;
 
     score_view.innerText = 'SCORE: '+avatargen[7]+'/5';
-    /*score_view.style.fontSize = '1.8em';
-    score_view.style.top = '50px';
-    score_view.style.left = '60px';
-    score_view.style.display = 'flex';
-    score_view.style.position = 'relative';
-    score_view.style.position= 'relative';*/
+
 
     avatarScore(avatargen[7], avatargen[8]);
 
@@ -383,6 +371,21 @@ function seeAvatar(nickname) {
 
 }
 
+function defaultAvatar(){
+
+    avatargen[0] = 'black_hair';
+    avatargen[1] = '0h';
+    avatargen[2] = 'blue_eyes';
+    avatargen[3] = 'skin1';
+
+    body.replaceChildren([]);
+    score_cont.style.display = 'none';
+    score_view.hidden = true;
+    nameAvatar.hidden = true;
+
+
+}
+
 
 stars_vector = [];
 nStars = 5;
@@ -402,12 +405,7 @@ function avatarScore(score, votes){
     a.setAttribute('id', 'star_cont');
 
     score_cont.appendChild(a);
-    /*score_cont.style.gap = '50px';
-    score_cont.style.position = 'relative';
-    score_cont.style.justifyItems = 'center';
-    score_cont.style.display = 'grid';
-    score_cont.style.left = '460px';
-    score_cont.style.bottom = '400px';*/
+
 
     for(let i = 0; i<nStars; i++){
 
@@ -452,7 +450,7 @@ function unColorBorder(e){
 function fillStar(e) {
     //console.log('enter');
     //console.log(e.target.id);
-    //stars_vector.forEach((e)=>console.log(e))
+
     const img = stars_vector[e.target.id];
     let num = parseInt(e.target.id);
     //console.log('num '+num);
