@@ -205,14 +205,49 @@ function showNicks(){
     avatar_container.hidden = false;
     body.hidden = false;
     //console.log(nicknames.length);
+    for(let i=0; i<all_avatars.length; i++){
+        //console.log(name);
+        nicknames[i] = all_avatars[i]["username"];
+    }
 
+    //console.log(nicknames);
+
+    nameList.replaceChildren([]);
+
+    for (let i = 0; i < all_avatars.length; i++) {
+        const nickname = nicknames[i];
+
+        // Create a list item element
+        const li = document.createElement("li");
+        li.textContent = nickname;
+        li.style.fontSize = '2em';
+        li.style.fontFamily = 'Helvetica Neue';
+        li.style.margin = '10px';
+        li.style.textTransform = 'uppercase';
+        li.style.color = '#ffdead';
+        li.style.transition = 'box-shadow 0.3s';
+        li.addEventListener('mouseover', function() {
+            li.style.boxShadow = '0 0 10px green';
+        });
+        li.addEventListener('mouseout', function() {
+            li.style.boxShadow = '';
+        });
+
+        // Add a click event listener to the list item
+        li.addEventListener("click", function() {
+            // Call the seeAvatar function with the selected nickname
+            chooseName(nickname, all_avatars);
+        });
+
+        // Add the list item to the name list
+        nameList.appendChild(li);
+    }
     order_by.addEventListener("change", ordering);
-
 }
+
 
 function ordering(){
     let order = order_by.value;
-
 
     //console.log(order);
 
@@ -247,45 +282,8 @@ function ordering(){
             return 0;
         });
     }
-
-    for(let i=0; i<all_avatars.length; i++){
-        //console.log(name);
-        nicknames[i] = all_avatars[i]["username"];
-    }
-
-
-    //console.log(nicknames);
-
-    nameList.replaceChildren([]);
-
-    for (let i = 0; i < all_avatars.length; i++) {
-        const nickname = nicknames[i];
-
-        // Create a list item element
-        const li = document.createElement("li");
-        li.textContent = nickname;
-        li.style.fontSize = '2em';
-        li.style.fontFamily = 'Helvetica Neue';
-        li.style.margin = '10px';
-        li.style.textTransform = 'uppercase';
-        li.style.color = '#ffdead';
-        li.style.transition = 'box-shadow 0.3s';
-        li.addEventListener('mouseover', function() {
-            li.style.boxShadow = '0 0 10px green';
-        });
-        li.addEventListener('mouseout', function() {
-            li.style.boxShadow = '';
-        });
-
-        // Add a click event listener to the list item
-        li.addEventListener("click", function() {
-            // Call the seeAvatar function with the selected nickname
-            chooseName(nickname, all_avatars);
-        });
-
-        // Add the list item to the name list
-        nameList.appendChild(li);
-    }
+    
+    showNicks();
 }
 
 function chooseName(nickname, avatars) {
