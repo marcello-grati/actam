@@ -205,17 +205,12 @@ function showNicks(){
     avatar_container.hidden = false;
     body.hidden = false;
     //console.log(nicknames.length);
-    for(let i=0; i<all_avatars.length; i++){
-        //console.log(name);
-        nicknames[i] = all_avatars[i]["username"];
-    }
-
-    //console.log(nicknames);
 
     nameList.replaceChildren([]);
 
     for (let i = 0; i < all_avatars.length; i++) {
-        const nickname = nicknames[i];
+        const nickname = all_avatars[i]['username'];
+        const userid = all_avatars[i]['id'];
 
         // Create a list item element
         const li = document.createElement("li");
@@ -236,7 +231,7 @@ function showNicks(){
         // Add a click event listener to the list item
         li.addEventListener("click", function() {
             // Call the seeAvatar function with the selected nickname
-            chooseName(nickname, all_avatars);
+            chooseName(nickname, userid);
         });
 
         // Add the list item to the name list
@@ -286,24 +281,25 @@ function ordering(){
     showNicks();
 }
 
-function chooseName(nickname, avatars) {
+function chooseName(nickname, userid) {
 
     optionsContainer.style.display = 'none';
     grid.hidden = false;
     score_cont.style.display = 'none';
     console.log(`Selected nickname: ${nickname}`);
 
-    for(let i=0; i<avatars.length; i++){
-        if(avatars[i]['username'] === nickname){
-            avatargen[0] = avatars[i]['haircolor'];
-            avatargen[1] = avatars[i]['haircut'];
-            avatargen[2] = avatars[i]['eyes'];
-            avatargen[3] = avatars[i]['skin'];
-            avatargen[4] = avatars[i]['nose'];
-            avatargen[5] = avatars[i]['mouth'];
-            avatargen[6] = avatars[i]['username'];
-            avatargen[7] = avatars[i]['score'];
-            avatargen[8] = avatars[i]['votes'];
+    for(let i=0; i<all_avatars.length; i++){
+        if(all_avatars[i]['id'] === userid){
+            avatargen[0] = all_avatars[i]['haircolor'];
+            avatargen[1] = all_avatars[i]['haircut'];
+            avatargen[2] = all_avatars[i]['eyes'];
+            avatargen[3] = all_avatars[i]['skin'];
+            avatargen[4] = all_avatars[i]['nose'];
+            avatargen[5] = all_avatars[i]['mouth'];
+            avatargen[6] = all_avatars[i]['username'];
+            avatargen[7] = all_avatars[i]['score'];
+            avatargen[8] = all_avatars[i]['votes'];
+            avatargen[9] = all_avatars[i]['id'];
         }
     }
 
@@ -334,20 +330,6 @@ function seeAvatar(nickname) {
 
 
     avatarScore(avatargen[7], avatargen[8]);
-
-    if(avatargen[0]==='0.0'){
-        avatargen[0] = 'black_hair';
-    }
-    if(avatargen[1]==='0.0'){
-        avatargen[1] = '0h';
-    }
-    if(avatargen[2]==='0.0'){
-        avatargen[2] = 'blue_eyes';
-    }
-    if(avatargen[3]==='0.0'){
-        avatargen[3] = 'skin1';
-    }
-
 
 
     haircut = body.contentDocument.getElementById('haircut');
@@ -390,6 +372,9 @@ function defaultAvatar(){
 
 stars_vector = [];
 nStars = 5;
+
+
+
 scores = [];
 
 function avatarScore(score, votes){
@@ -474,6 +459,15 @@ function fillStar(e) {
     avatargen[7] = new_score;
     avatargen[8] += 1;
 
+    let new_votes = avatargen[8];
+
+    for(let i=0; i<all_avatars.length; i++){
+        if(all_avatars[i]['id'] === avatargen[9]){
+            all_avatars[i]['score'] = new_score;
+            all_avatars[i]['votes'] = new_votes;
+        }
+    }
+
     score_view.innerText = 'SCORE: '+new_score+'/5';
 
     console.log(avatargen);
@@ -489,7 +483,8 @@ function fillStar(e) {
             avatargen[5],
             avatargen[6],
             avatargen[7],
-            avatargen[8]
+            avatargen[8],
+            avatargen[9]
         ]
     };
 

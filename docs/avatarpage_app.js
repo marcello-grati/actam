@@ -223,6 +223,7 @@ function arrayCreation(elem, selected) {
   else if (selected === 'nose') avatarFeat[4] = elem;
   else if (selected === 'mouth') avatarFeat[5] = elem;
 
+
   // Per visualizzare array in console
   console.log(
     avatarFeat[0] +
@@ -239,7 +240,7 @@ function arrayCreation(elem, selected) {
   );
 }
 
-avatardb = [0,0,0,0,0,0];
+avatardb = [0,0,0,0,0,0,0,0];
 
 // Disabilta tendina dopo "done"
 async function doneButton() {
@@ -259,6 +260,8 @@ async function doneButton() {
 
   avatardb = avatarFeat;
   avatardb[6] = document.getElementById('nickname').value;
+  avatardb[7] = Math.round(Math.random () * 1000);
+  console.log('avatardb: ' +avatardb);
 
 
   fetch('http://localhost:3000/community/add', {

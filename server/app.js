@@ -13,7 +13,8 @@ db.prepare(
     mouth TEXT NOT NULL,
     username TEXT NOT NULL,
     score INTEGER DEFAULT 0,
-    votes INTEGER DEFAULT 0
+    votes INTEGER DEFAULT 0,
+    id INTEGER DEFAULT 0
 );`,
 ).run();
 
@@ -79,7 +80,7 @@ app.post('/community/add', (req, res) => {
   // salva nel db
   // INSERT INTO avatar () values ...
   db.prepare(
-    `INSERT INTO genoma (haircolor, haircut, eyes, skin, nose, mouth, username) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+    `INSERT INTO genoma (haircolor, haircut, eyes, skin, nose, mouth, username, id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
   ).run(...avatar_da_salvare);
 
 
@@ -90,27 +91,22 @@ app.post('/community/add', (req, res) => {
 app.post('/community/update', (req, res) => {
   const avatar = req.body.genome;
   console.log('Received update request:', avatar);
-
-  const haircolor = avatar[0];
-  const haircut = avatar[1];
-  const eyes = avatar[2];
-  const skin = avatar[3]
-  const nose = avatar[4];
-  const mouth = avatar[5];
+  
   const username = avatar[6];
   const score = avatar[7];
   const votes = avatar[8];
+  const id = avatar[9];
 
   console.log('Searching for existing avatars with username:', username);
-  const existingAvatars = db.prepare('SELECT * FROM genoma WHERE haircolor = ? AND haircut = ? AND eyes = ? AND skin = ? AND nose = ? AND mouth = ? AND username = ?').all(haircolor, haircut, eyes, skin, nose, mouth, username);
+  const existingAvatars = db.prepare('SELECT * FROM genoma WHERE id = ?').all(id);
   console.log('Found existing avatars:', existingAvatars);
 
   db.transaction(() => {
     if (existingAvatars.length > 0) {
       console.log('Updating existing avatars with new score and votes:', score, votes);
-      const updateStmt = db.prepare('UPDATE genoma SET score = ?, votes = ? WHERE haircolor = ? AND haircut = ? AND eyes = ? AND skin = ? AND nose = ? AND mouth = ? AND username = ?');
+      const updateStmt = db.prepare('UPDATE genoma SET score = ?, votes = ? WHERE id = ?');
       existingAvatars.forEach(existingAvatar => {
-        updateStmt.run(score, votes, existingAvatar.haircolor, existingAvatar.haircut, existingAvatar.eyes, existingAvatar.skin, existingAvatar.nose, existingAvatar.mouth, username);
+        updateStmt.run(score, votes,id);
       });
     }
   })();
