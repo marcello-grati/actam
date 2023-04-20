@@ -323,6 +323,9 @@ function seeAvatar(nickname) {
 
     avatar_container.hidden = false;
     body.hidden = false;
+    document.getElementById('play_community').hidden = false;
+    document.getElementById('pause').hidden = false;
+    document.getElementById('stop').hidden = false;
 
     score_cont.style.display = 'flex';
     score_view.hidden = false;
