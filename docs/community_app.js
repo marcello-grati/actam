@@ -61,6 +61,9 @@ function filtersSelection() {
     defaultAvatar();
     selection[0] = filtersMenu.value;
 
+    document.getElementById('play_community').hidden = true;
+    document.getElementById('pause').hidden = true;
+    document.getElementById('stop').hidden = true;
     grid.style.display = 'none';
     score_cont.style.display = 'none';
     noFound.hidden = true;
