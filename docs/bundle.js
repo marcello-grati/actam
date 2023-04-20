@@ -90,6 +90,21 @@ function features2int() {
     return input;
 }
 
+function features2int_community() {
+    let input = [];
+    input.push(options.haircolor.indexOf(avatargen[0]));
+    input.push(options.haircut.indexOf(avatargen[1]));
+    input.push(options.eyes.indexOf(avatargen[2]));
+    input.push(options.skin.indexOf(avatargen[3]));
+    input.push(options.nose.indexOf(avatargen[4]));
+    input.push(options.mouth.indexOf(avatargen[5]));
+
+    // input.push(Math.round(rng(*3)) // temp nose
+    // input.push(Math.round(rng()) // temp mouth
+
+    return input;
+}
+
 function convertInput(input) {
     let chordInput = [];
     for (let i=0; i<6; i++) {    // for (let i=0; i<input.length; i++) {
@@ -143,13 +158,17 @@ function nextConsonantNote(input, old_note, key, chord) {
 }
 
 // write the sheet music
-function writeMusic () {
+function writeMusic (option) {
 
     let input = [];
 
     // for (let i=0; i<1000; i++) input[i] = Math.floor(rng(*100); // deprecated
 
-    input = features2int();
+    if (option)
+        input = features2int_community();
+    else
+        input = features2int();
+
     let chord_input = convertInput(input);
     //for (let i=0; i<1000; i++) input.push(Math.floor(rng(*100));
 
@@ -160,7 +179,10 @@ function writeMusic () {
     let rng = seedrandom(seed_string);
     //seedrandom(seed_string, { global: true });
 
-    console.log("avatarFeat: ", avatarFeat);
+    if (option)
+        console.log("avatargen: ", avatargen);
+    else
+        console.log("avatarFeat: ", avatarFeat);
     console.log("stringa in input: ", input);
     console.log("chordInput: ", chord_input);
 
@@ -481,7 +503,7 @@ document.getElementById("write").addEventListener("click", function() {
         Tone.start().then(() => {
             console.log("write");
             t.stop();
-            writeMusic();
+            writeMusic(false);
             initializeMusic();
             t.start(t.now() + 0.6);
         });
@@ -526,6 +548,19 @@ document.getElementById("download").addEventListener("click", function() {
         t.stop();
         recorder.stop()
         recording = false;
+    }
+});
+
+document.getElementById("play_community").addEventListener("click", function() {
+
+    if (!recording) {
+        Tone.start().then(() => {
+            console.log("write and play");
+            t.stop();
+            writeMusic(true);
+            initializeMusic();
+            t.start(t.now() + 0.6);
+        });
     }
 });
 },{"seedrandom":22,"tonal":30,"tone":31}],2:[function(require,module,exports){
