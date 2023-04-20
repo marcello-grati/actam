@@ -575,3 +575,12 @@ if (document.getElementById("play_community")) {
         console.log("banana");
     });
 }
+
+if (document.getElementById('filters-menu')) {
+    document.getElementById('filters-menu').addEventListener("change", function () {
+        if (!recording) {
+            console.log("stop");
+            t.stop();
+        }
+    });
+}

@@ -577,6 +577,15 @@ if (document.getElementById("play_community")) {
     });
 }
 
+if (document.getElementById('filters-menu')) {
+    document.getElementById('filters-menu').addEventListener("change", function () {
+        if (!recording) {
+            console.log("stop");
+            t.stop();
+        }
+    });
+}
+
 },{"seedrandom":22,"tonal":30,"tone":31}],2:[function(require,module,exports){
 "use strict";
 var __defProp = Object.defineProperty;
