@@ -496,69 +496,82 @@ function downloadMusic() {
     });
 }
 
-document.getElementById("write").addEventListener("click", function() {
+if (document.getElementById("write")) {
+    document.getElementById("write").addEventListener("click", function () {
 
-    if (!recording) {
-        Tone.start().then(() => {
-            console.log("write");
+        if (!recording) {
+            Tone.start().then(() => {
+                console.log("write");
+                t.stop();
+                writeMusic(false);
+                initializeMusic();
+                t.start(t.now() + 0.6);
+            });
+        }
+    });
+}
+
+if (document.getElementById("play")) {
+    document.getElementById("play").addEventListener("click", function () {
+
+        if (!recording) {
+            Tone.start().then(() => {
+                console.log("start");
+                t.start();
+            });
+        }
+    });
+}
+
+if (document.getElementById("pause")) {
+    document.getElementById("pause").addEventListener("click", function () {
+
+        if (!recording) {
+            console.log("pause");
+            t.pause();
+        }
+    });
+}
+
+if (document.getElementById("stop")) {
+    document.getElementById("stop").addEventListener("click", function () {
+
+        if (!recording) {
+            console.log("stop");
             t.stop();
-            writeMusic(false);
-            initializeMusic();
-            t.start(t.now() + 0.6);
-        });
-    }
-});
+        }
+    });
+}
 
-document.getElementById("play").addEventListener("click", function() {
+if (document.getElementById("download")) {
+    document.getElementById("download").addEventListener("click", function () {
 
-    if (!recording) {
-        Tone.start().then(() => {
-            console.log("start");
-            t.start();
-        });
-    }
-});
-
-document.getElementById("pause").addEventListener("click", function() {
-
-    if (!recording) {
-        console.log("pause");
-        t.pause();
-    }
-});
-
-document.getElementById("stop").addEventListener("click", function() {
-
-    if (!recording) {
-        console.log("stop");
-        t.stop();
-    }
-});
-
-document.getElementById("download").addEventListener("click", function() {
-
-    if (!recording && !recording_interrupted) {
-        console.log("download");
-        recording = true;
-        downloadMusic();
-    } else {
-        console.log("download interrupted");
-        recording_interrupted = true;
-        t.stop();
-        recorder.stop()
-        recording = false;
-    }
-});
-
-document.getElementById("play_community").addEventListener("click", function() {
-
-    if (!recording) {
-        Tone.start().then(() => {
-            console.log("write and play");
+        if (!recording && !recording_interrupted) {
+            console.log("download");
+            recording = true;
+            downloadMusic();
+        } else {
+            console.log("download interrupted");
+            recording_interrupted = true;
             t.stop();
-            writeMusic(true);
-            initializeMusic();
-            t.start(t.now() + 0.6);
-        });
-    }
-});
+            recorder.stop()
+            recording = false;
+        }
+    });
+}
+
+if (document.getElementById("play_community")) {
+    document.getElementById("play_community").addEventListener("click", function () {
+
+        if (!recording) {
+            Tone.start().then(() => {
+                console.log("write and play");
+                t.stop();
+                writeMusic(true);
+                initializeMusic();
+                t.start(t.now() + 0.6);
+            });
+        }
+        console.log("banana");
+    });
+}
