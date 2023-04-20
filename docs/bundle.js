@@ -462,7 +462,9 @@ function downloadMusic() {
                 //audio.src = URL.createObjectURL(blob);    // This is only to use the html audio player
 
                 const anchor = document.createElement('a');
-                document.body.appendChild(anchor);
+                //document.body.appendChild(anchor);
+                let b = document.getElementsByTagName('body')[0];
+                b.appendChild(anchor);
                 anchor.style.display = 'none';
                 anchor.href = url;
                 anchor.download = 'FaceTune.webm';
