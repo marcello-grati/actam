@@ -58,7 +58,7 @@ const options = {
     'chocolate_hair',
     'gold_hair',
   ],
-  haircut: ['0h','1h', '2h', '3h'],
+  haircut: ['0h','1h', '2h', '3h','4h','5h','6h','7h'],
   eyes: ['green_eyes', 'blue_eyes', 'brown_eyes', 'grey_eyes'],
   nose: ['type1n', 'type2n', 'type3n', 'type4n'],
   mouth: ['type1m', 'type2m'],
