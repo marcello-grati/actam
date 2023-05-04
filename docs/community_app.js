@@ -114,7 +114,12 @@ function filtersSelection() {
                 a.setAttribute('id', filter);
 
                 const el_img = document.createElement('object');
-                el_img.classList.add('svgimage');
+                if(selection[0]==='nose')
+                    el_img.classList.add('svgimage_nose');
+                else if(selection[0]==='mouth')
+                    el_img.classList.add('svgimage_mouth');
+                else if(selection[0]==='haircut')
+                    el_img.classList.add('svgimage_hair');
                 el_img.id = filter + 'svg';
                 el_img.type = 'image/svg+xml';
                 el_img.data = filter + '.svg';
@@ -338,7 +343,7 @@ function seeAvatar(nickname) {
     haircut = body.contentDocument.getElementById('haircut');
     hr = avatargen[1] + '.svg#' + avatargen[1];
     haircut.setAttribute('href', hr);
-    haircut = body.contentDocument.getElementById('haircut');
+    /*haircut = body.contentDocument.getElementById('haircut');*/
     haircut.classList.replace(haircut.classList.item(0), avatargen[0]);
     eyebrows = body.contentDocument.getElementById('eyebrows_left');
     eyebrows.classList.replace(eyebrows.classList.item(0), avatargen[0]);
@@ -352,6 +357,14 @@ function seeAvatar(nickname) {
     iris.classList.replace(iris.classList.item(0), avatargen[2]);
     iris = body.contentDocument.getElementById('iris_left');
     iris.classList.replace(iris.classList.item(0), avatargen[2]);
+    nose = body.contentDocument.getElementById('nose');
+    hr = avatargen[4] + '.svg#' + avatargen[4];
+    nose.setAttribute('href', hr);
+    nose.classList.replace(nose.classList.item(0), avatargen[3] + '1');
+    mouth = body.contentDocument.getElementById('mouth');
+    hr = avatargen[5] + '.svg#' + avatargen[5];
+    mouth.setAttribute('href', hr);
+    mouth.classList.replace(mouth.classList.item(0), avatargen[3] + '1');
 
 
 

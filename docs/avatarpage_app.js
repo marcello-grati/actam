@@ -101,7 +101,12 @@ function menuselection() {
       a.setAttribute('id', filename);
 
       const el_img = document.createElement('object');
-      el_img.classList.add('svgimage');
+      if(selected==='nose')
+        el_img.classList.add('svgimage_nose');
+      else if(selected==='mouth')
+        el_img.classList.add('svgimage_mouth');
+      else if(selected==='haircut')
+        el_img.classList.add('svgimage_hair');
       el_img.id = filename + 'svg';
       el_img.type = 'image/svg+xml';
       el_img.data = filename + '.svg';
