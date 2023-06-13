@@ -681,3 +681,31 @@ object {
         0 0 140px #ffe4e1;
     }
 }
+
+#myProgress {
+
+    border-radius: 10px;
+    /*padding: 10px 20px; /* grandezza bottoni */
+    /*background-color: #ffdead;*/
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
+    font-size: 30px;
+    position:relative;
+    margin: 0 0 0;
+    width: 500px;
+}
+
+#myBar {
+    width: 1%;
+    height: 100%;
+
+    border-radius: 10px;
+    /*padding: 10px 20px; /* grandezza bottoni */
+    background-color: #ffdead;
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
+    font-size: 30px;
+    position:relative;
+    margin: 0 0 0;
+}
+

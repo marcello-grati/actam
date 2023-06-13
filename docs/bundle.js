@@ -44,6 +44,7 @@ const piano_options = {
     release: 2,
     baseUrl: "https://tonejs.github.io/audio/salamander/"
 }
+let song_duration;
 
 const t = Tone.Transport;
 const pan_left = new Tone.Panner().toDestination();
@@ -155,6 +156,10 @@ function nextConsonantNote(input, old_note, key, chord) {
         input = (input + 1) % 7;
     }
     return next_note;
+}
+
+function updateSongDuration() {
+    song_duration = (sheet.measures + 1) * 4 * 60 / sheet.bpm;
 }
 
 // write the sheet music
@@ -404,6 +409,7 @@ function writeMusic (option) {
         progression: simple_progression,
         melody : melody
     }
+    updateSongDuration()
 }
 
 // play the song
@@ -524,6 +530,35 @@ if (document.getElementById("play")) {
     });
 }
 
+let intervalID;
+let song_position = 0;
+
+function repeatEverySecond() {
+    intervalID = setInterval(getSongPosition, 100);
+}
+
+function getSongPosition() {
+
+    let currentPosition = t.position;
+    // console.log(currentPosition);
+    console.log(song_position + " s  - " + Math.round(song_position * 100 / song_duration) + "%");
+    song_position+=0.1;
+
+    let myBar = document.getElementById("myBar");
+
+    if (song_position > song_duration) {
+        clearInterval(intervalID);
+        song_position = 0;
+        myBar.style.width = 100 + "%";
+        myBar.hidden = true;
+        document.getElementById("myProgress").hidden = true;
+        document.getElementById("download").hidden = false;
+    } else {
+        let progress = Math.round(song_position * 100 / song_duration) + "%";
+        myBar.style.width = progress;
+    }
+}
+
 if (document.getElementById("pause")) {
     document.getElementById("pause").addEventListener("click", function () {
 
@@ -544,6 +579,21 @@ if (document.getElementById("stop")) {
     });
 }
 
+if (document.getElementById("done")) {
+    document.getElementById("done").addEventListener("click", function () {
+
+        if (!recording) {
+            Tone.start().then(() => {
+                console.log("write");
+                t.stop();
+                writeMusic(false);
+                initializeMusic();
+                t.start(t.now() + 0.6);
+            });
+        }
+    });
+}
+
 if (document.getElementById("download")) {
     document.getElementById("download").addEventListener("click", function () {
 
@@ -551,12 +601,26 @@ if (document.getElementById("download")) {
             console.log("download");
             recording = true;
             downloadMusic();
+
+            console.log("song duration : " + song_duration + " s");
+            repeatEverySecond();
+            document.getElementById("myBar").hidden = false;
+            document.getElementById("myProgress").hidden = false;
+            document.getElementById("download").hidden = true;
+
+
         } else {
             console.log("download interrupted");
             recording_interrupted = true;
             t.stop();
             recorder.stop()
             recording = false;
+
+            clearInterval(intervalID);
+            song_position = 0;
+            document.getElementById("myBar").hidden = true;
+            document.getElementById("myProgress").hidden = true;
+            document.getElementById("download").hidden = false;
         }
     });
 }
