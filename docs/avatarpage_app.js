@@ -266,7 +266,7 @@ async function doneButton() {
   avatardb = avatarFeat;
   let tempname = document.getElementById('nickname').value;
   avatardb[6] = tempname.toUpperCase();
-  avatardb[7] = Math.round(Math.random () * 1000);
+  avatardb[7] = Math.round(Math.random () * 100000);
   console.log('avatardb: ' +avatardb);
 
 

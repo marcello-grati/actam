@@ -443,7 +443,7 @@ object {
 
 .skin1{
     fill:#f0c7b1;
-    stroke: #c27b55;
+    stroke: #e6c6a0;
 }
 
 .skin11{
@@ -451,12 +451,12 @@ object {
 }
 
 #skin2{
-    background-color: #f6b9b6;
+    background-color: #ffd0bc;
 }
 
 .skin2{
-    fill: #ebbbb7;
-    stroke: #d28c78;
+    fill: #ffd0bc;
+    stroke: rgba(255, 186, 156, 0.99);
 }
 
 .skin21{
@@ -464,25 +464,25 @@ object {
 }
 
 #skin3{
-    background-color: #fac29d;
+    background-color: #f2aa92;
 }
 
 .skin3{
-    fill: #fac29d;
-    stroke: #f79e83;
+    fill: #f2aa92;
+    stroke: #d0846c;
 }
 
 .skin31{
-    fill: #f79e83;
+    fill: #bd6e59;
 }
 
 #skin4{
-    background-color: #f19975;
+    background-color: #d9a494;
 }
 
 .skin4{
-    fill:#f19975;
-    stroke: #e28548;
+    fill:#d9a494;
+    stroke: #d3907e;
 }
 
 .skin41{
@@ -490,25 +490,25 @@ object {
 }
 
 #skin5{
-    background-color: #fdd599;
+    background-color: #d5a798;
 }
 
 .skin5{
-    fill: #fdd599;
-    stroke: #cea059;
+    fill: #d5a798;
+    stroke: #c98a7a;
 }
 
 .skin51{
-    fill: #cea059;
+    fill: #be8484;
 }
 
 #skin6{
-    background-color: #ecac7a;
+    background-color: #cda184;
 }
 
 .skin6{
-    fill: #ecac7a;
-    stroke: #c3804d;
+    fill: #cda184;
+    stroke: #b98660;
 }
 
 .skin61{
@@ -516,12 +516,12 @@ object {
 }
 
 #skin7{
-    background-color: #4d2f2b;
+    background-color: #93614a;
 }
 
 .skin7{
-    fill: #4d2f2b;
-    stroke: #42231f;
+    fill: #93614a;
+    stroke: #724530;
 }
 
 .skin71{
@@ -529,16 +529,16 @@ object {
 }
 
 #skin8{
-    background-color: #9b572a;
+    background-color: #64371e;
 }
 
 .skin8{
-    fill: #9b572a;
-    stroke: #6d3814;
+    fill: #64371e ;
+    stroke: #502c18;
 }
 
 .skin81{
-    fill: #6d3814;
+    fill: #4d2810;
 }
 
 #skin9{
