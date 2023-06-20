@@ -9,7 +9,8 @@ Within the avatar community, users can view all the previously created avatars, 
 
 # GUI
 ## Initial Page
-
+![GUI](../Screenshot 2023-06-20 alle 17.53.35.png)
 ## Avatar Creation
-
+![GUI](../Screenshot 2023-06-20 alle 17.57.56.png)
 ## Avatar Community
+![GUI](../Screenshot 2023-06-20 alle 17.54.53.png)
