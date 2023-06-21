@@ -258,30 +258,32 @@ object {
 
 /*skin_color*/
 
+
+
 #skin1{
-    background-color: #f0c7b1;
-}
-
-.skin1{
-    fill:#f0c7b1;
-    stroke: #c27b55;
-}
-
-.skin11{
-    fill: #c27b55;
-}
-
-#skin2{
     background-color: #ffd6c8;
 }
 
-.skin2{
+.skin1{
     fill: #ffd6c8;
     stroke: rgba(202, 144, 121, 0.99);
 }
 
-.skin21{
+.skin11{
     fill: rgba(202, 144, 121, 0.99);
+}
+
+#skin2{
+    background-color: #f0c7b1;
+}
+
+.skin2{
+    fill:#f0c7b1;
+    stroke: #c27b55;
+}
+
+.skin21{
+    fill: #c27b55;
 }
 
 #skin3{

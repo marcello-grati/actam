@@ -1,8 +1,7 @@
 const selectionMenu = document.getElementById('selection-menu');
 const optionsContainer = document.getElementById('options-container');
-const avatarcontainer = document.getElementById('avatar-container');
 const namebox = document.getElementById('nickname');
-const body = document.getElementById('body');
+const body_svg = document.getElementById('body');
 
 //  Conferma nickname da tastiera
 namebox.addEventListener('keypress', function (event) {
@@ -14,13 +13,13 @@ namebox.addEventListener('keypress', function (event) {
 
 // Creazione testo con nickname inserito
 function saveName() {
-  const nameField = document.getElementById('nickname').value;
+  const nameField = namebox.value;
   let nameAvatar = document.getElementById('name-avatar');
   nameAvatar.innerText = nameField;
   changeView();
 }
 
-// Cambio layout
+// Cambio layout dopo aver confermato il nickname
 function changeView() {
   document.getElementById('create-container').style.display = 'flex';
   document.getElementById('done').hidden = false;
@@ -64,36 +63,38 @@ const options = {
   mouth: ['type1m', 'type2m'],
 };
 
+//array di features di default
 avatarFeat = ['black_hair', '0h', 'blue_eyes', 'skin1', 'type1n', 'type1m'];
-idsaver = 0;
-// contatori per fare replaceChildren se si sostituisce la scelta
-let cont_hair = 0;
-let cont_nose = 0;
-let cont_mouth = 0;
+
+selectionMenu.addEventListener('change', menuselection);
 
 // Selezione elementi dal menù a tendina
 function menuselection() {
   const selected = selectionMenu.value;
-  const filenames = options[selected];
+  const filenames = options[selected]; //options for a feature
+  //quando una caratteristica viene scelta
   const selected_el = (e) => {
     arrayCreation(e.target.id, selected);
     avatarcreation(e, selected);
-    idsaver = e.target.id;
-  };
+  }
   optionsContainer.replaceChildren([]);
 
+  //display delle caratteristiche
   for (const filename of filenames) {
     if (
       selected === 'haircolor' ||
       selected === 'skin' ||
       selected === 'eyes'
     ) {
+      // Crea le icone dei colori
       const color = document.createElement('div');
       color.setAttribute('id', filename);
       color.setAttribute('class', 'colors');
       color.addEventListener('click', selected_el);
       optionsContainer.appendChild(color);
-    } else {
+    }
+    else {
+      // Crea le icone di capelli, naso, bocca
       const a = document.createElement('div');
       a.classList.add('selectelement');
       a.style.cursor = 'pointer';
@@ -114,11 +115,14 @@ function menuselection() {
       a.addEventListener('click', selected_el);
       optionsContainer.appendChild(a);
       a.appendChild(el_img);
+
+      // cambia colore dei capelli delle icone in base al colore scelto su haircolor
       if (selected==='haircut') {
         el_img.addEventListener('load', function () {
           changeColor(el_img.id, 0);
         });
       }
+      // cambia colore di naso e bocca delle icone in base al colore scelto della pelle
       else if (selected==='mouse'||selected==='nose'){
         el_img.addEventListener('load', function () {
           changeColor(el_img.id, 3);
@@ -128,92 +132,90 @@ function menuselection() {
   }
 }
 
-selectionMenu.addEventListener('change', menuselection);
-
-// Cambio colore capelli
-function changeHairColor(color) {
-  console.log('change hair color' + color);
-  haircut = body.contentDocument.getElementById('haircut');
-  haircut.classList.replace(haircut.classList.item(0), color);
-  eyebrows = body.contentDocument.getElementById('eyebrows_left');
-  eyebrows.classList.replace(eyebrows.classList.item(0), color);
-  eyebrows = body.contentDocument.getElementById('eyebrows_right');
-  eyebrows.classList.replace(eyebrows.classList.item(0), color);
-}
-
-//cambio colore capelli icone
+// Cambio colore capelli icone in base a scelta
 function changeColor(name,i) {
   const elem = document.getElementById(name);
-  console.log(elem);
+  //console.log(elem);
   const ele = elem.contentDocument;
   const e = ele.getElementsByTagName('g')[0];
   e.classList.replace(e.classList.item(0), avatarFeat[i]);
 }
 
+// Cambio colore capelli avatar in base a selezione
+function changeHairColor(color) {
+  //console.log('change hair color' + color);
+  let haircut = body_svg.contentDocument.getElementById('haircut');
+  haircut.classList.replace(haircut.classList.item(0), color);
+  let eyebrows = body_svg.contentDocument.getElementById('eyebrows_left');
+  eyebrows.classList.replace(eyebrows.classList.item(0), color);
+  eyebrows = body_svg.contentDocument.getElementById('eyebrows_right');
+  eyebrows.classList.replace(eyebrows.classList.item(0), color);
+}
 
-//cambio taglio di capelli
+// Cambio taglio di capelli avatar in base a selezione
 function changeHairCut(hair) {
-  console.log('change haircut ' + hair);
-  haircut = body.contentDocument.getElementById('haircut');
-  hr = hair + '.svg#' + hair;
+  //console.log('change haircut ' + hair);
+  let haircut = body_svg.contentDocument.getElementById('haircut');
+  let hr = hair + '.svg#' + hair;
   haircut.setAttribute('href', hr);
 }
 
+// Cambio bocca avatar in base a selezione
 function changeMouth(mouthtype) {
-  console.log('change mouthtype ' + mouthtype);
-  mouth = body.contentDocument.getElementById('mouth');
-  m = mouthtype + '.svg#' + mouthtype;
+  //console.log('change mouthtype ' + mouthtype);
+  let mouth = body_svg.contentDocument.getElementById('mouth');
+  let m = mouthtype + '.svg#' + mouthtype;
   mouth.setAttribute('href', m);
 }
 
+// Cambio naso avatar in base a selezione
 function changeNose(nosetype) {
-  console.log('change nosetype ' + nosetype);
-  nose = body.contentDocument.getElementById('nose');
-  n = nosetype + '.svg#' + nosetype;
+  //console.log('change nosetype ' + nosetype);
+  let nose = body_svg.contentDocument.getElementById('nose');
+  let n = nosetype + '.svg#' + nosetype;
   nose.setAttribute('href', n);
 }
 
-// Cambio colore pelle
-//non funziona ancora perchè bisogna cambiare i colori nell'svg
+// Cambio colore pelle avatar in base a selezione
 function changeSkinColor(colorskin) {
-  console.log('change skin color' + colorskin);
-  skin = body.contentDocument.getElementById('sameskin');
+  //console.log('change skin color' + colorskin);
+  let skin = body_svg.contentDocument.getElementById('sameskin');
   skin.classList.replace(skin.classList.item(0), colorskin);
-  skin = body.contentDocument.getElementById('sameskin1');
+  skin = body_svg.contentDocument.getElementById('sameskin1');
   skin.classList.replace(skin.classList.item(0), colorskin + '1');
-  nose = body.contentDocument.getElementById('nose');
+  let nose = body_svg.contentDocument.getElementById('nose');
   nose.classList.replace(nose.classList.item(0), colorskin +'1');
-  mouth = body.contentDocument.getElementById('mouth');
+  let mouth = body_svg.contentDocument.getElementById('mouth');
   mouth.classList.replace(mouth.classList.item(0), colorskin +'1');
 }
 
-//cambio colore occhi
+// Cambio colore occhi avatar in base a selezione
 function changeEyesColor(eyescolor) {
-  console.log('change eyes color' + eyescolor);
-  iris = body.contentDocument.getElementById('iris_right');
+  //console.log('change eyes color' + eyescolor);
+  let iris = body_svg.contentDocument.getElementById('iris_right');
   iris.classList.replace(iris.classList.item(0), eyescolor);
-  iris = body.contentDocument.getElementById('iris_left');
+  iris = body_svg.contentDocument.getElementById('iris_left');
   iris.classList.replace(iris.classList.item(0), eyescolor);
 }
 
-// Creazione avatar
+// Creazione avatar in base alla selezione
 function avatarcreation(e, selected) {
   if (selected === 'haircolor') {
     changeHairColor(e.target.id);
   }
-  if (selected === 'haircut') {
+  else if (selected === 'haircut') {
     changeHairCut(e.target.id);
   }
-  if (selected === 'skin') {
+  else if (selected === 'skin') {
     changeSkinColor(e.target.id);
   }
-  if (selected === 'eyes') {
+  else if (selected === 'eyes') {
     changeEyesColor(e.target.id);
   }
-  if (selected === 'mouth') {
+  else if (selected === 'mouth') {
     changeMouth(e.target.id);
   }
-  if (selected === 'nose') {
+  else if (selected === 'nose') {
     changeNose(e.target.id);
   }
 }
@@ -228,26 +230,15 @@ function arrayCreation(elem, selected) {
   else if (selected === 'nose') avatarFeat[4] = elem;
   else if (selected === 'mouth') avatarFeat[5] = elem;
 
-
   // Per visualizzare array in console
-  console.log(
-    avatarFeat[0] +
-      ',' +
-      avatarFeat[1] +
-      ',' +
-      avatarFeat[2] +
-      ',' +
-      avatarFeat[3] +
-      ',' +
-      avatarFeat[4] +
-      ',' +
-      avatarFeat[5],
-  );
+  console.log(avatarFeat[0] + ',' + avatarFeat[1] + ',' + avatarFeat[2] + ',' +
+      avatarFeat[3] + ',' + avatarFeat[4] + ',' + avatarFeat[5]);
 }
 
 avatardb = [0,0,0,0,0,0,0,0];
 
-// Disabilta tendina dopo "done"
+// Disabilita tendina dopo "done"
+// invia avatar al database
 async function doneButton() {
 
   selectionMenu.setAttribute('disabled', '');
@@ -264,12 +255,14 @@ async function doneButton() {
   document.getElementById('back').style.marginRight = '73px';
 
   avatardb = avatarFeat;
-  let tempname = document.getElementById('nickname').value;
+  // name avatar
+  let tempname = namebox.value;
   avatardb[6] = tempname.toUpperCase();
+  // id avatar
   avatardb[7] = Math.round(Math.random () * 100000);
-  console.log('avatardb: ' +avatardb);
+  console.log('avatardb: ' + avatardb);
 
-
+  //connessione al server
   fetch('http://localhost:3000/community/add', {
     method: 'POST',
     headers: {
@@ -281,6 +274,4 @@ async function doneButton() {
   const res = await fetch('http://localhost:3000/community');
   const all = await res.json();
   console.log(all);
-
-
 }
