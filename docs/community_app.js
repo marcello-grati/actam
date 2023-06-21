@@ -6,7 +6,7 @@ const nameList = document.getElementById('name-list');
 const noFound = document.getElementById('no_found');
 const nameAvatar = document.getElementById('name-avatar_f');
 const avatar_container = document.getElementById('avatar_container_f');
-const body = document.getElementById('body_f');
+const body_svg = document.getElementById('body_f');
 const grid = document.getElementById('grid_container');
 const score_cont = document.getElementById('score');
 const score_view = document.getElementById('score_text');
@@ -52,7 +52,10 @@ const options = {
 };
 
 const selection = [];
-idsaver=0;
+
+if (filtersMenu) {
+    filtersMenu.addEventListener("change", filtersSelection);
+}
 
 function filtersSelection() {
 
@@ -67,46 +70,50 @@ function filtersSelection() {
     grid.style.display = 'none';
     score_cont.style.display = 'none';
     noFound.hidden = true;
-    //console.log(1);
 
     console.log(selection);
 
+    // all avatars
     if(selection[0] === 'all'){
         optionsContainer.style.display = 'none';
         namebox.hidden = true;
         filtersArray(0, selection[0]);
 
-    }else if(selection[0] === 'username'){
+    }
+    // filter by name
+    else if(selection[0] === 'username'){
         optionsContainer.style.display = 'none';
         namebox.hidden = false;
-        //console.log(2);
 
-    }else {
+    }
+    // other filters
+    else {
         optionsContainer.style.display = 'grid';
         namebox.hidden= true;
         const filters = options[selection[0]];
 
         const selected_el = (e) => {
             filtersArray(e.target.id, selection[0]);
-            idsaver = e.target.id;
         };
         console.log(selection);
-        console.log(idsaver);
 
         optionsContainer.replaceChildren([]);
 
+        // display delle caratteristiche
         for (const filter of filters) {
             if (
                 selection[0] === 'haircolor' ||
                 selection[0] === 'skin' ||
                 selection[0] === 'eyes'
             ) {
+                // Crea le icone dei colori
                 const color = document.createElement('div');
                 color.setAttribute('id', filter);
                 color.setAttribute('class', 'colors');
                 color.addEventListener('click', selected_el);
                 optionsContainer.appendChild(color);
             } else {
+                // Crea le icone di capelli, naso, bocca
                 const a = document.createElement('div');
                 a.classList.add('selectelement');
                 a.style.cursor = 'pointer';
@@ -127,26 +134,14 @@ function filtersSelection() {
                 a.addEventListener('click', selected_el);
                 optionsContainer.appendChild(a);
                 a.appendChild(el_img);
-
             }
-
         }
     }
-
     filtersMenu.value = 'null';
-
 }
-
-
-if (filtersMenu) {
-    filtersMenu.addEventListener("change", filtersSelection);
-}
-
-
 
 if(namebox){
     namebox.addEventListener('keypress', function (event) {
-        //console.log(3);
         if (event.key === 'Enter') {
             event.preventDefault();
             saveName();
@@ -154,10 +149,8 @@ if(namebox){
     });
 }
 
-
 function saveName() {
     const nameField = document.getElementById('username').value;
-    // console.log(4);
     filtersArray(nameField, selection[0]);
     //console.log(nameField);
 
@@ -171,7 +164,6 @@ async function filtersArray(elem, selected) {
     if (selected === 'all') {
         selection[1] = 'all';
     }else {
-        //console.log(5);
         selection[1] = elem;
     }
 
@@ -194,13 +186,9 @@ async function filtersArray(elem, selected) {
     }else{
         showNicks();
     }
-
-
     //console.log(selection);
 }
 
-
-let nicknames = [];
 function showNicks(){
 
     console.log(all_avatars);
@@ -211,8 +199,7 @@ function showNicks(){
     nameList.hidden = false;
     nameListContainer.hidden = false;
     avatar_container.hidden = false;
-    body.hidden = false;
-    //console.log(nicknames.length);
+    body_svg.hidden = false;
 
     nameList.replaceChildren([]);
 
@@ -223,19 +210,12 @@ function showNicks(){
         // Create a list item element
         const li = document.createElement("li");
         li.textContent = nickname;
-        li.style.fontSize = '2em';
-        li.style.fontFamily = 'Helvetica Neue';
-        li.style.margin = '10px';
-        li.style.textTransform = 'uppercase';
-        li.style.color = '#ffdead';
-        li.style.transition = 'box-shadow 0.3s';
         li.addEventListener('mouseover', function() {
             li.style.boxShadow = '0 0 10px green';
         });
         li.addEventListener('mouseout', function() {
             li.style.boxShadow = '';
         });
-
         // Add a click event listener to the list item
         li.addEventListener("click", function() {
             // Call the seeAvatar function with the selected nickname
@@ -244,6 +224,7 @@ function showNicks(){
 
         // Add the list item to the name list
         nameList.appendChild(li);
+        console.log(i);
     }
     order_by.addEventListener("change", ordering);
 }
@@ -326,7 +307,7 @@ function seeAvatar(nickname) {
     nameAvatar.innerText = nickname;
 
     avatar_container.hidden = false;
-    body.hidden = false;
+    body_svg.hidden = false;
     document.getElementById('play_community').hidden = false;
     document.getElementById('pause').hidden = false;
     document.getElementById('stop').hidden = false;
@@ -340,56 +321,46 @@ function seeAvatar(nickname) {
     avatarScore(avatargen[7], avatargen[8]);
 
 
-    haircut = body.contentDocument.getElementById('haircut');
-    hr = avatargen[1] + '.svg#' + avatargen[1];
+    let haircut = body_svg.contentDocument.getElementById('haircut');
+    let hr = avatargen[1] + '.svg#' + avatargen[1];
     haircut.setAttribute('href', hr);
-    /*haircut = body.contentDocument.getElementById('haircut');*/
     haircut.classList.replace(haircut.classList.item(0), avatargen[0]);
-    eyebrows = body.contentDocument.getElementById('eyebrows_left');
+    let eyebrows = body_svg.contentDocument.getElementById('eyebrows_left');
     eyebrows.classList.replace(eyebrows.classList.item(0), avatargen[0]);
-    eyebrows = body.contentDocument.getElementById('eyebrows_right');
+    eyebrows = body_svg.contentDocument.getElementById('eyebrows_right');
     eyebrows.classList.replace(eyebrows.classList.item(0), avatargen[0]);
-    skin = body.contentDocument.getElementById('sameskin');
+    let skin = body_svg.contentDocument.getElementById('sameskin');
     skin.classList.replace(skin.classList.item(0), avatargen[3]);
-    skin = body.contentDocument.getElementById('sameskin1');
+    skin = body_svg.contentDocument.getElementById('sameskin1');
     skin.classList.replace(skin.classList.item(0), avatargen[3] + '1');
-    iris = body.contentDocument.getElementById('iris_right');
+    let iris = body_svg.contentDocument.getElementById('iris_right');
     iris.classList.replace(iris.classList.item(0), avatargen[2]);
-    iris = body.contentDocument.getElementById('iris_left');
+    iris = body_svg.contentDocument.getElementById('iris_left');
     iris.classList.replace(iris.classList.item(0), avatargen[2]);
-    nose = body.contentDocument.getElementById('nose');
+    let nose = body_svg.contentDocument.getElementById('nose');
     hr = avatargen[4] + '.svg#' + avatargen[4];
     nose.setAttribute('href', hr);
     nose.classList.replace(nose.classList.item(0), avatargen[3] + '1');
-    mouth = body.contentDocument.getElementById('mouth');
+    let mouth = body_svg.contentDocument.getElementById('mouth');
     hr = avatargen[5] + '.svg#' + avatargen[5];
     mouth.setAttribute('href', hr);
     mouth.classList.replace(mouth.classList.item(0), avatargen[3] + '1');
-
-
-
 }
 
 function defaultAvatar(){
-
-    avatargen[0] = 'black_hair';
+    /*avatargen[0] = 'black_hair';
     avatargen[1] = '0h';
     avatargen[2] = 'blue_eyes';
-    avatargen[3] = 'skin1';
+    avatargen[3] = 'skin1';*/
 
-    body.replaceChildren([]);
+    body_svg.replaceChildren([]);
     score_cont.style.display = 'none';
     score_view.hidden = true;
     nameAvatar.hidden = true;
-
-
 }
-
 
 stars_vector = [];
 nStars = 5;
-
-
 
 scores = [];
 
@@ -442,7 +413,6 @@ function colorBorder(e){
     img.style.stroke = 'orange';
 
 }
-
 
 function unColorBorder(e){
     var img = e.target;

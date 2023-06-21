@@ -92,7 +92,6 @@ button{
 @font-face {
     font-family: 'neon_club_musicregular';
     src: url('../fonts/neoneon/Neoneon.woff') format('woff');
-    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
     font-weight: normal;
     font-style: normal;
 }
@@ -100,7 +99,6 @@ button{
 @font-face {
     font-family: 'bobble';
     src: url('../fonts/Bobbleboddy/Bobbleboddy_light.woff') format('woff');
-    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
     font-weight: normal;
     font-style: normal;
 }
