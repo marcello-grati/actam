@@ -1,22 +1,15 @@
-@font-face {
-    font-family: 'neon_club_musicregular';
-    src: url('../fonts/neoneon/Neoneon.woff') format('woff');
-    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'bobble';
-    src: url('../fonts/Bobbleboddy/Bobbleboddy_light.woff') format('woff');
-    /*url('fonts/clip/clip-webfont.woff') format('woff');*/
-    font-weight: normal;
-    font-style: normal;
-}
-
 body{
     margin: 0;
     background-color: black;
+}
+
+p {
+    margin-block-start: unset;
+    margin-block-end: unset;
+}
+
+object {
+    pointer-events: none;
 }
 
 .contenitore {
@@ -32,6 +25,24 @@ body{
     align-items: center; /*allinea tutti gli elementi del contenitore in centro*/
 }
 
+.create-container{
+    height: 60%;
+    width: 100%;
+    min-width: 700px;
+    min-height: 330px;
+    justify-content: space-evenly;
+    display: none;
+}
+
+.avatar_container{
+    position:relative;
+    background-color: white;
+    width: 50%;
+    height:100%;
+    min-width: 350px;
+    max-width:400px;
+}
+
 .avatar{
     position: absolute;
     left: 50%;
@@ -42,59 +53,6 @@ body{
     min-height: 200px;
 }
 
-.haircut{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%,-50%);
-    height: 90%;
-    min-width: 200px;
-    min-height: 200px;
-}
-
-.avatar_container{
-    position:relative;
-    background-color: white;
-    width: 50%;
-    height:100%;
-    min-width: 350px;
-    max-width:400px;
-    /*margin-bottom: 10px;*/
-}
-
-.create-container{
-    height: 60%;
-    width: 100%;
-    min-width: 700px;
-    min-height: 330px;
-    justify-content: space-evenly;
-    display: none;
-}
-
-
-.selectelement{
-    width:80px;
-    height:80px;
-    display: flex;
-    justify-content: center;
-}
-
-.svgimage_hair{
-    height: 100%;
-    padding: 5%;
-    max-height: 75px;
-
-}
-.svgimage_nose{
-    height: 350%;
-    transform: translate(0, -33%);
-}
-
-.svgimage_mouth{
-    height: 350%;
-    transform: translate(0, -44%);
-}
-
 .selection{
     display: inline-flex;
     flex-direction: column;
@@ -103,75 +61,15 @@ body{
     min-width:300px;
 }
 
-.title {
-    font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
-    font-size: 5em; /* Grandezza del titolo*/
-    margin-block-start: unset;
-    margin-block-end: unset;
-    /*margin-bottom: 70px;*/
-}
-
-.subtitle{
-    font-family: "bobble", Courier, serif;
-    font-size: 2.5em;
-    margin-block-start: unset;
-    margin-block-end: unset;
-    /*margin-bottom: 20px;*/
-}
-
-.neonText {
-    color: #ffdead;
-    text-shadow:
-            0 0 18px #ffa07a,
-            0 0 21px #ff00ff,
-            0 0 31px #ff00ff,
-            0 0 51px #fff0f5,
-            0 0 92px #ffdab9,
-            0 0 102px #ffe4b5,
-            0 0 112px #ffe4e1,
-            0 0 161px #ffe4e1;
-}
-
-.neonText2 {
-    color: #fff;
-    text-shadow:
-            0 0 7px #fff,
-            0 0 10px #fff,
-            0 0 21px #fff,
-            0 0 42px #0fa,
-            0 0 82px #0fa,
-            0 0 92px #0fa,
-            0 0 102px #0fa,
-            0 0 151px #0fa;
-}
-
-.nick{
-    color:#ffdead;
-    font-family: "bobble", Courier, serif; /* font Nickname*/
-    font-size:1.5em;
-    /*margin-bottom: 10px;*/
-}
-
-input {
-    font-size: 1.5em;
-}
-
-p {
-    margin-block-start: unset;
-    margin-block-end: unset;
-}
-
 .selections{
     background-color:#ffdead;
     border-radius: 10%;
     box-shadow:inset 3px 3px 15px -30px #40FF0B,5px 5px 10px 1px #F3FF83;
-    /*margin: 15px 15px 40px;*/
     padding: 10px 15px;
     font-size: 1.2em;
     border-color: #ffdead;
     cursor:pointer;
     font-family: "bobble", Courier, serif;
-
 }
 
 .options-container {
@@ -179,7 +77,6 @@ p {
     grid-template-columns: repeat(3, 0.5fr);
     border-color: white;
     width: 100%;
-    /*height: 50%;*/
     gap: 10px;
     justify-content: center;
     align-items: center;
@@ -196,117 +93,8 @@ p {
     justify-content: center;
     align-items: center;
     justify-items: center;
-
 }
 
-#options-container2{
-    width:30%;
-    height: 40%;
-}
-
-#name-list-container{
-    width: 60%;
-    height: 50%;
-    border: white;
-    background-color:black;
-    align-content: center;
-    align-items: center;
-    justify-items: center;
-    text-align: center;
-    margin-top: 20%;
-    margin-bottom: 20%;
-
-}
-
-.avatar_container_f{
-    position:relative;
-    background-color: black;
-    width: 60%;
-    height: 50%;
-    margin-top: 20%;
-    margin-bottom: 20%;
-
-    /*margin-bottom: 10px;*/
-}
-
-#name-list{
-    width: 100%;
-    height: 100%;
-    padding-inline-start: 0px;
-    cursor: pointer;
-    overflow-y: scroll;
-    background-color: black;
-    justify-content: center;
-    justify-items: center;
-    align-content: center;
-}
-
-#name-list li{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
-#name-list::-webkit-scrollbar {
-    width: 10px;
-}
-
-#name-list::-webkit-scrollbar-track {
-    background-color: #020202;
-}
-
-#name-list::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 5px;
-}
-
-.grid_container {
-    position: relative;
-    display: grid;
-    width: 80%;
-    height: 50%;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    justify-content: center;
-
-}
-
-#body_f{
-    position:relative;
-    width: 80%;
-    height: 80%;
-    align-content: center;
-}
-
-
-object {
-    pointer-events: none;
-}
-
-
-.new_name{
-    font-family: "bobble", Courier, serif;
-    font-size: 2.5em;
-    /*margin: 10px 0 120px;
-    justify-content: inherit;*/
-    text-transform: uppercase;
-}
-
-#name-avatar_f{
-    position: relative;
-    align:center;
-    justify-content: center;
-    left: 85px;
-    top: 0px;
-}
-
-.avatar-hair{
-    position:absolute;
-    height:85%;
-    left:8%;
-    top:10%;
-}
 .colors{
     height: 50px;
     width: 50px;
@@ -315,6 +103,41 @@ object {
     background-color: red;
     cursor: pointer;
 }
+
+.selectelement{
+    width:80px;
+    height:80px;
+    display: flex;
+    justify-content: center;
+}
+
+.haircut{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    height: 90%;
+    min-width: 200px;
+    min-height: 200px;
+}
+
+.svgimage_hair{
+    height: 100%;
+    padding: 5%;
+    max-height: 75px;
+}
+
+.svgimage_nose{
+    height: 350%;
+    transform: translate(0, -33%);
+}
+
+.svgimage_mouth{
+    height: 350%;
+    transform: translate(0, -44%);
+}
+
+/*hair_color*/
 
 .black_hair{
     fill: #251f26;
@@ -340,13 +163,9 @@ object {
     opacity: 1;
 }
 
-
-
 #blonde_hair{
     background-color: #ffe735;
 }
-
-
 
 .white_hair{
     fill: #ffffff;
@@ -437,30 +256,34 @@ object {
     background-color: #ffb500;
 }
 
+/*skin_color*/
+
+
+
 #skin1{
-    background-color: #f0c7b1;
-}
-
-.skin1{
-    fill:#f0c7b1;
-    stroke: #c27b55;
-}
-
-.skin11{
-    fill: #c27b55;
-}
-
-#skin2{
     background-color: #ffd6c8;
 }
 
-.skin2{
+.skin1{
     fill: #ffd6c8;
     stroke: rgba(202, 144, 121, 0.99);
 }
 
-.skin21{
+.skin11{
     fill: rgba(202, 144, 121, 0.99);
+}
+
+#skin2{
+    background-color: #f0c7b1;
+}
+
+.skin2{
+    fill:#f0c7b1;
+    stroke: #c27b55;
+}
+
+.skin21{
+    fill: #c27b55;
 }
 
 #skin3{
@@ -567,6 +390,8 @@ object {
     fill: #5b290c;
 }
 
+/*color eyes*/
+
 #green_eyes{
     background-color: #09883d;
 }
@@ -599,6 +424,8 @@ object {
     fill: #4b5757;
 }
 
+/*buttons*/
+
 .backdone{
     width:100%;
     justify-content: space-around;
@@ -618,6 +445,8 @@ object {
     position:relative;
     margin: 0 0 0;
 }
+
+/*player buttons*/
 
 .btn {
     border-radius: 37%;
@@ -659,6 +488,89 @@ object {
     margin-left: 13px;
 }
 
+/*download bar*/
+
+#myProgress {
+    border-radius: 10px;
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
+    font-size: 30px;
+    position:relative;
+    margin: 0 0 0;
+    width: 185px;
+}
+
+#myBar {
+    width: 1%;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #ffdead;
+    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
+    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
+    font-size: 30px;
+    position:relative;
+    margin: 0 0 0;
+}
+
+/*font*/
+
+@font-face {
+    font-family: 'neon_club_musicregular';
+    src: url('../fonts/neoneon/Neoneon.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'bobble';
+    src: url('../fonts/Bobbleboddy/Bobbleboddy_light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.title {
+    font-family: "neon_club_musicregular", Courier, serif; /* font del titolo*/
+    font-size: 5em; /* Grandezza del titolo*/
+    margin-block-start: unset;
+    margin-block-end: unset;
+}
+
+.subtitle{
+    font-family: "bobble", Courier, serif;
+    font-size: 2.5em;
+    margin-block-start: unset;
+    margin-block-end: unset;
+}
+
+.nick{
+    color:#ffdead;
+    font-family: "bobble", Courier, serif; /* font Nickname*/
+    font-size:1.5em;
+}
+
+.new_name{
+    font-family: "bobble", Courier, serif;
+    font-size: 2.5em;
+    text-transform: uppercase;
+}
+
+input {
+    font-size: 1.5em;
+}
+
+.neonText {
+    color: #ffdead;
+    text-shadow:
+            0 0 18px #ffa07a,
+            0 0 21px #ff00ff,
+            0 0 31px #ff00ff,
+            0 0 51px #fff0f5,
+            0 0 92px #ffdab9,
+            0 0 102px #ffe4b5,
+            0 0 112px #ffe4e1,
+            0 0 161px #ffe4e1;
+}
+
 .pulsate {
     animation: pulsate 1.5s infinite alternate;
 }
@@ -687,31 +599,3 @@ object {
         0 0 140px #ffe4e1;
     }
 }
-
-#myProgress {
-
-    border-radius: 10px;
-    /*padding: 10px 20px; /* grandezza bottoni */
-    /*background-color: #ffdead;*/
-    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
-    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
-    font-size: 30px;
-    position:relative;
-    margin: 0 0 0;
-    width: 185px;
-}
-
-#myBar {
-    width: 1%;
-    height: 100%;
-
-    border-radius: 10px;
-    /*padding: 10px 20px; /* grandezza bottoni */
-    background-color: #ffdead;
-    box-shadow: inset 3px 3px 50px -13px #40FF0B,5px 5px 35px 2px #F3FF83;
-    font-family: "neon_club_musicregular", Courier, serif; /* font bottoni */
-    font-size: 30px;
-    position:relative;
-    margin: 0 0 0;
-}
-
