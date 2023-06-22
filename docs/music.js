@@ -117,43 +117,63 @@ function convertInput(input) {
 function input2intervals(input) {
 
     switch (input) {
-        case 0: return -3;
-        case 1: return -2;
+        case 0: return -2;
+        case 1: return -1;
         case 2: return -1;
         case 3: return 0;
         case 4: return 1;
-        case 5: return 2;
-        case 6: return 3;
+        case 5: return 1;
+        case 6: return 2;
         default: return null;
     }
 }
 
 function nextDissonantNote(input, old_note, key) {
-    let old_note_index = key.scale.indexOf(old_note);
+    let old_note_index = key.scale.indexOf(old_note.substring(0, old_note.length-1));
     let next_note_index = old_note_index + input2intervals(input);
     let next_note;
     if (next_note_index < 0) {
         next_note_index += 7;
-        next_note = key.scale[next_note_index] + "3";
+
+        //next_note = key.scale[next_note_index] + "2";
+
+        next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
         next_note = Tonal.Note.transpose(next_note, "-8P");
+
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : down");
+
     } else if (next_note_index > 6) {
         next_note_index -= 7;
-        next_note = key.scale[next_note_index] + "3";
+
+        //next_note = key.scale[next_note_index] + "4";
+
+        next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
         next_note = Tonal.Note.transpose(next_note, "+8P");
+
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : up");
+
     } else {
-        next_note = key.scale[next_note_index] + "3";
+        next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : same");
     }
+
     return next_note;
 }
 
 function nextConsonantNote(input, old_note, key, chord) {
 
     let next_note = null;
-    while (chord.indexOf(next_note)===-1) {
+    let counter=0;
+    let temp_note = null;
+    while (chord.indexOf(temp_note)===-1 && counter<10) {
 
+        //if (counter>0) console.log("failed");
         next_note = nextDissonantNote(input, old_note, key);
         input = (input + 1) % 7;
+        temp_note = next_note.substring(0,next_note.length-1) + "3";
+        counter++;
     }
+    if (counter>=10) console.log("error - " + next_note + " - " + chord);
     return next_note;
 }
 
@@ -288,11 +308,12 @@ function writeMusic (option) {
     // Math.ceil(x/2) +1
 
     let melody = [];
+    let old_note = null;
 
     for (let i=0; i<measures; i++) {
         let tempo_left = 16;
         let counter = 0;
-        let old_note = null;
+
         let duration;
         let note;
         let time
@@ -376,6 +397,7 @@ function writeMusic (option) {
             time = (i * 16 + (16 - tempo_left)) * t.toSeconds("16n");
             tempo_left -= duration;
             counter++;
+            // console.log(old_note + " -> " + note);
             old_note = note;
 
             melody.push(
