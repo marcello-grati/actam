@@ -2,11 +2,15 @@ const Tone = require('tone');
 const Tonal = require('tonal');
 const seedrandom = require('seedrandom');
 
-let recording = false;
-let recording_interrupted = false;
-let sheet;
-const num_of_chord_notes = 3;
-const num_of_voices = 1;
+// Global variables
+
+let recording = false;                  // true when user is downloading the song
+let recording_interrupted = false;      // true when download has been interrupted and until return to initial stage
+const CHORD_NOTES = 3;             // chords are triads
+let song_duration;                      // song duration in seconds
+let sheet;                              // data object in which all music information are stored
+
+// Piano sampler
 const piano_options = {
     urls: {
         A0: "A0.mp3",
@@ -43,69 +47,70 @@ const piano_options = {
     release: 2,
     baseUrl: "https://tonejs.github.io/audio/salamander/"
 }
-let song_duration;
-const chrom_scale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
 
+// Transport object that controls audio timing
 const t = Tone.Transport;
-const pan_left = new Tone.Panner().toDestination();
-//const pan_right = new Tone.Panner(0.5).toDestination();
-//const piano_chord_sampler = new Tone.Sampler(piano_options).toDestination();
-//const piano_melody_sampler = new Tone.Sampler(piano_options).connect(pan_left);
-//const piano_right_sampler = new Tone.Sampler(piano_options).connect(pan_right);
-//const piano_melody_sampler = new Tone.Sampler(piano_options).toDestination();
-//const piano_right_sampler = new Tone.Sampler(piano_options).toDestination();
 
-const piano_chord_sampler = new Tone.Sampler(piano_options).connect(pan_left);
-const piano_melody_sampler = new Tone.Sampler(piano_options).connect(pan_left);
+// Audio nodes routing : (piano_chord_sampler, piano_melody_sampler) -> (pan) -> (destination, recording_node)
 
-//const audio = document.querySelector('audio');    // This is only to use the html audio player
+const pan = new Tone.Panner().toDestination();
+const piano_chord_sampler = new Tone.Sampler(piano_options).connect(pan);
+const piano_melody_sampler = new Tone.Sampler(piano_options).connect(pan);
 
-const dest  = Tone.context.createMediaStreamDestination();
-pan_left.connect(dest);
-const recorder = new MediaRecorder(dest.stream, { mimeType: "audio/webm" });
+const recording_node  = Tone.context.createMediaStreamDestination();
+pan.connect(recording_node);
+const recorder = new MediaRecorder(recording_node.stream, { mimeType: "audio/webm" });
 
-// Create an inverted chord
+/*
+    Creates an inverted chord
+
+    @param chord : original chord
+    @param inv_num : inversion number (es.  1 -> C/E : [E, G, C],
+                                            2 -> C/G : [G, C, E])
+    @return inverted chord
+ */
 function invert(chord, inv_num) {
     return Tonal.Chord.getChord(chord.type, chord.tonic, chord.notes[inv_num]);
 }
 
-// Choose between a set of chords
+/*
+    Chooses between a set of proposed chords
+
+    @param chords : chord options
+    @param input : input generated from avatarFeat
+    @param index : current position in input
+    @return : chosen chord
+ */
 function choose_btw_set(choices, input, index) {
     index = index % input.length;
     let choice = input[index] % choices.length;
     return choices[choice] - 1
 }
 
-function features2int() {
-    let input = [];
-    input.push(options.haircolor.indexOf(avatarFeat[0]));
-    input.push(options.haircut.indexOf(avatarFeat[1]));
-    input.push(options.eyes.indexOf(avatarFeat[2]));
-    input.push(options.skin.indexOf(avatarFeat[3]));
-    input.push(options.nose.indexOf(avatarFeat[4]));
-    input.push(options.mouth.indexOf(avatarFeat[5]));
+/*
+    Converts avatar characteristics into an array of integers
 
-    // input.push(Math.round(rng(*3)) // temp nose
-    // input.push(Math.round(rng()) // temp mouth
+    @param avatar_options : reads from avatar editor or community
+    @return input array
+ */
+function features2int(avatar_options) {
+    let input = [];
+    input.push(options.haircolor.indexOf(avatar_options[0]));
+    input.push(options.haircut.indexOf(avatar_options[1]));
+    input.push(options.eyes.indexOf(avatar_options[2]));
+    input.push(options.skin.indexOf(avatar_options[3]));
+    input.push(options.nose.indexOf(avatar_options[4]));
+    input.push(options.mouth.indexOf(avatar_options[5]));
 
     return input;
 }
 
-function features2int_community() {
-    let input = [];
-    input.push(options.haircolor.indexOf(avatargen[0]));
-    input.push(options.haircut.indexOf(avatargen[1]));
-    input.push(options.eyes.indexOf(avatargen[2]));
-    input.push(options.skin.indexOf(avatargen[3]));
-    input.push(options.nose.indexOf(avatargen[4]));
-    input.push(options.mouth.indexOf(avatargen[5]));
+/*
+    Converts input integers into numbers between 0 and 6 to be used as chord choices
 
-    // input.push(Math.round(rng(*3)) // temp nose
-    // input.push(Math.round(rng()) // temp mouth
-
-    return input;
-}
-
+    @param input : avatar input
+    @return input choices in chord format
+ */
 function convertInput(input) {
     let chordInput = [];
     for (let i=0; i<6; i++) {    // for (let i=0; i<input.length; i++) {
@@ -115,6 +120,12 @@ function convertInput(input) {
     return chordInput;
 }
 
+/*
+    Maps input integer (from 0 to 6) to interval choice (from -2 to +2)
+
+    @param input : avatar input
+    @return chosen interval
+ */
 function input2intervals(input) {
 
     switch (input) {
@@ -129,157 +140,115 @@ function input2intervals(input) {
     }
 }
 
+/*
+    Finds the new melody note, with respect to previous note and key, and adapting its octave
+
+    @param input : current avatar input
+    @param old_note : previous note
+    @param key : song key
+    @return : chosen note
+ */
 function nextDissonantNote(input, old_note, key) {
-    let interval = input2intervals(input);
-    let old_note_index = key.scale.indexOf(old_note.substring(0, old_note.length-1));
-    let next_note_index = old_note_index + interval;
 
-    let distance = chrom_scale.indexOf(key.tonic);
-
+    let interval = input2intervals(input);      // (-2, ..., +2 )
+    let old_note_index = key.scale.indexOf(Tonal.Note.pitchClass(old_note));    // with respect to key (0, ..., 6)
+    let next_note_index = old_note_index + interval;    // with respect to key (0, ..., 6)
     let next_note;
     next_note_index = (next_note_index + 7) % 7;
-    next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
+    next_note = key.scale[next_note_index] + Tonal.Note.octave(old_note);
 
-    let next_note_chroma_index = chrom_scale.indexOf(key.scale[next_note_index]);
+    // with respect to chromatic scale (0, ..., 11)
+    let next_note_chroma_index = Tonal.Note.chroma(key.scale[next_note_index]);
     if (next_note_chroma_index === -1)
-        next_note_chroma_index = chrom_scale.indexOf(Tonal.Note.enharmonic(key.scale[next_note_index]));
+        next_note_chroma_index = Tonal.Note.chroma(Tonal.Note.enharmonic(key.scale[next_note_index]));
 
-    let old_note_chroma_index = chrom_scale.indexOf(key.scale[old_note_index]);
+    // with respect to chromatic scale (0, ..., 11)
+    let old_note_chroma_index = Tonal.Note.chroma(key.scale[old_note_index]);
     if (old_note_chroma_index === -1)
-        old_note_chroma_index = chrom_scale.indexOf(Tonal.Note.enharmonic(key.scale[old_note_index]));
+        old_note_chroma_index = Tonal.Note.chroma(Tonal.Note.enharmonic(key.scale[old_note_index]));
 
+    // transposes current note to correct octave
     if ((next_note_chroma_index > old_note_chroma_index) && (interval < 0)) {
-
         next_note = Tonal.Note.transpose(next_note, "-8P");
 
-        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : down");
-
     } else if ((next_note_chroma_index < old_note_chroma_index) && (interval > 0)) {
-
         next_note = Tonal.Note.transpose(next_note, "+8P");
-
-        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : up");
     }
-
-    console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +
-        ")\nold_note_chroma_index = " + old_note_chroma_index + " -> next_note_chroma_index = " +
-        next_note_chroma_index + " input = " + interval);
-
     return next_note;
 }
 
 /*
-function nextDissonantNote(input, old_note, key) {
-    let old_note_index = key.scale.indexOf(old_note.substring(0, old_note.length-1));
-    let next_note_index = old_note_index + input2intervals(input);
+    Finds the new melody note between the ones from the current chord
 
-    let distance = chrom_scale.indexOf(key.tonic);
-
-    let next_note;
-    if (next_note_index < 0) {
-        next_note_index += 7;
-
-        //next_note = key.scale[next_note_index] + "2";
-
-        next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
-        next_note = Tonal.Note.transpose(next_note, "-8P");
-
-        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : down");
-
-    } else if (next_note_index > 6) {
-        next_note_index -= 7;
-
-        //next_note = key.scale[next_note_index] + "4";
-
-        next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
-        next_note = Tonal.Note.transpose(next_note, "+8P");
-
-        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : up");
-
-    } else {
-        next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
-        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : same");
-    }
-
-    return next_note;
-}
+    @param input : current avatar input
+    @param old_note : previous note
+    @param key : song key
+    @param chord : current chord (acceptable notes)
+    @return : chosen note
  */
-
 function nextConsonantNote(input, old_note, key, chord) {
 
     let next_note = null;
     let counter=0;
     let temp_note = null;
-    while (chord.indexOf(temp_note)===-1 && counter<10) {
 
-        if (counter>0) console.log("failed");
+    // compute note and checks if it belongs to chord
+    while (chord.indexOf(temp_note)===-1 && counter<10) {
         next_note = nextDissonantNote(input, old_note, key);
         input = (input + 1) % 7;
-        temp_note = next_note.substring(0,next_note.length-1) + "3";
+        temp_note = Tonal.Note.pitchClass(next_note) + "3";
         counter++;
     }
     if (counter>=10) console.log("error - " + next_note + " - " + chord);
     return next_note;
 }
 
+/*
+    update song_duration global variable with current song duration
+ */
 function updateSongDuration() {
     song_duration = (sheet.measures + 1) * 4 * 60 / sheet.bpm;
 }
 
-// write the sheet music
-function writeMusic (option) {
+/*
+    Writes music starting from avatar characteristics
 
-    let input = [];
+    @param avatar_options : avatar characteristics from editor or community
+    @return sheet object of whole song
+ */
+function writeMusic (avatar_options) {
 
-    // for (let i=0; i<1000; i++) input[i] = Math.floor(rng(*100); // deprecated
+    // conversion from avatar characteristics to music input
 
-    if (option)
-        input = features2int_community();
-    else
-        input = features2int();
-
+    let input = features2int(avatar_options);
     let chord_input = convertInput(input);
-    //for (let i=0; i<1000; i++) input.push(Math.floor(rng(*100));
-
     let seed_string = "";
     for (let i=0; i<input.length; i++) {
         seed_string = seed_string + input[i];
     }
     let rng = seedrandom(seed_string);
-    //seedrandom(seed_string, { global: true });
 
-    if (option)
-        console.log("avatargen: ", avatargen);
-    else
-        console.log("avatarFeat: ", avatarFeat);
-    console.log("stringa in input: ", input);
-    console.log("chordInput: ", chord_input);
+    console.log("avatar options: ", avatar_options);
+    // console.log("stringa in input: ", input);
+    // console.log("chordInput: ", chord_input);
 
-    const measures_index = 1;
-    const key_index = 0;
-    const bpm_index = 3;
-    const chord_index = 3;
+    const KEY_INDEX = 0;        // hair color -> key
+    const MEASURES_INDEX = 1;   // haircut -> measures
+    const BPM_INDEX = 3;        // skin -> bpm
 
-    //const measures = input[measures_index] % 5 + 4;   // deprecated
-    const measures = input[measures_index] + 4;
-
-    const first_note_index1 = chord_index + 1;
-    const first_rythm_index1 = first_note_index1 + measures*16;
-
-    //const first_note_index2 = first_rythm_index1 + measures*16
-    //const first_rythm_index2 = first_note_index2 + measures*16
+    const measures = input[MEASURES_INDEX] + 4;
 
     const chromatic_scale = Tonal.Range.chromatic(["C4", "B4"], {sharps : false, pitchClass : true});
 
-    const key = new Tonal.Key.majorKey(chromatic_scale[input[key_index]]);
-    // const key = new Tonal.Key.majorKey(chromaticScale[input[key_index] % 12]);   // deprecated
+    const key = new Tonal.Key.majorKey(chromatic_scale[input[KEY_INDEX]]);
+    // const key = new Tonal.Key.majorKey(chromaticScale[input[KEY_INDEX] % 12]);   // deprecated
     //const key = new Tonal.Key.majorKey("C"); // test
 
     let chords_scale_obj = [];
     key.chords.forEach((value, index) => {chords_scale_obj[index] = Tonal.Chord.get(value)});
 
-    // const bpm = input[bpm_index] % 30 + 95;  // deprecated
-    const bpm = input[bpm_index] * 2 + 100;
+    // const bpm = input[BPM_INDEX] % 30 + 95;  // deprecated
+    const bpm = input[BPM_INDEX] * 2 + 100;
 
     t.bpm.value = bpm;
 
@@ -343,8 +312,8 @@ function writeMusic (option) {
     let simple_progression = [];
 
     for (let i=0; i<measures; i++) {
-        simple_progression.push(new Array(num_of_chord_notes));
-        for (let j=0; j<num_of_chord_notes; j++) {
+        simple_progression.push(new Array(CHORD_NOTES));
+        for (let j=0; j<CHORD_NOTES; j++) {
             simple_progression[i][j] = progression[i].notes[j] + "3";
         }
     }
@@ -369,8 +338,8 @@ function writeMusic (option) {
                 duration = Math.floor(rng() * 2) + 3;
                 // duration = input[first_rhythm_index1 + i*16 + counter] % 2 + 3;   // deprecated
                 //duration = 4; // test
-                //note = simple_progression[i][chord_input[(i + counter) % chord_input.length] % num_of_chord_notes];
-                note = simple_progression[i][Math.floor(rng() * num_of_chord_notes)];
+                //note = simple_progression[i][chord_input[(i + counter) % chord_input.length] % CHORD_NOTES];
+                note = simple_progression[i][Math.floor(rng() * CHORD_NOTES)];
 
             } else {
 
@@ -402,7 +371,7 @@ function writeMusic (option) {
 
                     //console.log("fine for " + note + " " + simple_progression[i]);
 
-                    //note = simple_progression[i][input[first_note_index1 + i*16 + counter] % num_of_chord_notes];
+                    //note = simple_progression[i][input[first_note_index1 + i*16 + counter] % CHORD_NOTES];
                     //note = Tonal.Note.transpose(note, "+8P");
 
 
@@ -489,7 +458,7 @@ function initializeMusic() {
     let part_array = [];
 
     for (let i=0; i<sheet.measures; i++) {
-        for (let j=0; j<num_of_chord_notes; j++) {
+        for (let j=0; j<CHORD_NOTES; j++) {
             part_array.push(
                 {
                     time : i * t.toSeconds("1m"),
@@ -576,7 +545,7 @@ if (document.getElementById("write")) {
             Tone.start().then(() => {
                 console.log("write");
                 t.stop();
-                writeMusic(false);
+                writeMusic(avatarFeat);
                 initializeMusic();
                 t.start(t.now() + 0.6);
             });
@@ -652,7 +621,7 @@ if (document.getElementById("done")) {
             Tone.start().then(() => {
                 console.log("write");
                 t.stop();
-                writeMusic(false);
+                writeMusic(avatarFeat);
                 initializeMusic();
                 t.start(t.now() + 0.6);
             });
@@ -698,7 +667,7 @@ if (document.getElementById("play_community")) {
             Tone.start().then(() => {
                 console.log("write and play");
                 t.stop();
-                writeMusic(true);
+                writeMusic(avatargen);
                 initializeMusic();
                 t.start(t.now() + 0.6);
             });
