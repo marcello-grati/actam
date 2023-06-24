@@ -45,6 +45,7 @@ const piano_options = {
     baseUrl: "https://tonejs.github.io/audio/salamander/"
 }
 let song_duration;
+const chrom_scale = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"];
 
 const t = Tone.Transport;
 const pan_left = new Tone.Panner().toDestination();
@@ -130,8 +131,51 @@ function input2intervals(input) {
 }
 
 function nextDissonantNote(input, old_note, key) {
+    let interval = input2intervals(input);
+    let old_note_index = key.scale.indexOf(old_note.substring(0, old_note.length-1));
+    let next_note_index = old_note_index + interval;
+
+    let distance = chrom_scale.indexOf(key.tonic);
+
+    let next_note;
+    next_note_index = (next_note_index + 7) % 7;
+    next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
+
+    let next_note_chroma_index = chrom_scale.indexOf(key.scale[next_note_index]);
+    if (next_note_chroma_index === -1)
+        next_note_chroma_index = chrom_scale.indexOf(Tonal.Note.enharmonic(key.scale[next_note_index]));
+
+    let old_note_chroma_index = chrom_scale.indexOf(key.scale[old_note_index]);
+    if (old_note_chroma_index === -1)
+        old_note_chroma_index = chrom_scale.indexOf(Tonal.Note.enharmonic(key.scale[old_note_index]));
+
+    if ((next_note_chroma_index > old_note_chroma_index) && (interval < 0)) {
+
+        next_note = Tonal.Note.transpose(next_note, "-8P");
+
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : down");
+
+    } else if ((next_note_chroma_index < old_note_chroma_index) && (interval > 0)) {
+
+        next_note = Tonal.Note.transpose(next_note, "+8P");
+
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : up");
+    }
+
+    console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +
+        ")\nold_note_chroma_index = " + old_note_chroma_index + " -> next_note_chroma_index = " +
+        next_note_chroma_index + " input = " + interval);
+
+    return next_note;
+}
+
+/*
+function nextDissonantNote(input, old_note, key) {
     let old_note_index = key.scale.indexOf(old_note.substring(0, old_note.length-1));
     let next_note_index = old_note_index + input2intervals(input);
+
+    let distance = chrom_scale.indexOf(key.tonic);
+
     let next_note;
     if (next_note_index < 0) {
         next_note_index += 7;
@@ -141,7 +185,7 @@ function nextDissonantNote(input, old_note, key) {
         next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
         next_note = Tonal.Note.transpose(next_note, "-8P");
 
-        console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : down");
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : down");
 
     } else if (next_note_index > 6) {
         next_note_index -= 7;
@@ -151,15 +195,16 @@ function nextDissonantNote(input, old_note, key) {
         next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
         next_note = Tonal.Note.transpose(next_note, "+8P");
 
-        console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : up");
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : up");
 
     } else {
         next_note = key.scale[next_note_index] + old_note[old_note.length - 1];
-        console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : same");
+        //console.log(old_note + " (" + old_note_index +  ")" + " -> " + next_note + " (" + next_note_index +  ")" + " : same");
     }
 
     return next_note;
 }
+ */
 
 function nextConsonantNote(input, old_note, key, chord) {
 
@@ -174,7 +219,7 @@ function nextConsonantNote(input, old_note, key, chord) {
         temp_note = next_note.substring(0,next_note.length-1) + "3";
         counter++;
     }
-    if (counter>=10) console.log("DIOBESTIA - " + next_note + " - " + chord);
+    if (counter>=10) console.log("error - " + next_note + " - " + chord);
     return next_note;
 }
 
@@ -239,7 +284,7 @@ function writeMusic (option) {
 
     t.bpm.value = bpm;
 
-    //console.log(key);
+    // console.log(key);
     console.log("key = ", key.tonic);
     console.log("BPM = " + bpm);
     console.log("measures = " + measures);
