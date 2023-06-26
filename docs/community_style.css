@@ -8,8 +8,9 @@
     min-height: 400px;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 25px;
-    margin-bottom: 20px;
+    /*margin-top: 25px;
+    margin-bottom: 20px;*/
+    height: 50%;
 }
 
 #name-list-container{
@@ -69,7 +70,7 @@
 }
 
 #body_f{
-    width: 100%;
+    width: 85%;
 }
 
 .score_container{
