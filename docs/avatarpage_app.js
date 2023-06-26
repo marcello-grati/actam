@@ -135,7 +135,6 @@ function menuselection() {
 // Cambio colore capelli icone in base a scelta
 function changeColor(name,i) {
   const elem = document.getElementById(name);
-  //console.log(elem);
   const ele = elem.contentDocument;
   const e = ele.getElementsByTagName('g')[0];
   e.classList.replace(e.classList.item(0), avatarFeat[i]);
@@ -143,7 +142,6 @@ function changeColor(name,i) {
 
 // Cambio colore capelli avatar in base a selezione
 function changeHairColor(color) {
-  //console.log('change hair color' + color);
   let haircut = body_svg.contentDocument.getElementById('haircut');
   haircut.classList.replace(haircut.classList.item(0), color);
   let eyebrows = body_svg.contentDocument.getElementById('eyebrows_left');
@@ -154,7 +152,6 @@ function changeHairColor(color) {
 
 // Cambio taglio di capelli avatar in base a selezione
 function changeHairCut(hair) {
-  //console.log('change haircut ' + hair);
   let haircut = body_svg.contentDocument.getElementById('haircut');
   let hr = hair + '.svg#' + hair;
   haircut.setAttribute('href', hr);
@@ -162,7 +159,6 @@ function changeHairCut(hair) {
 
 // Cambio bocca avatar in base a selezione
 function changeMouth(mouthtype) {
-  //console.log('change mouthtype ' + mouthtype);
   let mouth = body_svg.contentDocument.getElementById('mouth');
   let m = mouthtype + '.svg#' + mouthtype;
   mouth.setAttribute('href', m);
@@ -170,7 +166,6 @@ function changeMouth(mouthtype) {
 
 // Cambio naso avatar in base a selezione
 function changeNose(nosetype) {
-  //console.log('change nosetype ' + nosetype);
   let nose = body_svg.contentDocument.getElementById('nose');
   let n = nosetype + '.svg#' + nosetype;
   nose.setAttribute('href', n);
@@ -178,7 +173,6 @@ function changeNose(nosetype) {
 
 // Cambio colore pelle avatar in base a selezione
 function changeSkinColor(colorskin) {
-  //console.log('change skin color' + colorskin);
   let skin = body_svg.contentDocument.getElementById('sameskin');
   skin.classList.replace(skin.classList.item(0), colorskin);
   skin = body_svg.contentDocument.getElementById('sameskin1');
@@ -191,7 +185,6 @@ function changeSkinColor(colorskin) {
 
 // Cambio colore occhi avatar in base a selezione
 function changeEyesColor(eyescolor) {
-  //console.log('change eyes color' + eyescolor);
   let iris = body_svg.contentDocument.getElementById('iris_right');
   iris.classList.replace(iris.classList.item(0), eyescolor);
   iris = body_svg.contentDocument.getElementById('iris_left');
@@ -258,7 +251,7 @@ async function doneButton() {
   // name avatar
   let tempname = namebox.value;
   avatardb[6] = tempname.toUpperCase();
-  // id avatar
+  // id avatar randomizzato
   avatardb[7] = Math.round(Math.random () * 100000);
   console.log('avatardb: ' + avatardb);
 

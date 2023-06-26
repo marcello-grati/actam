@@ -27,7 +27,7 @@
 
     </div>
 
-    <form name="nicktext" method="post" id="nick-form" hidden="hidden"> <!-- autocomplete="off" se non si vuole che rimangano memorizzati i nomi-->
+    <form name="nicktext" method="post" id="nick-form" hidden="hidden">
         <label for="username" class="nick">Nickname:</label>
         <input type="text" id="username" name="nickname" size="20" maxlength="20" >
         <input type="button" id="subButton" value="Confirm" onclick="saveName()" />
@@ -44,7 +44,6 @@
                 <option value="lower"> Lower Score </option>
             </select>
             <ul id="name-list" hidden="hidden">
-                <!-- The list of names will be added dynamically using JavaScript -->
             </ul>
         </div>
         <div class="avatar_container_f" id="avatar_container_f" hidden="hidden">
