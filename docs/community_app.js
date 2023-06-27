@@ -63,6 +63,7 @@ function filtersSelection() {
 
     nameList.replaceChildren([]);
     order_by.value = 'null1';
+    defaultAvatar();
     selection[0] = filtersMenu.value;
 
     document.getElementById('play_community').hidden = true;
@@ -353,6 +354,12 @@ function seeAvatar(nickname) {
     hr = avatargen[5] + '.svg#' + avatargen[5];
     mouth.setAttribute('href', hr);
     mouth.classList.replace(mouth.classList.item(0), avatargen[3] + '1');
+}
+function defaultAvatar(){
+    body_svg.replaceChildren([]);
+    score_cont.style.display = 'none';
+    score_view.hidden = true;
+    nameAvatar.hidden = true;
 }
 
 stars_vector = [];
