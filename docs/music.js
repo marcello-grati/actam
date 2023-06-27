@@ -639,16 +639,21 @@ if (document.getElementById("done")) {
     });
 }
 
-
+/*
+    Download button action: starts download if recording is not already in action
+ */
 if (document.getElementById("download")) {
     document.getElementById("download").addEventListener("click", function () {
 
         if (!recording && !recording_interrupted) {
+
+            // Starts download
             console.log("download");
             recording = true;
             downloadMusic();
-
             console.log("song duration : " + song_duration + " s");
+
+            // update and show progress bar instead of button
             repeatEverySecond();
             document.getElementById("myBar").hidden = false;
             document.getElementById("myProgress").hidden = false;
@@ -656,12 +661,15 @@ if (document.getElementById("download")) {
 
 
         } else {
+
+            // Handles download interruption
             console.log("download interrupted");
             recording_interrupted = true;
             t.stop();
             recorder.stop()
             recording = false;
 
+            // Bring back download button
             clearInterval(intervalID);
             song_position = 0;
             document.getElementById("myBar").hidden = true;
@@ -671,6 +679,9 @@ if (document.getElementById("download")) {
     });
 }
 
+/*
+    Alternative Play button for community, it writes and initializes music too
+ */
 if (document.getElementById("play_community")) {
     document.getElementById("play_community").addEventListener("click", function () {
 
@@ -683,10 +694,12 @@ if (document.getElementById("play_community")) {
                 t.start(t.now() + 0.6);
             });
         }
-        console.log("banana");
     });
 }
 
+/*
+    Stops music when applying new filter in the community
+ */
 if (document.getElementById('filters-menu')) {
     document.getElementById('filters-menu').addEventListener("change", function () {
         if (!recording) {
