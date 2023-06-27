@@ -13,7 +13,7 @@ db.prepare(
     nose TEXT NOT NULL,
     mouth TEXT NOT NULL,
     username TEXT NOT NULL,
-    score INTEGER DEFAULT 0,
+    score REAL DEFAULT 0,
     votes INTEGER DEFAULT 0,
     id INTEGER DEFAULT 0
 );`,
