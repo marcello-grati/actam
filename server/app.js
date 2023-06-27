@@ -84,7 +84,7 @@ app.post('/community/add', (req, res) => {
   ).run(...avatar_da_salvare);
 
 
-  return res.status(200);
+  return res.status(200).json({ message: 'Success' });
 });
 
 // Update del database con nuovo punteggio
@@ -104,14 +104,14 @@ app.post('/community/update', (req, res) => {
     if (existingAvatars.length > 0) {
       const updateStmt = db.prepare('UPDATE genoma SET score = ?, votes = ? WHERE id = ?');
       existingAvatars.forEach(existingAvatar => {
-        updateStmt.run(score, votes,id);
+        updateStmt.run(score, votes, id);
       });
     }
   })();
 
   console.log('updated');
 
-  return res.status(200);
+  return res.status(200).json({ message: 'Success' });
 });
 
 

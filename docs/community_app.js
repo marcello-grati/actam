@@ -441,10 +441,10 @@ function fillStar(e) {
 
     // Calcolo nuovo score
     const new_score_dec = (scores[0] * scores[1] + (num + 1)) / (scores[1] + 1);
-    let new_score = new_score_dec.toFixed(1);
+    let new_score = Math.round(new_score_dec*10)/10;
     console.log('new score:' + new_score);
 
-    // Salvataggio nuovo score e aggiornamento  numero di votazioni nell'array dell'avatar
+    // Salvataggio nuovo score e aggiornamento numero di votazioni nell'array dell'avatar
     avatargen[7] = new_score;
     avatargen[8] += 1;
 
@@ -488,8 +488,4 @@ function fillStar(e) {
         .then(response => response.json())
         .then(data => console.log(data))
         .catch(error => console.error(error));
-
-
-
-
 }
