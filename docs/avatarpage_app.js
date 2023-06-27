@@ -123,7 +123,7 @@ function menuselection() {
         });
       }
       // cambia colore di naso e bocca delle icone in base al colore scelto della pelle
-      else if (selected==='mouse'||selected==='nose'){
+      else if (selected==='mouth'||selected==='nose'){
         el_img.addEventListener('load', function () {
           changeColor(el_img.id, 3);
         });
@@ -137,7 +137,12 @@ function changeColor(name,i) {
   const elem = document.getElementById(name);
   const ele = elem.contentDocument;
   const e = ele.getElementsByTagName('g')[0];
-  e.classList.replace(e.classList.item(0), avatarFeat[i]);
+  if (i===3)
+    e.classList.replace(e.classList.item(0), avatarFeat[i]+'1');
+  else
+    e.classList.replace(e.classList.item(0), avatarFeat[i]);
+
+
 }
 
 // Cambio colore capelli avatar in base a selezione

@@ -346,47 +346,49 @@ object {
 }
 
 .skin71{
-    fill: #42231f;
+    fill: #4d2d26;
 }
 
 #skin8{
-    background-color: #64371e;
-}
-
-.skin8{
-    fill: #64371e ;
-    stroke: #502c18;
-}
-
-.skin81{
-    fill: #4d2810;
-}
-
-#skin9{
-    background-color: #54311a;
-}
-
-.skin9{
-    fill: #54311a;
-    stroke: #462510;
-}
-
-.skin91{
-    fill: #462510;
-}
-
-#skin10{
     background-color: #753c19;
 }
 
-.skin10{
+.skin8{
     fill:  #753c19;
     stroke: #5b290c;
 }
 
-.skin101{
+.skin81{
     fill: #5b290c;
 }
+
+#skin9{
+    background-color: #64371e;
+}
+
+.skin9{
+    fill: #64371e ;
+    stroke: #502c18;
+}
+
+.skin91{
+    fill: #4d2810;
+}
+
+#skin10{
+    background-color: #54311a;
+}
+
+.skin10{
+    fill: #54311a;
+    stroke: #40210d;
+}
+
+.skin101{
+    fill: #40210d;
+}
+
+
 
 /*color eyes*/
 
