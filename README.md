@@ -1,10 +1,10 @@
 # FaceTune
 
 FaceTune is a web application developed using JavaScript, HTML and CSS.
-It allows users to generate a personalized avatar by selecting skin color, hair color, eyes color, haircut, nose shape and mouth shape. 
+It allows users to create their personalized avatar by selecting various physical characteristics. These include skin color, hair color, eyes color, haircut, nose shape and mouth shape.
 Based on the chosen characteristics, the application generates a customized jingle for the avatar, allowing customization of tonality, speed, duration, harmonic and melodic progression.
 
-Once the avatar is created, the application enables users to download the jingle and saves the created avatar in the "Avatar Community".
+Once the avatar is created, the application enables users to download the jingle and saves the created avatar in the "Avatars Community".
 Within the avatar community, users can view all the previously created avatars, listen to their jingles, and rate them on a scale from 1 to 5.
 
 # GUI
@@ -14,7 +14,7 @@ Within the avatar community, users can view all the previously created avatars, 
 ## Avatar Creation
 <img width="1000" src="readmeImages/Screenshot 2023-06-20 alle 17.57.56.png">
 
-## Avatar Community
+## Avatars Community
 <img width="1000" src="readmeImages/Screenshot 2023-06-20 alle 17.54.53.png">
 
 
