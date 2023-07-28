@@ -17,6 +17,12 @@ Within the avatar community, users can view all the previously created avatars, 
 ## Avatar Community
 <img width="1000" src="readmeImages/Screenshot 2023-06-20 alle 17.54.53.png">
 
+
+# DEMO
+
+https://github.com/marcello-grati/actam/assets/101573040/1c5eb2c5-ab63-421a-b760-74465305c2bd
+
+
 # How to run it
 
 1. Clone the repository
