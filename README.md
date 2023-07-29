@@ -26,7 +26,7 @@ https://github.com/marcello-grati/actam/assets/101573040/1c5eb2c5-ab63-421a-b760
 
 The image of the avatar is created using Scalable Graphics Vector (SVG) format. 
 
-Each shape is body.svg created through the tag <path> and then, using the tag <g>, grouped together to form the various part of the body.
+Each shape in body.svg  is created through the tag \<path\> and then, using the tag \<g\>, grouped together to form the various part of the body.
 The elements whose color can be changed from the user, are assigned to a class defined in the .css according to the color chosen.
 
 
